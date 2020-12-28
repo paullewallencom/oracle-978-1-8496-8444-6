@@ -1,0 +1,93 @@
+<?xml version = "1.0" encoding = "UTF-8" ?>
+<!--
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Oracle JDeveloper BPEL Designer 
+  
+  Created: Mon Sep 05 01:44:09 CEST 2011
+  Author:  Administrator
+  Type: BPEL 1.1 Process
+  Purpose: Asynchronous BPEL Process
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-->
+<process name="CustomerManagementASync"
+         targetNamespace="http://xmlns.oracle.com/invoking_soa_composite_async/CustomerManagement/CustomerManagementASync"
+         xmlns="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+         xmlns:client="http://xmlns.oracle.com/invoking_soa_composite_async/CustomerManagement/CustomerManagementASync"
+         xmlns:ora="http://schemas.oracle.com/xpath/extension"
+         xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
+         xmlns:bpws="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+         xmlns:ns1="http://osb-cookbook/CustomerManagement"
+         xmlns:ns2="http://osb-cookbook/customer"
+         xmlns:ns3="http://osb-cookbook/creditcard">
+
+    <!-- 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        PARTNERLINKS                                                      
+        List of services participating in this BPEL process               
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    --> 
+    <partnerLinks>
+        <!-- 
+      The 'client' role represents the requester of this service. It is 
+      used for callback. The location and correlation information associated
+      with the client role are automatically set using WS-Addressing.
+    -->
+        <partnerLink name="customermanagementasync_client" partnerLinkType="client:CustomerManagementASync" myRole="CustomerManagementASyncProvider" partnerRole="CustomerManagementASyncRequester"/>
+    </partnerLinks>
+
+    <!-- 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        VARIABLES                                                        
+        List of messages and XML documents used within this BPEL process 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    -->
+    <variables>
+        <!-- Reference to the message passed as input during initiation -->
+        <variable name="inputVariable" messageType="client:CustomerManagementASyncRequestMessage"/>
+
+        <!-- Reference to the message that will be sent back to the requester during callback -->
+        <variable name="outputVariable" messageType="client:CustomerManagementASyncResponseMessage"/>
+    </variables>
+
+    <!-- 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+       ORCHESTRATION LOGIC                                               
+       Set of activities coordinating the flow of messages across the    
+       services integrated within this business process                  
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    -->
+    <sequence name="main">
+        <!-- Receive input from requestor. (Note: This maps to operation defined in CustomerManagementASync.wsdl) -->
+        <receive name="receiveInput" partnerLink="customermanagementasync_client" portType="client:CustomerManagementASync" operation="process" variable="inputVariable" createInstance="yes"/>
+
+        <!-- 
+          Asynchronous callback to the requester. (Note: the callback location and correlation id is transparently handled using WS-addressing.)
+        -->
+        <assign name="AssignOutput">
+            <copy>
+                <from><Customer xmlns="http://osb-cookbook/CustomerManagement"
+                                xmlns:cus1="http://osb-cookbook/customer"
+                                xmlns:cred="http://osb-cookbook/creditcard">
+       <cus1:ID>100</cus1:ID>
+       <cus1:FirstName>Larry</cus1:FirstName>
+       <cus1:LastName>Ellison</cus1:LastName>
+       <cus1:EmailAddress>larry.ellison@oracle.com</cus1:EmailAddress>
+       <cus1:Addresses/>
+       <cus1:BirthDate>1967-08-13</cus1:BirthDate>
+       <cus1:Rating>A</cus1:Rating>
+       <cus1:Gender>Male</cus1:Gender>
+       <cus1:CreditCard>
+               <cred:CardIssuer>visa</cred:CardIssuer>
+               <cred:CardNumber>123</cred:CardNumber>
+               <cred:CardholderName>Larry</cred:CardholderName>
+               <cred:ExpirationDate>2020-01-01</cred:ExpirationDate>
+              <cred:CardValidationCode>1233</cred:CardValidationCode>
+       </cus1:CreditCard>
+</Customer></from>
+                <to variable="outputVariable" part="payload"
+                    query="/ns1:FindCustomerResponse/ns1:Customer"/>
+            </copy>
+        </assign>
+        <invoke name="callbackClient" partnerLink="customermanagementasync_client" portType="client:CustomerManagementASyncCallback" operation="processResponse" inputVariable="outputVariable"/>
+    </sequence>
+</process>

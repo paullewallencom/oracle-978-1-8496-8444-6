@@ -1,0 +1,9 @@
+<plugin xmlns="http://www.bea.com/alsb/offline/extensions">
+
+    <transport class="com.bea.alsb.transports.websocket.WebSocketTransportProviderFactory"/>
+
+    <libraries>
+        <library name='lib/transports/websocket_transport.jar'/>
+    </libraries>
+
+</plugin>

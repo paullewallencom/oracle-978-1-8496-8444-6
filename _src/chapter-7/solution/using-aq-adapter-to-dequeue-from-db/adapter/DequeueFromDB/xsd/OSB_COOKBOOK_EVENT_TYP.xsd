@@ -1,0 +1,16 @@
+<schema targetNamespace="http://xmlns.oracle.com/xdb/OSB_COOKBOOK" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:OSB_COOKBOOK="http://xmlns.oracle.com/xdb/OSB_COOKBOOK" elementFormDefault="unqualified" attributeFormDefault="qualified">
+   <complexType name="EVENT_TYP">
+      <sequence>
+         <element name="ID" type="long" nillable="true" minOccurs="0"/>
+         <element name="EVENT_TYPE" nillable="true" minOccurs="0">
+            <simpleType>
+               <restriction base="string">
+                  <maxLength value="30"/>
+               </restriction>
+            </simpleType>
+         </element>
+         <element name="EVENT_TIME" type="string" nillable="true" minOccurs="0"/>
+      </sequence>
+   </complexType>
+   <element name="EVENT_TYP" type="OSB_COOKBOOK:EVENT_TYP" />
+</schema>

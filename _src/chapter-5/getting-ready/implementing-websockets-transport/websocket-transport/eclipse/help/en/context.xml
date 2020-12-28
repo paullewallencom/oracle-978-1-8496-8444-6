@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?NLS TYPE="org.eclipse.help.contexts"?>
+<contexts>
+    <!--
+    Default Socket Transport help
+    -->
+		<context id="tpSOCKETTransportBizService"
+			title="WebSocket Transport Configuration page (Business Service)">
+		    <description>WebSocket transport</description>
+			<topic href="help/en/tpSOCKETTransportBizService.html"
+			label="WebSocket Transport Configuration Page (Business Services)"/>
+		</context>
+
+
+		<context id="tpSOCKETTransportBizWizard"
+			title="WebSocket Transport Configuration page (Business Service)">
+		    <description>WebSocket transport</description>
+			<topic href="help/en/tpSOCKETTransportBizService.html"
+			label="WebSocket Transport Configuration Page (Business Services)"/>
+		</context>
+
+		<context id="tpSOCKETTransportProxyService"
+			title="WebSocket Transport Configuration page (Proxy Service)">
+		    <description>WebSocket transport</description>
+			<topic href="help/en/tpSOCKETTransportProxyService.html"
+			label="WebSocket Transport Configuration Page (Proxy Services)"/>
+		</context>
+
+		<context id="tpSOCKETTransportProxyWizard"
+			title="WebSocket Transport Configuration page (Proxy Service)">
+		    <description>WebSocket transport</description>
+			<topic href="help/en/tpSOCKETTransportProxyService.html"
+			label="WebSocket Transport Configuration Page (Proxy Services)"/>
+		</context>
+
+</contexts>
+
+
+
+
+

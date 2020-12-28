@@ -1,0 +1,10 @@
+<properties xmlns="http://packt.osb.book/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<property>
+		<name>property1</name>
+		<value>value1</value>
+	</property>
+	<property>
+		<name>property2</name>
+		<value>value2</value>
+	</property>	
+</properties>

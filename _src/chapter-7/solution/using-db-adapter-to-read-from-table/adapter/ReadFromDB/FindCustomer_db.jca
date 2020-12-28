@@ -1,0 +1,14 @@
+<adapter-config name="FindCustomer" adapter="Database Adapter" wsdlLocation="FindCustomer.wsdl" xmlns="http://platform.integration.oracle/blocks/adapter/fw/metadata">
+  
+  <connection-factory location="eis/DB/OsbCookbookConnection" UIConnectionName="OsbCookbookConnection" adapterRef=""/>
+  <endpoint-interaction portType="FindCustomer_ptt" operation="FindCustomerSelect">
+    <interaction-spec className="oracle.tip.adapter.db.DBReadInteractionSpec">
+      <property name="DescriptorName" value="FindCustomer.CustomerT"/>
+      <property name="QueryName" value="FindCustomerSelect"/>
+      <property name="MappingsMetaDataURL" value="FindCustomer-or-mappings.xml"/>
+      <property name="ReturnSingleResultSet" value="false"/>
+      <property name="GetActiveUnitOfWork" value="false"/>
+    </interaction-spec>
+  </endpoint-interaction>
+
+</adapter-config>

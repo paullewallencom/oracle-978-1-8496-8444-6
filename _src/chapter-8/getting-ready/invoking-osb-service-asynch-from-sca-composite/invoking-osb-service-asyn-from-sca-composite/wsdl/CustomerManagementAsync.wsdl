@@ -1,0 +1,71 @@
+<wsdl:definitions name="CustomerManagementAsync" 
+                  targetNamespace="http://osb-cookbook/CustomerManagementAsync" 
+                  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+                  xmlns:WL5G3N2="http://schemas.xmlsoap.org/wsdl/soap/"  
+                  xmlns:WL5G3N0="http://schemas.xmlsoap.org/wsdl/" 
+                  xmlns:WL5G3N1="http://osb-cookbook/CustomerManagementAsync">
+    <wsdl:types>
+        <xsd:schema targetNamespace="http://osb-cookbook/CustomerManagementAsync" xmlns:WL5G3N3="http://schemas.xmlsoap.org/wsdl/soap/" 
+                    xmlns:WL5G3N4="http://schemas.xmlsoap.org/wsdl/soap/" 
+                    xmlns:cus="http://osb-cookbook/customer" 
+                    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+                    xmlns:tns="http://osb-cookbook/CustomerManagementAsync" 
+                    xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" 
+                    xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+            <xsd:import namespace="http://osb-cookbook/customer" schemaLocation="../xsd/Customer.xsd"/>
+            <xsd:element name="FindCustomer">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="ID" type="xsd:long"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="FindCustomerResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="Customer" type="cus:CustomerTyp"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:schema>
+    </wsdl:types>
+    <wsdl:message name="FindCustomerRequest">
+        <wsdl:part name="parameters" element="WL5G3N1:FindCustomer"/>
+    </wsdl:message>
+    <wsdl:message name="FindCustomerResponse">
+        <wsdl:part name="parameters" element="WL5G3N1:FindCustomerResponse"/>
+    </wsdl:message>
+
+    <wsdl:portType name="CustomerManagementAsync">
+        <wsdl:operation name="FindCustomerAsync">
+            <wsdl:input message="WL5G3N1:FindCustomerRequest"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:portType name="CustomerManagementAsyncCallback">
+        <wsdl:operation name="FindCustomerResponseAsync">
+            <wsdl:input message="WL5G3N1:FindCustomerResponse"/>
+        </wsdl:operation>
+    </wsdl:portType>
+ 
+    <wsdl:binding name="CustomerManagementSOAPAsync" type="WL5G3N1:CustomerManagementAsync">
+        <WL5G3N2:binding style="document" transport="http://www.bea.com/transport/2007/05/sb"/>
+        <wsdl:operation name="FindCustomerAsync">
+            <WL5G3N2:operation soapAction="http://osb-cookbook/CustomerManagement/FindCustomer"/>
+            <wsdl:input>
+                <WL5G3N2:body use="literal"/>
+            </wsdl:input>
+        </wsdl:operation>
+    </wsdl:binding>
+
+    <wsdl:binding name="CustomerManagementSOAPAsyncCallback" type="WL5G3N1:CustomerManagementAsyncCallback">
+        <WL5G3N2:binding style="document" transport="http://xmlns.oracle.com/soa/direct"/>
+        <wsdl:operation name="FindCustomerResponseAsync">
+            <WL5G3N2:operation soapAction="http://osb-cookbook/CustomerManagement/FindCustomerResponse"/>
+            <wsdl:input>
+                <WL5G3N2:body use="literal"/>
+            </wsdl:input>
+        </wsdl:operation>
+    </wsdl:binding>
+
+
+</wsdl:definitions>

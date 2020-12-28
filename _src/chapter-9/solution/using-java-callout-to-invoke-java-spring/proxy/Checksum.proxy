@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xml-fragment xmlns:ser="http://www.bea.com/wli/sb/services" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:env="http://www.bea.com/wli/config/env" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:con="http://www.bea.com/wli/sb/pipeline/config" xmlns:con1="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con2="http://www.bea.com/wli/sb/stages/config">
+  <ser:coreEntry isProxy="true" isEnabled="true">
+    <ser:binding type="Mixed" xsi:type="con:MixedBindingType" xmlns:con="http://www.bea.com/wli/sb/services/bindings/config">
+      <con:request type="Text"/>
+      <con:response type="Text"/>
+    </ser:binding>
+    <ser:monitoring isEnabled="false">
+      <ser:aggregationInterval>10</ser:aggregationInterval>
+      <ser:pipelineMonitoringLevel>Pipeline</ser:pipelineMonitoringLevel>
+    </ser:monitoring>
+    <ser:reporting>true</ser:reporting>
+    <ser:logging isEnabled="true">
+      <ser:logLevel>debug</ser:logLevel>
+    </ser:logging>
+    <ser:sla-alerting isEnabled="true">
+      <ser:alertLevel>normal</ser:alertLevel>
+    </ser:sla-alerting>
+    <ser:pipeline-alerting isEnabled="true">
+      <ser:alertLevel>normal</ser:alertLevel>
+    </ser:pipeline-alerting>
+  </ser:coreEntry>
+  <ser:endpointConfig>
+    <tran:provider-id>http</tran:provider-id>
+    <tran:inbound>true</tran:inbound>
+    <tran:URI>
+      <env:value>/using-java-callout-to-invoke-java-spring/proxy/Checksum</env:value>
+    </tran:URI>
+    <tran:inbound-properties/>
+    <tran:all-headers>false</tran:all-headers>
+    <tran:provider-specific>
+      <http:inbound-properties/>
+    </tran:provider-specific>
+  </ser:endpointConfig>
+  <ser:router>
+    <con:pipeline type="request" name="CalculateChecksumPipelinePair_request">
+      <con:stage name="CalculateChecksumStage">
+        <con:context/>
+        <con:actions>
+          <con1:javaCallout varName="checksumValue">
+            <con2:id>_ActionId-1179746223787761928-6c04ab2d.133bb0aa610.-78b7</con2:id>
+            <con1:archive ref="using-java-callout-to-invoke-java-spring/jar/osb-checksum-util-spring"/>
+            <con1:className>osbcookbook.util.checksum.ChecksumUtil</con1:className>
+            <con1:method>public static long calculateChecksum(java.lang.String, java.lang.String)</con1:method>
+            <con1:expr>
+              <con2:xqueryText>$body/text()</con2:xqueryText>
+            </con1:expr>
+            <con1:expr>
+              <con2:xqueryText>'crc32'</con2:xqueryText>
+            </con1:expr>
+          </con1:javaCallout>
+          <con1:replace varName="body" contents-only="true">
+            <con2:id>_ActionId-1179746223787761928-6c04ab2d.133bb0aa610.-77f8</con2:id>
+            <con1:expr>
+              <con2:xqueryText>$checksumValue</con2:xqueryText>
+            </con1:expr>
+          </con1:replace>
+        </con:actions>
+      </con:stage>
+    </con:pipeline>
+    <con:pipeline type="response" name="CalculateChecksumPipelinePair_response"/>
+    <con:flow>
+      <con:pipeline-node name="CalculateChecksumPipelinePair">
+        <con:request>CalculateChecksumPipelinePair_request</con:request>
+        <con:response>CalculateChecksumPipelinePair_response</con:response>
+      </con:pipeline-node>
+    </con:flow>
+  </ser:router>
+</xml-fragment>

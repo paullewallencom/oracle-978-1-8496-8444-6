@@ -1,0 +1,54 @@
+CREATE OR REPLACE PACKAGE BODY customer_pck
+IS
+
+FUNCTION get_customer(in_customer_id IN customer_t.id%TYPE) RETURN customer_typ
+IS
+	customer_obj customer_typ;
+	addresses address_l;
+
+  person_id person_t.id%TYPE;
+BEGIN
+	SELECT cus.person_id, customer_typ(cus.id, per.first_name, per.last_name, per.email, per.birth_date, rating,
+                                     credit_card_typ(cus.cc_type, cus.cc_number, per.first_name, per.last_name, cus.cc_expiration), address_l())
+  INTO person_id, customer_obj
+	FROM customer_t	cus
+	INNER JOIN person_t per ON (cus.person_id = per.id)
+	WHERE cus.id = in_customer_id;
+
+	FOR r IN (SELECT address_typ(adr.id, adr.address_type, adr.street, adr.zip_code, adr.city, country_typ(ctry.id, ctry.name, ctry.iso_alpha_code, ctry.iso_num_code)) AS address_obj
+	FROM address_t adr
+	INNER JOIN country_t ctry ON (adr.country_id = ctry.id)
+	WHERE person_id = person_id)
+	LOOP
+		customer_obj.addresses.EXTEND(1);
+		customer_obj.addresses(customer_obj.addresses.COUNT()) := r.address_obj;
+	END LOOP;
+
+	RETURN customer_obj;
+END get_customer;
+
+PROCEDURE save_customer(in_customer IN customer_typ)
+IS
+BEGIN
+   IF in_customer.id IS NULL THEN --insert
+      INSERT INTO person_t (id, first_name, last_name, email, birth_date)
+      VALUES (person_seq.NEXTVAL, in_customer.first_name, in_customer.last_name, in_customer.email, in_customer.birth_date);
+      
+      INSERT INTO customer_t (id, person_id, rating, cc_type, cc_number, cc_expiration, cc_cvc)
+      VALUES (customer_seq.NEXTVAL, person_seq.CURRVAL, in_customer.rating, in_customer.credit_card.card_type, in_customer.credit_card.card_number
+               , in_customer.credit_card.expiration_date, NULL); 
+      IF in_customer.addresses IS NOT NULL THEN
+        FOR idx IN in_customer.addresses.first .. in_customer.addresses.LAST
+        LOOP
+            INSERT INTO address_t (id, person_id, address_type, street, zip_code, city, country_id)
+            VALUES (address_seq.NEXTVAL, person_seq.CURRVAL, in_customer.addresses(idx).address_type, in_customer.addresses(idx).street
+                   , in_customer.addresses(idx).zip_code, in_customer.addresses(idx).city, in_customer.addresses(idx).country.id);
+        END LOOP;
+      END IF;
+   ELSE
+      NULL;
+   END IF; 
+END save_customer;
+
+END customer_pck;
+/

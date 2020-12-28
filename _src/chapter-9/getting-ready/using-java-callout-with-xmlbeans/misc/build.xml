@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="XMLBeansDemo" default="build">
+    <property environment="env"/>
+	<property file="build.properties"/>
+
+    <path id="Any.path">
+        <path refid="xmlbeans.path"/>
+        <fileset dir="${build.path}/lib" includes="*.jar"/>
+        <pathelement path="${build.path}/classes"/>
+    </path>
+
+    <target name="init">
+        <property name="xmlbeans.home" value="${xmlbeans.home}"/>    	
+    	
+        <echo message="xmlbeans.home: ${xmlbeans.home}"/>
+
+        <!-- check for xbean.jar from binary distribution -->
+		<echo message="${xmlbeans.lib}/${xmlbeans.lib.jar}"/>
+
+    	<available
+            property="xmlbeans.lib"
+            value="${xmlbeans.lib}"
+            file="${xmlbeans.lib}/${xmlbeans.lib.jar}" />
+
+        <fail message="Set XMLBEANS_HOME in your environment."
+            unless="xmlbeans.lib"/>
+
+        <echo message="xmlbeans.lib: ${xmlbeans.lib}"/>
+    
+        <path id="xmlbeans.path">
+            <fileset dir="${xmlbeans.lib}" includes="${xmlbeans.lib.jar}"/>
+        </path>
+
+        <taskdef name="xmlbean"
+            classname="org.apache.xmlbeans.impl.tool.XMLBean"
+            classpathref="xmlbeans.path"/>
+    </target>
+
+    <!-- ========================== clean ==== -->
+
+    <target name="clean">
+        <delete dir="build"/>
+    </target>
+
+    <!-- ========================== build ==== -->
+
+    <target name="build" depends="init,schemas.jar,Any.classes">
+    </target>
+
+    <target name="schemas.check">
+        <uptodate property="schemas.notRequired"
+            targetfile="${build.path}/lib/${build.target.file}">
+            <srcfiles dir="schemas" includes="**/*.xsd"/>        	
+        </uptodate>
+    </target>
+
+    <target name="schemas.jar" depends="init,schemas.check"
+        unless="schemas.notRequired">
+        <mkdir dir="${build.path}/lib"/>
+        <xmlbean schema="schemas"
+            destfile="${build.path}/lib/${build.target.file}"
+            srcgendir="src"
+            classpathref="xmlbeans.path"
+    		source="1.5"
+        	javasource="1.5"
+            debug="on"
+            />
+    </target>
+
+    <target name="Any.classes" depends="init">
+        <mkdir dir="${build.path}/classes"/>
+
+        <javac srcdir="src"
+            destdir="${build.path}/classes"
+            classpathref="Any.path"
+            debug="on"
+        	source="1.5"            
+            />
+    </target>
+
+    <!-- ========================== run ==== -->
+
+    <target name="run" depends="init,build">
+        <echo message="============================== running Any"/>
+        <java
+            classname="org.apache.xmlbeans.samples.anytype.Any"
+            classpathref="Any.path"
+            fork="true">
+            <arg line="xml/any.xml"/>        	
+        </java>
+    </target>
+
+    <!-- ========================== test ==== -->
+
+    <target name="test" depends="init,build">
+        <echo message="============================== testing Any"/>
+        <java
+            classname="org.apache.xmlbeans.samples.anytype.AnyTest"
+            classpathref="Any.path"
+            fork="true">
+            <arg line="xml/any.xml"/>
+        </java>
+    </target>
+
+</project>

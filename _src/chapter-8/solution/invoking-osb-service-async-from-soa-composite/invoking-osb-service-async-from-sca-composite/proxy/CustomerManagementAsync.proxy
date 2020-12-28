@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xml-fragment xmlns:ser="http://www.bea.com/wli/sb/services" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:env="http://www.bea.com/wli/config/env" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sb="http://www.bea.com/wli/sb/transports/sb" xmlns:con="http://www.bea.com/wli/sb/pipeline/config" xmlns:con1="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con2="http://www.bea.com/wli/sb/stages/config" xmlns:con3="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con4="http://www.bea.com/wli/sb/stages/transform/config">
+  <ser:coreEntry isProxy="true" isEnabled="true">
+    <ser:binding type="SOAP" isSoap12="false" xsi:type="con5:SoapBindingType" xmlns:con5="http://www.bea.com/wli/sb/services/bindings/config">
+      <con5:wsdl ref="invoking-osb-service-async-from-sca-composite/wsdl/CustomerManagementAsync"/>
+      <con5:binding>
+        <con5:name>CustomerManagementSOAPAsync</con5:name>
+        <con5:namespace>http://osb-cookbook/CustomerManagementAsync</con5:namespace>
+      </con5:binding>
+      <con5:selector type="SOAP body"/>
+      <con5:WSI-compliant>false</con5:WSI-compliant>
+    </ser:binding>
+    <ser:monitoring isEnabled="false">
+      <ser:aggregationInterval>10</ser:aggregationInterval>
+      <ser:pipelineMonitoringLevel>Pipeline</ser:pipelineMonitoringLevel>
+    </ser:monitoring>
+    <ser:reporting>true</ser:reporting>
+    <ser:logging isEnabled="true">
+      <ser:logLevel>debug</ser:logLevel>
+    </ser:logging>
+    <ser:sla-alerting isEnabled="true">
+      <ser:alertLevel>normal</ser:alertLevel>
+    </ser:sla-alerting>
+    <ser:pipeline-alerting isEnabled="true">
+      <ser:alertLevel>normal</ser:alertLevel>
+    </ser:pipeline-alerting>
+    <ser:ws-policy>
+      <ser:binding-mode>wsdl-policy-attachments</ser:binding-mode>
+    </ser:ws-policy>
+  </ser:coreEntry>
+  <ser:endpointConfig>
+    <tran:provider-id>sb</tran:provider-id>
+    <tran:inbound>true</tran:inbound>
+    <tran:URI>
+      <env:value>CustomerManagementAsync</env:value>
+    </tran:URI>
+    <tran:inbound-properties/>
+    <tran:all-headers>false</tran:all-headers>
+    <tran:provider-specific>
+      <sb:inbound-properties>
+        <sb:use-ssl>false</sb:use-ssl>
+      </sb:inbound-properties>
+    </tran:provider-specific>
+  </ser:endpointConfig>
+  <ser:router>
+    <con:pipeline type="request" name="LogPipelinePair_request">
+      <con:stage name="LogStage">
+        <con:context/>
+        <con:actions>
+          <con1:log>
+            <con2:id>_ActionId-3798974660226827400-793f9a49.1322f8332ff.-7f41</con2:id>
+            <con1:logLevel>warning</con1:logLevel>
+            <con1:expr>
+              <con2:xqueryText>$header</con2:xqueryText>
+            </con1:expr>
+          </con1:log>
+        </con:actions>
+      </con:stage>
+    </con:pipeline>
+    <con:pipeline type="response" name="LogPipelinePair_response"/>
+    <con:flow>
+      <con:pipeline-node name="LogPipelinePair">
+        <con:request>LogPipelinePair_request</con:request>
+        <con:response>LogPipelinePair_response</con:response>
+      </con:pipeline-node>
+      <con:route-node name="CallbackRoute">
+        <con:context/>
+        <con:actions>
+          <con3:route>
+            <con2:id>_ActionId-3798974660226827400-793f9a49.1322f8332ff.-7ebf</con2:id>
+            <con3:service ref="invoking-osb-service-async-from-sca-composite/business/CustomerManagementCallback" xsi:type="ref:BusinessServiceRef" xmlns:ref="http://www.bea.com/wli/sb/reference"/>
+            <con3:operation>FindCustomerResponseAsync</con3:operation>
+            <con3:outboundTransform>
+              <con4:routing-options>
+                <con2:id>_ActionId-3798974660226827400-793f9a49.1322f8332ff.-7dc6</con2:id>
+                <con4:uriExpr>
+                  <con2:xqueryText>fn:concat(fn:substring-before($header/wsa05:ReplyTo/wsa05:Address/text(), '*'),'/',fn:substring-after(fn:substring-after($header/wsa05:ReplyTo/wsa05:Address/text(),'*'), '/'))</con2:xqueryText>
+                </con4:uriExpr>
+              </con4:routing-options>
+              <con4:replace contents-only="true" varName="body">
+                <con2:id>_ActionId-3798974660226827400-793f9a49.1322f8332ff.-7d73</con2:id>
+                <con4:expr>
+                  <con2:xqueryText><![CDATA[<cus:FindCustomerResponse 
+  xmlns:cus="http://osb-cookbook/CustomerManagementAsync" 
+  xmlns:cus1="http://osb-cookbook/customer" 
+  xmlns:cred="http://osb-cookbook/creditcard">
+         <Customer>
+            <cus1:ID>100</cus1:ID>
+            <cus1:FirstName>Larry</cus1:FirstName>
+            <cus1:LastName>Ellison</cus1:LastName>
+            <cus1:EmailAddress>larry.ellison@oracle.com</cus1:EmailAddress>
+            <cus1:Addresses/>
+            <cus1:BirthDate>1967-08-13</cus1:BirthDate>
+            <cus1:Rating>A</cus1:Rating>
+            <cus1:Gender>Male</cus1:Gender>
+            <cus1:CreditCard>
+               <cred:CardIssuer>visa</cred:CardIssuer>
+               <cred:CardNumber>123</cred:CardNumber>
+               <cred:CardholderName>Larry</cred:CardholderName>
+               <cred:ExpirationDate>2020-01-01</cred:ExpirationDate>
+               <cred:CardValidationCode>1233</cred:CardValidationCode>
+            </cus1:CreditCard>
+         </Customer>
+</cus:FindCustomerResponse>]]></con2:xqueryText>
+                </con4:expr>
+              </con4:replace>
+            </con3:outboundTransform>
+            <con3:responseTransform/>
+          </con3:route>
+        </con:actions>
+      </con:route-node>
+    </con:flow>
+  </ser:router>
+</xml-fragment>

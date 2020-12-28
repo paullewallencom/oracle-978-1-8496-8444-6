@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xml-fragment xmlns:ser="http://www.bea.com/wli/sb/services" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:env="http://www.bea.com/wli/config/env" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:con="http://www.bea.com/wli/sb/pipeline/config" xmlns:con1="http://www.bea.com/wli/sb/stages/config" xmlns:con2="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con3="http://www.bea.com/wli/sb/stages/transform/config">
+  <ser:coreEntry isProxy="true" isEnabled="true">
+    <ser:binding type="SOAP" isSoap12="false" xsi:type="con4:SoapBindingType" xmlns:con4="http://www.bea.com/wli/sb/services/bindings/config">
+      <con4:wsdl ref="using-service-accounts-with-osb/wsdl/CustomerManagement"/>
+      <con4:port>
+        <con4:name>CustomerManagementSOAP</con4:name>
+        <con4:namespace>http://www.somecorp.org/CustomerManagement</con4:namespace>
+      </con4:port>
+      <con4:selector type="SOAP body"/>
+    </ser:binding>
+    <ser:monitoring isEnabled="false">
+      <ser:aggregationInterval>10</ser:aggregationInterval>
+      <ser:pipelineMonitoringLevel>Pipeline</ser:pipelineMonitoringLevel>
+    </ser:monitoring>
+    <ser:reporting>true</ser:reporting>
+    <ser:logging isEnabled="true">
+      <ser:logLevel>debug</ser:logLevel>
+    </ser:logging>
+    <ser:sla-alerting isEnabled="true">
+      <ser:alertLevel>normal</ser:alertLevel>
+    </ser:sla-alerting>
+    <ser:pipeline-alerting isEnabled="true">
+      <ser:alertLevel>normal</ser:alertLevel>
+    </ser:pipeline-alerting>
+    <ser:ws-policy>
+      <ser:binding-mode>wsdl-policy-attachments</ser:binding-mode>
+    </ser:ws-policy>
+  </ser:coreEntry>
+  <ser:endpointConfig>
+    <tran:provider-id>http</tran:provider-id>
+    <tran:inbound>true</tran:inbound>
+    <tran:URI>
+      <env:value>/using-service-accounts-with-osb/proxy/CustomerManagement</env:value>
+    </tran:URI>
+    <tran:inbound-properties/>
+    <tran:all-headers>false</tran:all-headers>
+    <tran:provider-specific>
+      <http:inbound-properties>
+        <http:client-authentication xsi:type="http:HttpBasicAuthenticationType"/>
+      </http:inbound-properties>
+    </tran:provider-specific>
+  </ser:endpointConfig>
+  <ser:router>
+    <con:flow>
+      <con:branch-node type="operation" name="HandleOperationBranch">
+        <con:context/>
+        <con:branch-table>
+          <con:branch name="FindCustomer">
+            <con:operator>equals</con:operator>
+            <con:value/>
+            <con:flow>
+              <con:route-node name="FindCustomerRoute">
+                <con:context>
+                  <con1:userNsDecl namespace="http://www.crm.org/CustomerService/" prefix="ext"/>
+                  <con1:varNsDecl namespace="http://www.somecorp.org/CustomerManagement" prefix="cus"/>
+                </con:context>
+                <con:actions>
+                  <con2:route>
+                    <con1:id>_ActionId-3435026670021032855-6bf4bded.1310548a29a.-7ecd</con1:id>
+                    <con2:service ref="using-service-accounts-with-osb/business/CustomerService" xsi:type="ref:BusinessServiceRef" xmlns:ref="http://www.bea.com/wli/sb/reference"/>
+                    <con2:operation>RetrieveCustomerByCriteria</con2:operation>
+                    <con2:outboundTransform>
+                      <con3:replace varName="body" contents-only="true">
+                        <con1:id>_ActionId-3435026670021032855-6bf4bded.1310548a29a.-7e21</con1:id>
+                        <con3:expr>
+                          <con1:xqueryTransform>
+                            <con1:resource ref="using-service-accounts-with-osb/transformation/TransformFindCustomerRequest"/>
+                            <con1:param name="findCustomer1">
+                              <con1:path>$body/cus:FindCustomer</con1:path>
+                            </con1:param>
+                          </con1:xqueryTransform>
+                        </con3:expr>
+                      </con3:replace>
+                    </con2:outboundTransform>
+                    <con2:responseTransform>
+                      <con3:replace varName="body" contents-only="true">
+                        <con1:id>_ActionId-3435026670021032855-6bf4bded.1310548a29a.-7e0d</con1:id>
+                        <con3:expr>
+                          <con1:xqueryTransform>
+                            <con1:resource ref="using-service-accounts-with-osb/transformation/TransformFindCustomerResponse"/>
+                            <con1:param name="retrieveCustomerByCriteriaResponse1">
+                              <con1:path>$body/ext:RetrieveCustomerByCriteriaResponse</con1:path>
+                            </con1:param>
+                          </con1:xqueryTransform>
+                        </con3:expr>
+                      </con3:replace>
+                    </con2:responseTransform>
+                  </con2:route>
+                </con:actions>
+              </con:route-node>
+            </con:flow>
+          </con:branch>
+          <con:branch name="StoreCustomer">
+            <con:operator>equals</con:operator>
+            <con:value/>
+            <con:flow>
+              <con:route-node name="StoreCustomerRoute">
+                <con:context/>
+                <con:actions>
+                  <con2:route>
+                    <con1:id>_ActionId-3435026670021032855-6bf4bded.1310548a29a.-7eb4</con1:id>
+                    <con2:service ref="using-service-accounts-with-osb/business/CustomerService" xsi:type="ref:BusinessServiceRef" xmlns:ref="http://www.bea.com/wli/sb/reference"/>
+                    <con2:operation>CreateNewCustomer</con2:operation>
+                    <con2:outboundTransform/>
+                    <con2:responseTransform/>
+                  </con2:route>
+                </con:actions>
+              </con:route-node>
+            </con:flow>
+          </con:branch>
+          <con:default-branch>
+            <con:flow/>
+          </con:default-branch>
+        </con:branch-table>
+      </con:branch-node>
+    </con:flow>
+  </ser:router>
+</xml-fragment>

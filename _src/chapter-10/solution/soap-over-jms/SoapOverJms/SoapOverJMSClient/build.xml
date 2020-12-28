@@ -1,0 +1,20 @@
+<project default="clientOSB">
+
+  <path id="weblogic">
+    <pathelement path="C:/oracle/MiddlewareJdev/wlserver_10.3/server/lib/weblogic.jar" />
+  </path>
+
+ <taskdef name="clientgen" classname="weblogic.wsee.tools.anttasks.ClientGenTask"
+          classpathref="weblogic"/>
+
+ <target name="clientOSB">
+  <clientgen wsdl="file:Helloworld.wsdl"
+             destdir="src" 
+             packagename="osb.book.soap.jms"
+             type="JAXRPC"/>
+  <javac srcdir="src" 
+         destdir="classes"
+         includes="osb.book.soap.jms/**/*.java"/>
+ </target>
+
+</project>

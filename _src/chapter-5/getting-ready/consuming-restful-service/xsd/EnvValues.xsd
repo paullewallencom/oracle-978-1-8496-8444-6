@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema targetNamespace="http://www.bea.com/wli/config/env"
+           xmlns="http://www.bea.com/wli/config/env"
+           xmlns:tns="http://www.bea.com/wli/config/env"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified"
+           attributeFormDefault="unqualified">
+
+    <xs:complexType name="EnvString">
+        <xs:annotation>
+            <xs:documentation>
+                Environment specific string value
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="value" type="xs:string" />
+        </xs:sequence>
+    </xs:complexType>
+
+
+
+</xs:schema>
+
+    

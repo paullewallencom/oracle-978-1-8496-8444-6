@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpel:process name="SplitJoin"
+     targetNamespace="http://www.example.com/flow/using-dynamic-split-join/flow/SplitJoin"
+     xmlns:tns="http://www.example.com/flow/using-dynamic-split-join/flow/SplitJoin"
+		xmlns:bind="http://www.somecorp.org/CustomerManagement"
+     xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+		xmlns:rescon="http://www.bea.com/alsb/flow/resources/config"
+		xmlns:bea="http://www.bea.com/bpel/ui/extensions"
+		xmlns:ext="http://www.bea.com/bpel/extensions"
+		xmlns:expr="http://www.bea.com/wli/sb/stages/config"
+		xmlns:trf="http://www.bea.com/wli/sb/stages/transform/config"
+		bea:name="SplitJoin"
+     xmlns:cus="http://www.somecorp.com/customer" xmlns:ns1="http://www.osbcookbook.org/AddressCheckingService/">
+     <bpel:partnerLinks>
+			<bpel:partnerLink name="SplitJoin" partnerLinkType="tns:SplitJoin"
+				myRole="SplitJoin">
+			</bpel:partnerLink>
+		<bpel:partnerLink name="AddressChecking"
+		partnerLinkType="tns:AddressChecking_plnkType"
+		partnerRole="AddressChecking_PartnerRole">
+		</bpel:partnerLink></bpel:partnerLinks>
+
+		<bpel:variables>
+  		<bpel:variable name="request"
+			 		  messageType="bind:StoreCustomerRequest">
+			</bpel:variable>
+			<bpel:variable name="response"
+			 		  messageType="bind:StoreCustomerResponse">
+			</bpel:variable>
+		</bpel:variables>
+
+     <bpel:sequence>
+     <bpel:receive partnerLink="SplitJoin" operation="StoreCustomer" variable="request" createInstance="yes">
+			<rescon:receiveInfo>
+        		<rescon:wsdl ref="using-dynamic-split-join/wsdl/CustomerManagement" binding="bind:CustomerManagementSOAP"/>
+    		</rescon:receiveInfo>
+     </bpel:receive>
+     <bpel:forEach parallel="yes" counterName="counter">
+     	<bpel:startCounterValue>number(1)</bpel:startCounterValue>
+     	<bpel:finalCounterValue>count($request.parameters/Customer/cus:Addresses/cus:Address)</bpel:finalCounterValue>
+     	<bpel:scope>
+     		<bpel:variables>
+     			<bpel:variable name="addressCheckRequest"
+     				messageType="ns1:CheckAddressRequest">
+     			</bpel:variable>
+     			<bpel:variable name="addressCheckResponse"
+     				messageType="ns1:CheckAddressResponse">
+     			</bpel:variable></bpel:variables>
+     		<bpel:sequence>
+     			<bpel:assign>
+     				<bpel:extensionAssignOperation>
+     					<trf:assign varName="addressCheckRequest.parameters">
+     						<trf:expr>
+     							<expr:xqueryText>&lt;add:CheckAddress xmlns:add=&quot;http://www.osbcookbook.org/AddressCheckingService/&quot;&gt;
+	{$request.parameters/Customer/cus:Addresses/cus:Address[$counter]}
+&lt;/add:CheckAddress&gt;</expr:xqueryText></trf:expr></trf:assign>
+     				</bpel:extensionAssignOperation>
+     			</bpel:assign>
+     			
+     			<bpel:invoke operation="CheckAddress" partnerLink="AddressChecking" inputVariable="addressCheckRequest" outputVariable="addressCheckResponse">
+     				<rescon:invokeInfo>
+     					<rescon:service isProxy="false" ref="using-dynamic-split-join/business/AddressChecking"></rescon:service></rescon:invokeInfo></bpel:invoke>
+     			<bpel:assign>
+     				<bpel:extensionAssignOperation>
+     					<trf:assign varName="response.parameters">
+     						<trf:expr>
+     							<expr:xqueryText>&lt;out&gt;COMPLETED&lt;/out&gt;</expr:xqueryText></trf:expr></trf:assign>
+     				</bpel:extensionAssignOperation>
+     			</bpel:assign></bpel:sequence>
+     	</bpel:scope>
+     </bpel:forEach>
+     <bpel:reply partnerLink="SplitJoin" operation="StoreCustomer" variable="response"></bpel:reply>
+     </bpel:sequence>
+</bpel:process>

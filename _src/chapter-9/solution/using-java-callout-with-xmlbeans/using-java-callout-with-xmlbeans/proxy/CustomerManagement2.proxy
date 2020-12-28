@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xml-fragment xmlns:ser="http://www.bea.com/wli/sb/services" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:env="http://www.bea.com/wli/config/env" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:con="http://www.bea.com/wli/sb/pipeline/config" xmlns:con1="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con2="http://www.bea.com/wli/sb/stages/config" xmlns:con3="http://www.bea.com/wli/sb/stages/logging/config">
+  <ser:coreEntry isProxy="true" isEnabled="true">
+    <ser:binding type="abstract XML"/>
+    <ser:monitoring isEnabled="false">
+      <ser:aggregationInterval>10</ser:aggregationInterval>
+      <ser:pipelineMonitoringLevel>Pipeline</ser:pipelineMonitoringLevel>
+    </ser:monitoring>
+    <ser:reporting>true</ser:reporting>
+    <ser:logging isEnabled="true">
+      <ser:logLevel>debug</ser:logLevel>
+    </ser:logging>
+    <ser:sla-alerting isEnabled="true">
+      <ser:alertLevel>normal</ser:alertLevel>
+    </ser:sla-alerting>
+    <ser:pipeline-alerting isEnabled="true">
+      <ser:alertLevel>normal</ser:alertLevel>
+    </ser:pipeline-alerting>
+  </ser:coreEntry>
+  <ser:endpointConfig>
+    <tran:provider-id>http</tran:provider-id>
+    <tran:inbound>true</tran:inbound>
+    <tran:URI>
+      <env:value>/using-java-callout-with-xmlbeans/proxy/CustomerManagement2</env:value>
+    </tran:URI>
+    <tran:inbound-properties/>
+    <tran:all-headers>false</tran:all-headers>
+    <tran:provider-specific>
+      <http:inbound-properties/>
+    </tran:provider-specific>
+  </ser:endpointConfig>
+  <ser:router>
+    <con:pipeline type="request" name="HandleMessagePipeline_request">
+      <con:stage name="FindCustomer">
+        <con:context/>
+        <con:actions>
+          <con1:javaCallout varName="findCustomerResult">
+            <con2:id>_ActionId-1179746223787761928-6c04ab2d.133bb0aa610.-7dd0</con2:id>
+            <con1:archive ref="using-java-callout-with-xmlbeans/jar/customer-xml-beans"/>
+            <con1:className>cookbook.model.services.CustomerManagement</con1:className>
+            <con1:method>public static com.somecorp.customer.CustomerTyp findCustomerObject(long)</con1:method>
+            <con1:expr>
+              <con2:xqueryText>10</con2:xqueryText>
+            </con1:expr>
+          </con1:javaCallout>
+          <con1:replace varName="body" contents-only="true">
+            <con2:id>_ActionId-1179746223787761928-6c04ab2d.133bb0aa610.-7c22</con2:id>
+            <con1:expr>
+              <con2:xqueryText>$findCustomerResult</con2:xqueryText>
+            </con1:expr>
+          </con1:replace>
+        </con:actions>
+      </con:stage>
+    </con:pipeline>
+    <con:pipeline type="response" name="HandleMessagePipeline_response"/>
+    <con:flow>
+      <con:pipeline-node name="HandleMessagePipeline">
+        <con:request>HandleMessagePipeline_request</con:request>
+        <con:response>HandleMessagePipeline_response</con:response>
+      </con:pipeline-node>
+    </con:flow>
+  </ser:router>
+</xml-fragment>

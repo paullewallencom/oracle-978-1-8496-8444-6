@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xml-fragment xmlns:ser="http://www.bea.com/wli/sb/services" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:env="http://www.bea.com/wli/config/env" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:con="http://www.bea.com/wli/sb/typesystem/config" xmlns:con1="http://www.bea.com/wli/sb/pipeline/config" xmlns:con2="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con3="http://www.bea.com/wli/sb/stages/config" xmlns:con4="http://www.bea.com/wli/sb/stages/logging/config">
+  <ser:coreEntry isProxy="true" isEnabled="true">
+    <ser:binding type="SOAP" isSoap12="false" xsi:type="con5:SoapBindingType" xmlns:con5="http://www.bea.com/wli/sb/services/bindings/config">
+      <con5:wsdl ref="using-foreach-to-process-collections/wsdl/CustomerManagement"/>
+      <con5:port>
+        <con5:name>CustomerManagementSOAP</con5:name>
+        <con5:namespace>http://www.somecorp.org/CustomerManagement</con5:namespace>
+      </con5:port>
+      <con5:selector type="SOAP body"/>
+    </ser:binding>
+    <ser:monitoring isEnabled="false">
+      <ser:aggregationInterval>10</ser:aggregationInterval>
+      <ser:pipelineMonitoringLevel>Pipeline</ser:pipelineMonitoringLevel>
+    </ser:monitoring>
+    <ser:reporting>true</ser:reporting>
+    <ser:logging isEnabled="true">
+      <ser:logLevel>debug</ser:logLevel>
+    </ser:logging>
+    <ser:sla-alerting isEnabled="true">
+      <ser:alertLevel>normal</ser:alertLevel>
+    </ser:sla-alerting>
+    <ser:pipeline-alerting isEnabled="true">
+      <ser:alertLevel>normal</ser:alertLevel>
+    </ser:pipeline-alerting>
+    <ser:ws-policy>
+      <ser:binding-mode>wsdl-policy-attachments</ser:binding-mode>
+    </ser:ws-policy>
+  </ser:coreEntry>
+  <ser:endpointConfig>
+    <tran:provider-id>http</tran:provider-id>
+    <tran:inbound>true</tran:inbound>
+    <tran:URI>
+      <env:value>/using-foreach-to-process-collections/proxy/ForEach</env:value>
+    </tran:URI>
+    <tran:inbound-properties/>
+    <tran:all-headers>false</tran:all-headers>
+    <tran:provider-specific>
+      <http:inbound-properties/>
+    </tran:provider-specific>
+  </ser:endpointConfig>
+  <ser:router>
+    <con1:pipeline type="request" name="ProcessAddressesPipelinePair_request">
+      <con1:stage name="ProcessAddressesStage">
+        <con1:context>
+          <con3:varNsDecl namespace="http://www.somecorp.com/customer" prefix="cus"/>
+          <con3:varNsDecl namespace="http://www.somecorp.org/CustomerManagement" prefix="cus1"/>
+        </con1:context>
+        <con1:actions>
+          <con2:foreach>
+            <con3:id>_ActionId-57114947412905089-54e02402.133c31639ca.-7d86</con3:id>
+            <con2:variable>body</con2:variable>
+            <con2:expression>
+              <con3:xpathText>./cus1:StoreCustomer/Customer/cus:Addresses/cus:Address</con3:xpathText>
+            </con2:expression>
+            <con2:value-variable>address</con2:value-variable>
+            <con2:index-variable>index</con2:index-variable>
+            <con2:total-variable>count</con2:total-variable>
+            <con2:actions>
+              <con4:log>
+                <con3:id>_ActionId-57114947412905089-54e02402.133c31639ca.-7d89</con3:id>
+                <con4:logLevel>warning</con4:logLevel>
+                <con4:expr>
+                  <con3:xqueryText>concat('Address ', $index, ' of ', $count, ' = ', $address)</con3:xqueryText>
+                </con4:expr>
+              </con4:log>
+              <con2:wsCallout>
+                <con3:id>_ActionId-57114947412905089-54e02402.133c31639ca.-7d87</con3:id>
+                <con2:service xsi:type="ref:BusinessServiceRef" ref="using-foreach-to-process-collections/business/AddressChecking" xmlns:ref="http://www.bea.com/wli/sb/reference"/>
+                <con2:operation>CheckAddress</con2:operation>
+                <con2:request>
+                  <con2:body wrapped="false">$request</con2:body>
+                </con2:request>
+                <con2:response>
+                  <con2:body wrapped="false">response</con2:body>
+                </con2:response>
+                <con2:requestTransform>
+                  <con2:assign varName="request">
+                    <con3:id>_ActionId-57114947412905089-54e02402.133c31639ca.-7d88</con3:id>
+                    <con2:expr>
+                      <con3:xqueryText>&lt;add:CheckAddress xmlns:add="http://www.osbcookbook.org/AddressCheckingService/">
+	{$address}
+&lt;/add:CheckAddress></con3:xqueryText>
+                    </con2:expr>
+                  </con2:assign>
+                </con2:requestTransform>
+                <con2:responseTransform/>
+              </con2:wsCallout>
+            </con2:actions>
+          </con2:foreach>
+        </con1:actions>
+      </con1:stage>
+    </con1:pipeline>
+    <con1:pipeline type="response" name="ProcessAddressesPipelinePair_response"/>
+    <con1:flow>
+      <con1:branch-node type="operation" name="OperationalBranch">
+        <con1:context/>
+        <con1:branch-table>
+          <con1:branch name="StoreCustomer">
+            <con1:operator>equals</con1:operator>
+            <con1:value/>
+            <con1:flow>
+              <con1:pipeline-node name="ProcessAddressesPipelinePair">
+                <con1:request>ProcessAddressesPipelinePair_request</con1:request>
+                <con1:response>ProcessAddressesPipelinePair_response</con1:response>
+              </con1:pipeline-node>
+            </con1:flow>
+          </con1:branch>
+          <con1:default-branch>
+            <con1:flow/>
+          </con1:default-branch>
+        </con1:branch-table>
+      </con1:branch-node>
+    </con1:flow>
+  </ser:router>
+</xml-fragment>

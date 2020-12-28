@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xml-fragment xmlns:ser="http://www.bea.com/wli/sb/services" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:env="http://www.bea.com/wli/config/env" xmlns:web="http://www.bea.com/alsb/transports/websocket">
+  <ser:coreEntry isProxy="false" isEnabled="true">
+    <ser:binding type="abstract XML"/>
+    <ser:monitoring isEnabled="false">
+      <ser:aggregationInterval>10</ser:aggregationInterval>
+    </ser:monitoring>
+    <ser:sla-alerting isEnabled="true">
+      <ser:alertLevel>normal</ser:alertLevel>
+    </ser:sla-alerting>
+  </ser:coreEntry>
+  <ser:endpointConfig>
+    <tran:provider-id>websocket</tran:provider-id>
+    <tran:inbound>false</tran:inbound>
+    <tran:URI>
+      <env:value>/pass</env:value>
+    </tran:URI>
+    <tran:outbound-properties>
+      <tran:load-balancing-algorithm>round-robin</tran:load-balancing-algorithm>
+      <tran:retry-count>0</tran:retry-count>
+      <tran:retry-interval>30</tran:retry-interval>
+    </tran:outbound-properties>
+    <tran:provider-specific>
+      <web:outbound-properties>
+        <web:server-port>8085</web:server-port>
+        <web:server-context-path>/</web:server-context-path>
+        <web:static-files-dir>c:\work\static-files</web:static-files-dir>
+        <web:servlet-class>osb.cookbook.websocket.servlet.PassThroughServlet</web:servlet-class>
+      </web:outbound-properties>
+      <web:dispatch-policy>default</web:dispatch-policy>
+    </tran:provider-specific>
+  </ser:endpointConfig>
+</xml-fragment>

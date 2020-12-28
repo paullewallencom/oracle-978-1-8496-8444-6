@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WL5G3N0:definitions name="JwsServiceDefinitions" targetNamespace="http://www.openuri.org/" xmlns:WL5G3N0="http://schemas.xmlsoap.org/wsdl/" xmlns:WL5G3N1="http://www.openuri.org/" xmlns:WL5G3N2="http://schemas.xmlsoap.org/wsdl/soap/">
+  <WL5G3N0:types>
+    <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="java:cookbook.model.entities" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:import namespace="java:java.util"/>
+      <xs:complexType name="Customer">
+        <xs:sequence>
+          <xs:element minOccurs="1" name="Id" nillable="true" type="xs:long"/>
+          <xs:element minOccurs="1" name="FirstName" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="LastName" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="EmailAddress" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="BirthDate" nillable="true" type="xs:dateTime"/>
+          <xs:element minOccurs="1" name="Rating" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="Gender" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="Addresses" nillable="true" type="java:List" xmlns:java="java:java.util"/>
+          <xs:element minOccurs="1" name="CreditCard" nillable="true" type="java:CreditCard" xmlns:java="java:cookbook.model.entities"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="CreditCard">
+        <xs:sequence>
+          <xs:element minOccurs="1" name="CardIssuer" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="CardNumber" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="CardholderName" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="ExpirationDate" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="1" name="CardValidationCode" nillable="true" type="xs:long"/>
+        </xs:sequence>
+      </xs:complexType>
+    </xs:schema>
+    <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://www.openuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:import namespace="java:cookbook.model.entities"/>
+      <xs:import namespace="java:java.util"/>
+      <xs:element name="findCustomer">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="id" nillable="true" type="xs:long"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="findCustomerResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="customer" type="java:Customer" xmlns:java="java:cookbook.model.entities"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="findAllCustomers">
+        <xs:complexType>
+          <xs:sequence/>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="findAllCustomersResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="customers" type="java:List" xmlns:java="java:java.util"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:schema>
+    <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="java:java.util" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:import namespace="http://schemas.xmlsoap.org/soap/encoding/"/>
+      <xs:complexType name="List">
+        <xs:complexContent>
+          <xs:restriction base="soapenc:Array" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"/>
+        </xs:complexContent>
+      </xs:complexType>
+    </xs:schema>
+  </WL5G3N0:types>
+  <WL5G3N0:message name="findCustomer">
+    <WL5G3N0:part element="WL5G3N1:findCustomer" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="findCustomerResponse">
+    <WL5G3N0:part element="WL5G3N1:findCustomerResponse" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="findAllCustomers">
+    <WL5G3N0:part element="WL5G3N1:findAllCustomers" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="findAllCustomersResponse">
+    <WL5G3N0:part element="WL5G3N1:findAllCustomersResponse" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:portType name="Jws">
+    <WL5G3N0:operation name="findCustomer" parameterOrder="parameters">
+      <WL5G3N0:input message="WL5G3N1:findCustomer"/>
+      <WL5G3N0:output message="WL5G3N1:findCustomerResponse"/>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="findAllCustomers" parameterOrder="parameters">
+      <WL5G3N0:input message="WL5G3N1:findAllCustomers"/>
+      <WL5G3N0:output message="WL5G3N1:findAllCustomersResponse"/>
+    </WL5G3N0:operation>
+  </WL5G3N0:portType>
+  <WL5G3N0:binding name="JwsServiceSoapBinding" type="WL5G3N1:Jws">
+    <WL5G3N2:binding style="document" transport="http://www.bea.com/soap/transport/local"/>
+    <WL5G3N0:operation name="findCustomer">
+      <WL5G3N2:operation soapAction="http://www.openuri.org/findCustomer" style="document"/>
+      <WL5G3N0:input>
+        <WL5G3N2:body parts="parameters" use="literal"/>
+      </WL5G3N0:input>
+      <WL5G3N0:output>
+        <WL5G3N2:body parts="parameters" use="literal"/>
+      </WL5G3N0:output>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="findAllCustomers">
+      <WL5G3N2:operation soapAction="http://www.openuri.org/findAllCustomers" style="document"/>
+      <WL5G3N0:input>
+        <WL5G3N2:body parts="parameters" use="literal"/>
+      </WL5G3N0:input>
+      <WL5G3N0:output>
+        <WL5G3N2:body parts="parameters" use="literal"/>
+      </WL5G3N0:output>
+    </WL5G3N0:operation>
+  </WL5G3N0:binding>
+</WL5G3N0:definitions>

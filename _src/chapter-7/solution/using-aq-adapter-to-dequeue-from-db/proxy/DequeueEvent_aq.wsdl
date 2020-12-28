@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions targetNamespace="http://xmlns.oracle.com/pcbpel/adapter/aq/osbbook_ejb/DequeueFromDB/DequeueEvent" name="DequeueEvent-concrete" xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://xmlns.oracle.com/pcbpel/adapter/aq/osbbook_ejb/DequeueFromDB/DequeueEvent" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+  <import namespace="http://xmlns.oracle.com/pcbpel/adapter/aq/osbbook_ejb/DequeueFromDB/DequeueEvent" location="../adapter/DequeueFromDB/DequeueEvent.wsdl"/>
+  <binding name="Dequeue_ptt-binding" type="tns:Dequeue_ptt">
+    <soap:binding style="document" transport="http://www.bea.com/wli/sb/transports/jca"/>
+    <operation name="Dequeue">
+      <soap:operation soapAction="Dequeue"/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+    </operation>
+  </binding>
+  <service name="DequeueEvent-service">
+    <port name="DequeueEvent-port" binding="tns:Dequeue_ptt-binding">
+      <soap:address location="jca://eis/aq/OsbCookbookConnection"/>
+    </port>
+  </service>
+</definitions>

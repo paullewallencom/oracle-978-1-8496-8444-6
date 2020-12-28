@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xml-fragment xmlns:ser="http://www.bea.com/wli/sb/services" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:env="http://www.bea.com/wli/config/env" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ema="http://www.bea.com/wli/sb/transports/email" xmlns:con="http://www.bea.com/wli/sb/pipeline/config" xmlns:con1="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con2="http://www.bea.com/wli/sb/stages/config">
+  <ser:coreEntry isProxy="true" isEnabled="true">
+    <ser:binding type="Mixed" xsi:type="con:MixedBindingType" xmlns:con="http://www.bea.com/wli/sb/services/bindings/config">
+      <con:request type="Text"/>
+    </ser:binding>
+    <ser:monitoring isEnabled="false">
+      <ser:aggregationInterval>10</ser:aggregationInterval>
+      <ser:pipelineMonitoringLevel>Pipeline</ser:pipelineMonitoringLevel>
+    </ser:monitoring>
+    <ser:reporting>true</ser:reporting>
+    <ser:logging isEnabled="true">
+      <ser:logLevel>debug</ser:logLevel>
+    </ser:logging>
+    <ser:sla-alerting isEnabled="true">
+      <ser:alertLevel>normal</ser:alertLevel>
+    </ser:sla-alerting>
+    <ser:pipeline-alerting isEnabled="true">
+      <ser:alertLevel>normal</ser:alertLevel>
+    </ser:pipeline-alerting>
+  </ser:coreEntry>
+  <ser:endpointConfig>
+    <tran:provider-id>email</tran:provider-id>
+    <tran:inbound>true</tran:inbound>
+    <tran:URI>
+      <env:value>mailfrom:localhost:110</env:value>
+    </tran:URI>
+    <tran:inbound-properties/>
+    <tran:all-headers>true</tran:all-headers>
+    <tran:provider-specific>
+      <ema:inbound-properties>
+        <ema:protocol>pop3</ema:protocol>
+        <ema:attachment-action>ignore</ema:attachment-action>
+        <ema:polling-interval>10</ema:polling-interval>
+        <ema:read-limit>10</ema:read-limit>
+        <ema:post-read>delete</ema:post-read>
+        <ema:passByReference>false</ema:passByReference>
+        <ema:passAttachmentsByReference>false</ema:passAttachmentsByReference>
+        <ema:download-directory>
+          <env:value>c:\temp\emails-download</env:value>
+        </ema:download-directory>
+        <ema:error-directory>
+          <env:value>c:\temp\error</env:value>
+        </ema:error-directory>
+        <ema:service-account ref="consuming-emails/security/EmailServer"/>
+      </ema:inbound-properties>
+      <ema:request-encoding>iso-8859-1</ema:request-encoding>
+    </tran:provider-specific>
+  </ser:endpointConfig>
+  <ser:router>
+    <con:pipeline type="request" name="MailConsumerPipelinePair_request">
+      <con:stage name="LogStage">
+        <con:context/>
+        <con:actions>
+          <con1:log>
+            <con2:id>_ActionId-4533792170480339614--2fbd18b4.132ef78b5fd.-7f6c</con2:id>
+            <con1:logLevel>warning</con1:logLevel>
+            <con1:expr>
+              <con2:xqueryText>$body</con2:xqueryText>
+            </con1:expr>
+            <con1:message>Body of Email</con1:message>
+          </con1:log>
+        </con:actions>
+      </con:stage>
+    </con:pipeline>
+    <con:pipeline type="response" name="MailConsumerPipelinePair_response"/>
+    <con:flow>
+      <con:pipeline-node name="MailConsumerPipelinePair">
+        <con:request>MailConsumerPipelinePair_request</con:request>
+        <con:response>MailConsumerPipelinePair_response</con:response>
+      </con:pipeline-node>
+    </con:flow>
+  </ser:router>
+</xml-fragment>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xml-fragment xmlns:ser="http://www.bea.com/wli/sb/services" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:env="http://www.bea.com/wli/config/env" xmlns:jejb="http://www.bea.com/wli/sb/transports/jejb" xmlns:con="http://www.bea.com/wli/sb/pipeline/config" xmlns:con1="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con2="http://www.bea.com/wli/sb/stages/config">
+  <ser:coreEntry isProxy="true" isEnabled="true" isAutoPublish="false">
+    <ser:description/>
+    <ser:binding type="SOAP" isSoap12="false" xsi:type="con3:SoapBindingType" transport-typed="true" xmlns:con3="http://www.bea.com/wli/sb/services/bindings/config">
+      <con3:binding>
+        <con3:name>JEJBServiceBinding</con3:name>
+        <con3:namespace>http://www.openuri.org/</con3:namespace>
+      </con3:binding>
+      <con3:selector type="SOAP body"/>
+    </ser:binding>
+    <ser:monitoring isEnabled="false">
+      <ser:aggregationInterval>10</ser:aggregationInterval>
+    </ser:monitoring>
+    <ser:reporting>true</ser:reporting>
+    <ser:logging isEnabled="true">
+      <ser:logLevel>debug</ser:logLevel>
+    </ser:logging>
+    <ser:sla-alerting isEnabled="true">
+      <ser:alertLevel>normal</ser:alertLevel>
+    </ser:sla-alerting>
+    <ser:pipeline-alerting isEnabled="true">
+      <ser:alertLevel>normal</ser:alertLevel>
+    </ser:pipeline-alerting>
+  </ser:coreEntry>
+  <ser:endpointConfig>
+    <tran:provider-id>jejb</tran:provider-id>
+    <tran:inbound>true</tran:inbound>
+    <tran:URI>
+      <env:value>CustomerManagementModify</env:value>
+    </tran:URI>
+    <tran:inbound-properties/>
+    <tran:all-headers>false</tran:all-headers>
+    <tran:provider-specific>
+      <jejb:inbound-properties>
+        <jejb:txAttribute>Supports</jejb:txAttribute>
+      </jejb:inbound-properties>
+      <jejb:ejb-version>3.0</jejb:ejb-version>
+      <jejb:pass-by-value>true</jejb:pass-by-value>
+      <jejb:service>
+        <jejb:clientJar ref="exposing-session-bean-as-ejb/jar/customerManagementInterface"/>
+        <jejb:ejbObject classname="cookbook.model.services.CustomerManagement">
+          <jejb:method name="findAllCustomers" signature="java.util.List findAllCustomers()" exclude="false">
+            <jejb:invocationPoint>findAllCustomers</jejb:invocationPoint>
+            <jejb:return name="customers" type="java.util.List"/>
+          </jejb:method>
+          <jejb:method name="findCustomer" signature="cookbook.model.entities.Customer findCustomer(java.lang.Long)" exclude="false">
+            <jejb:invocationPoint>findCustomer</jejb:invocationPoint>
+            <jejb:param name="id" type="java.lang.Long"/>
+            <jejb:return name="customer" type="cookbook.model.entities.Customer"/>
+          </jejb:method>
+        </jejb:ejbObject>
+        <jejb:targetNamespace>http://www.openuri.org/</jejb:targetNamespace>
+      </jejb:service>
+    </tran:provider-specific>
+  </ser:endpointConfig>
+  <ser:router>
+    <con:flow>
+      <con:route-node name="RouteTo_CustomerManagement">
+        <con:context/>
+        <con:actions>
+          <con1:route xmlns:con1="http://www.bea.com/wli/sb/stages/routing/config">
+            <conid1:id xmlns:conid1="http://www.bea.com/wli/sb/stages/config">_ActionId-5538513250906237615--4fa44780.13269ba511d.-7f53</conid1:id>
+            <con1:service ref="exposing-session-bean-as-ejb/business/CustomerManagement" xsi:type="ref:BusinessServiceRef" xmlns:ref="http://www.bea.com/wli/sb/reference"/>
+            <con1:operation passThrough="true"/>
+            <con1:outboundTransform>
+              <con3:log xmlns:con3="http://www.bea.com/wli/sb/stages/logging/config">
+                <con2:id>_ActionId-5538513250906237615--4fa44780.13269ba511d.-7f1a</con2:id>
+                <con3:logLevel>warning</con3:logLevel>
+                <con3:expr>
+                  <con2:xqueryText>$body</con2:xqueryText>
+                </con3:expr>
+                <con3:message>$body in Request</con3:message>
+              </con3:log>
+            </con1:outboundTransform>
+            <con1:responseTransform>
+              <con3:log xmlns:con3="http://www.bea.com/wli/sb/stages/logging/config">
+                <con2:id>_ActionId-5538513250906237615--4fa44780.13269ba511d.-7ec6</con2:id>
+                <con3:logLevel>warning</con3:logLevel>
+                <con3:expr>
+                  <con2:xqueryText>$body</con2:xqueryText>
+                </con3:expr>
+                <con3:message>$body in Response</con3:message>
+              </con3:log>
+            </con1:responseTransform>
+          </con1:route>
+        </con:actions>
+      </con:route-node>
+    </con:flow>
+  </ser:router>
+</xml-fragment>

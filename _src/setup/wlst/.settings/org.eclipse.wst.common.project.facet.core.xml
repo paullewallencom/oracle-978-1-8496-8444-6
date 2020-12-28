@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faceted-project>
+  <runtime name="Oracle WebLogic Server 11gR1 PatchSet 3"/>
+  <installed facet="wls.wlst" version="10.3.4"/>
+</faceted-project>

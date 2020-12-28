@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xml-fragment xmlns:ser="http://www.bea.com/wli/sb/services" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:env="http://www.bea.com/wli/config/env" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ftp="http://www.bea.com/wli/sb/transports/ftp" xmlns:con="http://www.bea.com/wli/sb/pipeline/config" xmlns:con1="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con2="http://www.bea.com/wli/sb/stages/config">
+  <ser:coreEntry isProxy="true" isEnabled="true">
+    <ser:binding type="Mixed" xsi:type="con:MixedBindingType" xmlns:con="http://www.bea.com/wli/sb/services/bindings/config">
+      <con:request type="Text"/>
+    </ser:binding>
+    <ser:monitoring isEnabled="false">
+      <ser:aggregationInterval>10</ser:aggregationInterval>
+      <ser:pipelineMonitoringLevel>Pipeline</ser:pipelineMonitoringLevel>
+    </ser:monitoring>
+    <ser:reporting>true</ser:reporting>
+    <ser:logging isEnabled="true">
+      <ser:logLevel>debug</ser:logLevel>
+    </ser:logging>
+    <ser:sla-alerting isEnabled="true">
+      <ser:alertLevel>normal</ser:alertLevel>
+    </ser:sla-alerting>
+    <ser:pipeline-alerting isEnabled="true">
+      <ser:alertLevel>normal</ser:alertLevel>
+    </ser:pipeline-alerting>
+  </ser:coreEntry>
+  <ser:endpointConfig>
+    <tran:provider-id>ftp</tran:provider-id>
+    <tran:inbound>true</tran:inbound>
+    <tran:URI>
+      <env:value>ftp://localhost/</env:value>
+    </tran:URI>
+    <tran:inbound-properties/>
+    <tran:all-headers>false</tran:all-headers>
+    <tran:provider-specific>
+      <ftp:inbound-properties>
+        <ftp:recursive-scan>false</ftp:recursive-scan>
+        <ftp:passByReference>false</ftp:passByReference>
+        <ftp:directStreaming>false</ftp:directStreaming>
+        <ftp:download-directory>
+          <env:value>c:\work\stage</env:value>
+        </ftp:download-directory>
+        <ftp:timeout>60</ftp:timeout>
+        <ftp:auth-info>
+          <ftp:service-account ref="file-transport-to-trigger-service/security/FTPUser"/>
+        </ftp:auth-info>
+        <ftp:post-read-action>archive</ftp:post-read-action>
+        <ftp:archive-directory>
+          <env:value>c:\work\archive</env:value>
+        </ftp:archive-directory>
+        <ftp:error-directory>
+          <env:value>c:\work\error</env:value>
+        </ftp:error-directory>
+        <ftp:retry-count>3</ftp:retry-count>
+        <ftp:file-mask>*.*</ftp:file-mask>
+        <ftp:poll-info>
+          <ftp:interval-milliseconds>5000</ftp:interval-milliseconds>
+        </ftp:poll-info>
+        <ftp:read-limit>10</ftp:read-limit>
+        <ftp:sortByArrival>false</ftp:sortByArrival>
+        <ftp:transfer-mode>binary</ftp:transfer-mode>
+      </ftp:inbound-properties>
+      <ftp:request-encoding>utf-8</ftp:request-encoding>
+    </tran:provider-specific>
+  </ser:endpointConfig>
+  <ser:router>
+    <con:pipeline type="request" name="FileProcessingPipelinePair_request">
+      <con:stage name="LogStage">
+        <con:context/>
+        <con:actions>
+          <con1:log>
+            <con2:id>_ActionId-8095013429713085507--1b58ae6f.132bab3d141.-7e96</con2:id>
+            <con1:logLevel>warning</con1:logLevel>
+            <con1:expr>
+              <con2:xqueryText>$inbound</con2:xqueryText>
+            </con1:expr>
+          </con1:log>
+          <con1:log>
+            <con2:id>_ActionId-8095013429713085507--1b58ae6f.132bab3d141.-7e5c</con2:id>
+            <con1:logLevel>warning</con1:logLevel>
+            <con1:expr>
+              <con2:xqueryText>$body/text()</con2:xqueryText>
+            </con1:expr>
+          </con1:log>
+        </con:actions>
+      </con:stage>
+    </con:pipeline>
+    <con:pipeline type="response" name="FileProcessingPipelinePair_response"/>
+    <con:flow>
+      <con:pipeline-node name="FileProcessingPipelinePair">
+        <con:request>FileProcessingPipelinePair_request</con:request>
+        <con:response>FileProcessingPipelinePair_response</con:response>
+      </con:pipeline-node>
+    </con:flow>
+  </ser:router>
+</xml-fragment>

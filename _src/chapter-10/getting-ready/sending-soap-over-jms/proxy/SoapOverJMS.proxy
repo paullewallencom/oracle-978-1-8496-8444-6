@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xml-fragment xmlns:ser="http://www.bea.com/wli/sb/services" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:env="http://www.bea.com/wli/config/env" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jms="http://www.bea.com/wli/sb/transports/jms" xmlns:con="http://www.bea.com/wli/sb/pipeline/config" xmlns:con1="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con2="http://www.bea.com/wli/sb/stages/config" xmlns:con3="http://www.bea.com/wli/sb/stages/logging/config">
+  <ser:coreEntry isProxy="true" isEnabled="true">
+    <ser:binding type="SOAP" isSoap12="false" xsi:type="con:SoapBindingType" xmlns:con="http://www.bea.com/wli/sb/services/bindings/config">
+      <con:wsdl ref="sending-soap-over-jms/wsdl/Helloworld"/>
+      <con:binding>
+        <con:name>HelloWorldServiceSoapHttpPortBinding</con:name>
+        <con:namespace>http://wsrm.osbbook</con:namespace>
+      </con:binding>
+      <con:selector type="SOAP body"/>
+    </ser:binding>
+    <ser:monitoring isEnabled="false">
+      <ser:aggregationInterval>10</ser:aggregationInterval>
+      <ser:pipelineMonitoringLevel>Pipeline</ser:pipelineMonitoringLevel>
+    </ser:monitoring>
+    <ser:reporting>true</ser:reporting>
+    <ser:logging isEnabled="true">
+      <ser:logLevel>debug</ser:logLevel>
+    </ser:logging>
+    <ser:sla-alerting isEnabled="true">
+      <ser:alertLevel>normal</ser:alertLevel>
+    </ser:sla-alerting>
+    <ser:pipeline-alerting isEnabled="true">
+      <ser:alertLevel>normal</ser:alertLevel>
+    </ser:pipeline-alerting>
+    <ser:ws-policy>
+      <ser:binding-mode>wsdl-policy-attachments</ser:binding-mode>
+    </ser:ws-policy>
+  </ser:coreEntry>
+  <ser:endpointConfig>
+    <tran:provider-id>http</tran:provider-id>
+    <tran:inbound>true</tran:inbound>
+    <tran:URI>
+      <env:value>/sending-soap-over-jms/proxy/SoapOverJMS</env:value>
+    </tran:URI>
+    <tran:inbound-properties/>
+    <tran:all-headers>false</tran:all-headers>
+    <tran:provider-specific>
+      <http:inbound-properties/>
+    </tran:provider-specific>
+  </ser:endpointConfig>
+  <ser:router>
+    <con:pipeline type="request" name="MessageProcessingPipelinePair_request">
+      <con:stage name="LogStage">
+        <con:context/>
+        <con:actions>
+          <con3:log>
+            <con2:id>_ActionId-1783841486942670595--394a754b.130802637bd.-7ece</con2:id>
+            <con3:logLevel>warning</con3:logLevel>
+            <con3:expr>
+              <con2:xqueryText>$body</con2:xqueryText>
+            </con3:expr>
+            <con3:message>soap request</con3:message>
+          </con3:log>
+        </con:actions>
+      </con:stage>
+    </con:pipeline>
+    <con:pipeline type="response" name="MessageProcessingPipelinePair_response">
+      <con:stage name="ResponseStage">
+        <con:context/>
+        <con:actions>
+          <con1:replace contents-only="true" varName="body">
+            <con2:id>_ActionId-1783841486942670595--394a754b.130802637bd.-7f55</con2:id>
+            <con1:location>
+              <con2:xpathText>.</con2:xpathText>
+            </con1:location>
+            <con1:expr>
+              <con2:xqueryText>&lt;ns2:sayHelloResponse xmlns:ns2="http://wsrm.osbbook">
+  &lt;return>Hello world&lt;/return>
+&lt;/ns2:sayHelloResponse></con2:xqueryText>
+            </con1:expr>
+          </con1:replace>
+        </con:actions>
+      </con:stage>
+    </con:pipeline>
+    <con:flow>
+      <con:pipeline-node name="MessageProcessingPipelinePair">
+        <con:request>MessageProcessingPipelinePair_request</con:request>
+        <con:response>MessageProcessingPipelinePair_response</con:response>
+      </con:pipeline-node>
+    </con:flow>
+  </ser:router>
+</xml-fragment>

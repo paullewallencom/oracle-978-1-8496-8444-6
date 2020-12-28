@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xml-fragment xmlns:ser="http://www.bea.com/wli/sb/services" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:env="http://www.bea.com/wli/config/env" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:con="http://www.bea.com/wli/sb/pipeline/config" xmlns:con1="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con2="http://www.bea.com/wli/sb/stages/config" xmlns:con3="http://www.bea.com/wli/sb/stages/transform/config">
+  <ser:coreEntry isProxy="true" isEnabled="true">
+    <ser:binding type="SOAP" isSoap12="false" xsi:type="con4:SoapBindingType" xmlns:con4="http://www.bea.com/wli/sb/services/bindings/config">
+      <con4:wsdl ref="using-db-adapter-to-update-to-table/wsdl/CustomerManagement"/>
+      <con4:binding>
+        <con4:name>CustomerManagementSOAP</con4:name>
+        <con4:namespace>http://www.somecorp.org/CustomerManagement</con4:namespace>
+      </con4:binding>
+      <con4:selector type="SOAP body"/>
+      <con4:WSI-compliant>false</con4:WSI-compliant>
+    </ser:binding>
+    <ser:monitoring isEnabled="false">
+      <ser:aggregationInterval>10</ser:aggregationInterval>
+      <ser:pipelineMonitoringLevel>Pipeline</ser:pipelineMonitoringLevel>
+    </ser:monitoring>
+    <ser:reporting>true</ser:reporting>
+    <ser:logging isEnabled="true">
+      <ser:logLevel>debug</ser:logLevel>
+    </ser:logging>
+    <ser:sla-alerting isEnabled="true">
+      <ser:alertLevel>normal</ser:alertLevel>
+    </ser:sla-alerting>
+    <ser:pipeline-alerting isEnabled="true">
+      <ser:alertLevel>normal</ser:alertLevel>
+    </ser:pipeline-alerting>
+    <ser:ws-policy>
+      <ser:binding-mode>wsdl-policy-attachments</ser:binding-mode>
+    </ser:ws-policy>
+    <ser:transactions isRequired="true" sameTxForResponse="false"/>
+  </ser:coreEntry>
+  <ser:endpointConfig>
+    <tran:provider-id>http</tran:provider-id>
+    <tran:inbound>true</tran:inbound>
+    <tran:URI>
+      <env:value>/using-db-adapter-to-update-to-table/proxy/CustomerManagement</env:value>
+    </tran:URI>
+    <tran:inbound-properties/>
+    <tran:all-headers>false</tran:all-headers>
+    <tran:provider-specific>
+      <http:inbound-properties/>
+    </tran:provider-specific>
+  </ser:endpointConfig>
+  <ser:router>
+    <con:flow>
+      <con:route-node name="InvokeDBRoute">
+        <con:context>
+          <con2:userNsDecl namespace="http://xmlns.oracle.com/pcbpel/adapter/db/top/UpdateCustomer" prefix="upd"/>
+          <con2:varNsDecl namespace="http://www.somecorp.org/CustomerManagement" prefix="cus"/>
+        </con:context>
+        <con:actions>
+          <con1:route>
+            <con2:id>_ActionId-8372982627182607715-4d669c20.1332cf4ab5c.-7f0d</con2:id>
+            <con1:service ref="using-db-adapter-to-update-to-table/business/UpdateCustomer_db" xsi:type="ref:BusinessServiceRef" xmlns:ref="http://www.bea.com/wli/sb/reference"/>
+            <con1:operation>merge</con1:operation>
+            <con1:outboundTransform>
+              <con3:replace varName="body" contents-only="true">
+                <con2:id>_ActionId-8372982627182607715-4d669c20.1332cf4ab5c.-7ed2</con2:id>
+                <con3:expr>
+                  <con2:xqueryTransform>
+                    <con2:resource ref="using-db-adapter-to-update-to-table/transformation/createUpdateCustomerMsg"/>
+                    <con2:param name="storeCustomer1">
+                      <con2:path>$body/cus:StoreCustomer</con2:path>
+                    </con2:param>
+                  </con2:xqueryTransform>
+                </con3:expr>
+              </con3:replace>
+            </con1:outboundTransform>
+            <con1:responseTransform>
+              <con3:assign varName="body">
+                <con2:id>_ActionId-8372982627182607715-4d669c20.1332cf4ab5c.-7c8a</con2:id>
+                <con3:expr>
+                  <con2:xqueryText><![CDATA[<soap-env:Body>
+	<cus:StoreCustomerResponse>
+		<cus:ID>{$body/upd:CustomerTCollection/upd:CustomerT/upd:id}</cus:ID>
+	</cus:StoreCustomerResponse>
+</soap-env:Body>]]></con2:xqueryText>
+                </con3:expr>
+              </con3:assign>
+            </con1:responseTransform>
+          </con1:route>
+        </con:actions>
+      </con:route-node>
+    </con:flow>
+  </ser:router>
+</xml-fragment>

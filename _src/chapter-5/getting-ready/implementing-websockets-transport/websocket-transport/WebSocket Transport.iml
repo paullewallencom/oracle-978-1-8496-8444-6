@@ -1,0 +1,799 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="EclipseModuleManager">
+    <libelement value="jar://$MW_HOME$/Oracle_OSB1/lib/ws-core.jar!/" />
+    <libelement value="jar://$MW_HOME$/Oracle_OSB1/lib/alsb.jar!/" />
+    <libelement value="jar://$MW_HOME$/Oracle_OSB1/module/scom.bea.common.configfwk_1.5.0.0.jar!/" />
+    <libelement value="jar://$MW_HOME$/Oracle_OSB1/lib/sb-kernel-api.jar!/" />
+    <libelement value="jar://$MW_HOME$/Oracle_OSB1/lib/sb-kernel-common.jar!/" />
+    <libelement value="jar://$MW_HOME$/Oracle_OSB1/lib/sb-kernel-impl.jar!/" />
+    <libelement value="jar://$MW_HOME$/Oracle_OSB1/lib/sb-kernel-resources.jar!/" />
+    <libelement value="jar://$MW_HOME$/Oracle_OSB1/lib/sb-kernel-wls.jar!/" />
+    <libelement value="jar://$MW_HOME$/Oracle_OSB1/lib/sb-schemas.jar!/" />
+    <libelement value="jar://$MW_HOME$/Oracle_OSB1/lib/sb-transports-http-wls.jar!/" />
+    <libelement value="jar://$MW_HOME$/Oracle_OSB1/lib/sb-transports-main.jar!/" />
+    <libelement value="jar://$MW_HOME$/Oracle_OSB1/lib/version.jar!/" />
+    <libelement value="jar://$MW_HOME$/wlserver_10.3/server/lib/xqrl.jar!/" />
+    <libelement value="jar://$MW_HOME$/wlserver_10.3/server/lib/api.jar!/" />
+    <libelement value="jar://$MW_HOME$/wlserver_10.3/server/lib/aqapi.jar!/" />
+    <libelement value="jar://$MW_HOME$/wlserver_10.3/server/lib/bea_wls_async_response.jar!/" />
+    <libelement value="jar://$MW_HOME$/wlserver_10.3/server/lib/bea_wls_remote_deployer.jar!/" />
+    <libelement value="jar://$MW_HOME$/wlserver_10.3/server/lib/diagnostics-agent.jar!/" />
+    <libelement value="jar://$MW_HOME$/wlserver_10.3/server/lib/EccpressoAsn1.jar!/" />
+    <libelement value="jar://$MW_HOME$/wlserver_10.3/server/lib/EccpressoCore.jar!/" />
+    <libelement value="jar://$MW_HOME$/wlserver_10.3/server/lib/EccpressoJcae.jar!/" />
+    <libelement value="jar://$MW_HOME$/wlserver_10.3/server/lib/jcom.jar!/" />
+    <libelement value="jar://$MW_HOME$/wlserver_10.3/server/lib/jms51-interop.jar!/" />
+    <libelement value="jar://$MW_HOME$/wlserver_10.3/server/lib/jrmp.jar!/" />
+    <libelement value="jar://$MW_HOME$/wlserver_10.3/server/lib/jrmpclient.jar!/" />
+    <libelement value="jar://$MW_HOME$/wlserver_10.3/server/lib/mejb.jar!/" />
+    <libelement value="jar://$MW_HOME$/wlserver_10.3/server/lib/mysql-connector-java-commercial-5.0.3-bin.jar!/" />
+    <libelement value="jar://$MW_HOME$/wlserver_10.3/server/lib/ojdbc6.jar!/" />
+    <libelement value="jar://$MW_HOME$/wlserver_10.3/server/lib/pcl2.jar!/" />
+    <libelement value="jar://$MW_HOME$/wlserver_10.3/server/lib/weblogic.jar!/" />
+    <libelement value="jar://$MW_HOME$/wlserver_10.3/server/lib/weblogic-de.jar!/" />
+    <libelement value="jar://$MW_HOME$/wlserver_10.3/server/lib/weblogic-es.jar!/" />
+    <libelement value="jar://$MW_HOME$/wlserver_10.3/server/lib/weblogic-fr.jar!/" />
+    <libelement value="jar://$MW_HOME$/wlserver_10.3/server/lib/weblogic-it.jar!/" />
+    <libelement value="jar://$MW_HOME$/wlserver_10.3/server/lib/weblogic-ja.jar!/" />
+    <libelement value="jar://$MW_HOME$/wlserver_10.3/server/lib/weblogic-ko.jar!/" />
+    <libelement value="jar://$MW_HOME$/wlserver_10.3/server/lib/weblogic-L10N.jar!/" />
+    <libelement value="jar://$MW_HOME$/wlserver_10.3/server/lib/weblogic-pt_BR.jar!/" />
+    <libelement value="jar://$MW_HOME$/wlserver_10.3/server/lib/weblogic-spring.jar!/" />
+    <libelement value="jar://$MW_HOME$/wlserver_10.3/server/lib/weblogic-zh_CN.jar!/" />
+    <libelement value="jar://$MW_HOME$/wlserver_10.3/server/lib/weblogic-zh_TW.jar!/" />
+    <libelement value="jar://$MW_HOME$/wlserver_10.3/server/lib/webserviceclient.jar!/" />
+    <libelement value="jar://$MW_HOME$/wlserver_10.3/server/lib/webserviceclient+ssl.jar!/" />
+    <libelement value="jar://$MW_HOME$/wlserver_10.3/server/lib/webservices.jar!/" />
+    <libelement value="jar://$MW_HOME$/wlserver_10.3/server/lib/wlcipher.jar!/" />
+    <libelement value="jar://$MW_HOME$/wlserver_10.3/server/lib/wlclient.jar!/" />
+    <libelement value="jar://$MW_HOME$/wlserver_10.3/server/lib/wlcommons-logging.jar!/" />
+    <libelement value="jar://$MW_HOME$/wlserver_10.3/server/lib/wlconnector.jar!/" />
+    <libelement value="jar://$MW_HOME$/wlserver_10.3/server/lib/wldb2.jar!/" />
+    <libelement value="jar://$MW_HOME$/wlserver_10.3/server/lib/wldeploy.jar!/" />
+    <libelement value="jar://$MW_HOME$/wlserver_10.3/server/lib/wlinformix.jar!/" />
+    <libelement value="jar://$MW_HOME$/wlserver_10.3/server/lib/wl-j2ee-client.jar!/" />
+    <libelement value="jar://$MW_HOME$/wlserver_10.3/server/lib/wljarbuilder.jar!/" />
+    <libelement value="jar://$MW_HOME$/wlserver_10.3/server/lib/wljmsclient.jar!/" />
+    <libelement value="jar://$MW_HOME$/wlserver_10.3/server/lib/wljmxclient.jar!/" />
+    <libelement value="jar://$MW_HOME$/wlserver_10.3/server/lib/wllog4j.jar!/" />
+    <libelement value="jar://$MW_HOME$/wlserver_10.3/server/lib/wlnmclient.jar!/" />
+    <libelement value="jar://$MW_HOME$/wlserver_10.3/server/lib/wlsafclient.jar!/" />
+    <libelement value="jar://$MW_HOME$/wlserver_10.3/server/lib/wls-api.jar!/" />
+    <libelement value="jar://$MW_HOME$/wlserver_10.3/server/lib/wlsqlserver.jar!/" />
+    <libelement value="jar://$MW_HOME$/wlserver_10.3/server/lib/wlsybase.jar!/" />
+    <libelement value="jar://$MW_HOME$/wlserver_10.3/server/lib/wlthint3client.jar!/" />
+    <libelement value="jar://$MW_HOME$/wlserver_10.3/server/lib/wlw-langx.jar!/" />
+    <libelement value="jar://$MW_HOME$/wlserver_10.3/server/lib/wlw-langx-ja.jar!/" />
+    <libelement value="jar://$MW_HOME$/wlserver_10.3/server/lib/wlw-langx-ko.jar!/" />
+    <libelement value="jar://$MW_HOME$/wlserver_10.3/server/lib/wlw-langx-zh_CN.jar!/" />
+    <libelement value="jar://$MW_HOME$/wlserver_10.3/server/lib/wlw-langx-zh_TW.jar!/" />
+    <libelement value="jar://$MW_HOME$/wlserver_10.3/server/lib/wlw-wsee-soapfault.jar!/" />
+    <libelement value="jar://$MW_HOME$/wlserver_10.3/server/lib/wseeclient.jar!/" />
+    <libelement value="jar://$MW_HOME$/wlserver_10.3/server/lib/wseeclient.zip!/" />
+    <libelement value="jar://$MW_HOME$/wlserver_10.3/server/lib/wsse.jar!/" />
+    <libelement value="jar://$MW_HOME$/wlserver_10.3/server/lib/xmlx.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/../../../../modules/joda.time_1.2.1.0.jar!/" />
+    <libelement value="jar://$MW_HOME$/Oracle_OSB1/modules/com.bea.common.configfwk_1.5.0.0.jar!/" />
+    <libelement value="jar://$MW_HOME$/Oracle_OSB1/libws-core.jar!/" />
+    <libelement value="jar://$MW_HOME$/Oracle_OSB1/libalsb.jar!/" />
+    <libelement value="jar://$MW_HOME$/Oracle_OSB1/libsb-kernel-api.jar!/" />
+    <libelement value="jar://$MW_HOME$/Oracle_OSB1/libsb-kernel-common.jar!/" />
+    <libelement value="jar://$MW_HOME$/Oracle_OSB1/libsb-kernel-impl.jar!/" />
+    <libelement value="jar://$MW_HOME$/Oracle_OSB1/libsb-kernel-resources.jar!/" />
+    <libelement value="jar://$MW_HOME$/Oracle_OSB1/libsb-kernel-wls.jar!/" />
+    <libelement value="jar://$MW_HOME$/Oracle_OSB1/libsb-schemas.jar!/" />
+    <libelement value="jar://$MW_HOME$/Oracle_OSB1/libsb-transports-http-wls.jar!/" />
+    <libelement value="jar://$MW_HOME$/Oracle_OSB1/libsb-transports-main.jar!/" />
+    <libelement value="jar://$MW_HOME$/Oracle_OSB1/libversion.jar!/" />
+    <libelement value="jar://$MW_HOME$/Oracle_OSB1/modulescom.bea.common.configfwk_1.5.0.0.jar!/" />
+    <src_description expected_position="0">
+      <src_folder value="file://$MODULE_DIR$/src" expected_position="0" />
+      <src_folder value="file://$MODULE_DIR$/test/src" expected_position="1" />
+      <src_folder value="file://$MODULE_DIR$/build/generatedsrc/catalogs" expected_position="2" />
+      <src_folder value="file://$MODULE_DIR$/build/generatedsrc/xbean" expected_position="3" />
+    </src_description>
+  </component>
+  <component name="FacetManager">
+    <facet type="javaeeApplication" name="javaEEApplication">
+      <configuration>
+        <descriptors>
+          <deploymentDescriptor name="application.xml" url="file://$MODULE_DIR$/META-INF/application.xml" />
+        </descriptors>
+      </configuration>
+    </facet>
+    <facet type="web" name="Web">
+      <configuration>
+        <descriptors>
+          <deploymentDescriptor name="web.xml" url="file://$MODULE_DIR$/build/ear/webapp/WEB-INF/web.xml" />
+        </descriptors>
+        <webroots>
+          <root url="file://$MODULE_DIR$/build/ear/webapp" relative="/" />
+        </webroots>
+      </configuration>
+    </facet>
+    <facet type="web" name="Web2">
+      <configuration>
+        <descriptors>
+          <deploymentDescriptor name="web.xml" url="file://$MODULE_DIR$/webapp/WEB-INF/web.xml" />
+        </descriptors>
+        <webroots>
+          <root url="file://$MODULE_DIR$/webapp" relative="/" />
+        </webroots>
+      </configuration>
+    </facet>
+  </component>
+  <component name="NewModuleRootManager" inherit-compiler-output="false">
+    <output url="file://$MODULE_DIR$/build/oepe/classes" />
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/test/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generatedsrc/catalogs" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generatedsrc/xbean" isTestSource="false" />
+    </content>
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module-library">
+      <library name="ws-core.jar">
+        <CLASSES>
+          <root url="jar://$MW_HOME$/Oracle_OSB1/lib/ws-core.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="alsb.jar">
+        <CLASSES>
+          <root url="jar://$MW_HOME$/Oracle_OSB1/lib/alsb.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="com.bea.common.configfwk_1.5.0.0.jar">
+        <CLASSES>
+          <root url="jar://$MW_HOME$/Oracle_OSB1/modules/com.bea.common.configfwk_1.5.0.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="sb-kernel-api.jar">
+        <CLASSES>
+          <root url="jar://$MW_HOME$/Oracle_OSB1/lib/sb-kernel-api.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="sb-kernel-common.jar">
+        <CLASSES>
+          <root url="jar://$MW_HOME$/Oracle_OSB1/lib/sb-kernel-common.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="sb-kernel-impl.jar">
+        <CLASSES>
+          <root url="jar://$MW_HOME$/Oracle_OSB1/lib/sb-kernel-impl.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="sb-kernel-resources.jar">
+        <CLASSES>
+          <root url="jar://$MW_HOME$/Oracle_OSB1/lib/sb-kernel-resources.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="sb-kernel-wls.jar">
+        <CLASSES>
+          <root url="jar://$MW_HOME$/Oracle_OSB1/lib/sb-kernel-wls.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="sb-schemas.jar">
+        <CLASSES>
+          <root url="jar://$MW_HOME$/Oracle_OSB1/lib/sb-schemas.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="sb-transports-http-wls.jar">
+        <CLASSES>
+          <root url="jar://$MW_HOME$/Oracle_OSB1/lib/sb-transports-http-wls.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="sb-transports-main.jar">
+        <CLASSES>
+          <root url="jar://$MW_HOME$/Oracle_OSB1/lib/sb-transports-main.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="version.jar">
+        <CLASSES>
+          <root url="jar://$MW_HOME$/Oracle_OSB1/lib/version.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="module-library">
+      <library name="xqrl.jar">
+        <CLASSES>
+          <root url="jar://$MW_HOME$/wlserver_10.3/server/lib/xqrl.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="api.jar">
+        <CLASSES>
+          <root url="jar://$MW_HOME$/wlserver_10.3/server/lib/api.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="aqapi.jar">
+        <CLASSES>
+          <root url="jar://$MW_HOME$/wlserver_10.3/server/lib/aqapi.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="bea_wls_async_response.jar">
+        <CLASSES>
+          <root url="jar://$MW_HOME$/wlserver_10.3/server/lib/bea_wls_async_response.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="bea_wls_remote_deployer.jar">
+        <CLASSES>
+          <root url="jar://$MW_HOME$/wlserver_10.3/server/lib/bea_wls_remote_deployer.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="diagnostics-agent.jar">
+        <CLASSES>
+          <root url="jar://$MW_HOME$/wlserver_10.3/server/lib/diagnostics-agent.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="EccpressoAsn1.jar">
+        <CLASSES>
+          <root url="jar://$MW_HOME$/wlserver_10.3/server/lib/EccpressoAsn1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="EccpressoCore.jar">
+        <CLASSES>
+          <root url="jar://$MW_HOME$/wlserver_10.3/server/lib/EccpressoCore.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="EccpressoJcae.jar">
+        <CLASSES>
+          <root url="jar://$MW_HOME$/wlserver_10.3/server/lib/EccpressoJcae.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="jcom.jar">
+        <CLASSES>
+          <root url="jar://$MW_HOME$/wlserver_10.3/server/lib/jcom.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="jms51-interop.jar">
+        <CLASSES>
+          <root url="jar://$MW_HOME$/wlserver_10.3/server/lib/jms51-interop.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="jrmp.jar">
+        <CLASSES>
+          <root url="jar://$MW_HOME$/wlserver_10.3/server/lib/jrmp.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="jrmpclient.jar">
+        <CLASSES>
+          <root url="jar://$MW_HOME$/wlserver_10.3/server/lib/jrmpclient.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="mejb.jar">
+        <CLASSES>
+          <root url="jar://$MW_HOME$/wlserver_10.3/server/lib/mejb.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="mysql-connector-java-commercial-5.0.3-bin.jar">
+        <CLASSES>
+          <root url="jar://$MW_HOME$/wlserver_10.3/server/lib/mysql-connector-java-commercial-5.0.3-bin.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="ojdbc6.jar">
+        <CLASSES>
+          <root url="jar://$MW_HOME$/wlserver_10.3/server/lib/ojdbc6.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="pcl2.jar">
+        <CLASSES>
+          <root url="jar://$MW_HOME$/wlserver_10.3/server/lib/pcl2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="weblogic.jar">
+        <CLASSES>
+          <root url="jar://$MW_HOME$/wlserver_10.3/server/lib/weblogic.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="weblogic-de.jar">
+        <CLASSES>
+          <root url="jar://$MW_HOME$/wlserver_10.3/server/lib/weblogic-de.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="weblogic-es.jar">
+        <CLASSES>
+          <root url="jar://$MW_HOME$/wlserver_10.3/server/lib/weblogic-es.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="weblogic-fr.jar">
+        <CLASSES>
+          <root url="jar://$MW_HOME$/wlserver_10.3/server/lib/weblogic-fr.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="weblogic-it.jar">
+        <CLASSES>
+          <root url="jar://$MW_HOME$/wlserver_10.3/server/lib/weblogic-it.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="weblogic-ja.jar">
+        <CLASSES>
+          <root url="jar://$MW_HOME$/wlserver_10.3/server/lib/weblogic-ja.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="weblogic-ko.jar">
+        <CLASSES>
+          <root url="jar://$MW_HOME$/wlserver_10.3/server/lib/weblogic-ko.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="weblogic-L10N.jar">
+        <CLASSES>
+          <root url="jar://$MW_HOME$/wlserver_10.3/server/lib/weblogic-L10N.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="weblogic-pt_BR.jar">
+        <CLASSES>
+          <root url="jar://$MW_HOME$/wlserver_10.3/server/lib/weblogic-pt_BR.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="weblogic-spring.jar">
+        <CLASSES>
+          <root url="jar://$MW_HOME$/wlserver_10.3/server/lib/weblogic-spring.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="weblogic-zh_CN.jar">
+        <CLASSES>
+          <root url="jar://$MW_HOME$/wlserver_10.3/server/lib/weblogic-zh_CN.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="weblogic-zh_TW.jar">
+        <CLASSES>
+          <root url="jar://$MW_HOME$/wlserver_10.3/server/lib/weblogic-zh_TW.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="webserviceclient.jar">
+        <CLASSES>
+          <root url="jar://$MW_HOME$/wlserver_10.3/server/lib/webserviceclient.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="webserviceclient+ssl.jar">
+        <CLASSES>
+          <root url="jar://$MW_HOME$/wlserver_10.3/server/lib/webserviceclient+ssl.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="webservices.jar">
+        <CLASSES>
+          <root url="jar://$MW_HOME$/wlserver_10.3/server/lib/webservices.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="wlcipher.jar">
+        <CLASSES>
+          <root url="jar://$MW_HOME$/wlserver_10.3/server/lib/wlcipher.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="wlclient.jar">
+        <CLASSES>
+          <root url="jar://$MW_HOME$/wlserver_10.3/server/lib/wlclient.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="wlcommons-logging.jar">
+        <CLASSES>
+          <root url="jar://$MW_HOME$/wlserver_10.3/server/lib/wlcommons-logging.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="wlconnector.jar">
+        <CLASSES>
+          <root url="jar://$MW_HOME$/wlserver_10.3/server/lib/wlconnector.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="wldb2.jar">
+        <CLASSES>
+          <root url="jar://$MW_HOME$/wlserver_10.3/server/lib/wldb2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="wldeploy.jar">
+        <CLASSES>
+          <root url="jar://$MW_HOME$/wlserver_10.3/server/lib/wldeploy.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="wlinformix.jar">
+        <CLASSES>
+          <root url="jar://$MW_HOME$/wlserver_10.3/server/lib/wlinformix.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="wl-j2ee-client.jar">
+        <CLASSES>
+          <root url="jar://$MW_HOME$/wlserver_10.3/server/lib/wl-j2ee-client.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="wljarbuilder.jar">
+        <CLASSES>
+          <root url="jar://$MW_HOME$/wlserver_10.3/server/lib/wljarbuilder.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="wljmsclient.jar">
+        <CLASSES>
+          <root url="jar://$MW_HOME$/wlserver_10.3/server/lib/wljmsclient.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="wljmxclient.jar">
+        <CLASSES>
+          <root url="jar://$MW_HOME$/wlserver_10.3/server/lib/wljmxclient.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="wllog4j.jar">
+        <CLASSES>
+          <root url="jar://$MW_HOME$/wlserver_10.3/server/lib/wllog4j.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="wlnmclient.jar">
+        <CLASSES>
+          <root url="jar://$MW_HOME$/wlserver_10.3/server/lib/wlnmclient.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="wlsafclient.jar">
+        <CLASSES>
+          <root url="jar://$MW_HOME$/wlserver_10.3/server/lib/wlsafclient.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="wls-api.jar">
+        <CLASSES>
+          <root url="jar://$MW_HOME$/wlserver_10.3/server/lib/wls-api.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="wlsqlserver.jar">
+        <CLASSES>
+          <root url="jar://$MW_HOME$/wlserver_10.3/server/lib/wlsqlserver.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="wlsybase.jar">
+        <CLASSES>
+          <root url="jar://$MW_HOME$/wlserver_10.3/server/lib/wlsybase.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="wlthint3client.jar">
+        <CLASSES>
+          <root url="jar://$MW_HOME$/wlserver_10.3/server/lib/wlthint3client.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="wlw-langx.jar">
+        <CLASSES>
+          <root url="jar://$MW_HOME$/wlserver_10.3/server/lib/wlw-langx.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="wlw-langx-ja.jar">
+        <CLASSES>
+          <root url="jar://$MW_HOME$/wlserver_10.3/server/lib/wlw-langx-ja.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="wlw-langx-ko.jar">
+        <CLASSES>
+          <root url="jar://$MW_HOME$/wlserver_10.3/server/lib/wlw-langx-ko.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="wlw-langx-zh_CN.jar">
+        <CLASSES>
+          <root url="jar://$MW_HOME$/wlserver_10.3/server/lib/wlw-langx-zh_CN.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="wlw-langx-zh_TW.jar">
+        <CLASSES>
+          <root url="jar://$MW_HOME$/wlserver_10.3/server/lib/wlw-langx-zh_TW.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="wlw-wsee-soapfault.jar">
+        <CLASSES>
+          <root url="jar://$MW_HOME$/wlserver_10.3/server/lib/wlw-wsee-soapfault.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="wseeclient.jar">
+        <CLASSES>
+          <root url="jar://$MW_HOME$/wlserver_10.3/server/lib/wseeclient.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="wseeclient.zip">
+        <CLASSES>
+          <root url="jar://$MW_HOME$/wlserver_10.3/server/lib/wseeclient.zip!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="wsse.jar">
+        <CLASSES>
+          <root url="jar://$MW_HOME$/wlserver_10.3/server/lib/wsse.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="xmlx.jar">
+        <CLASSES>
+          <root url="jar://$MW_HOME$/wlserver_10.3/server/lib/xmlx.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="joda.time_1.2.1.0.jar">
+        <CLASSES>
+          <root url="jar://$MW_HOME$/modules/joda.time_1.2.1.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="library" name="com.bea.core.xml.xmlbeans_2.1.0.0_2-5-1.jar" level="project" />
+    <orderEntry type="module" module-name="websocket-server" />
+    <orderEntry type="library" name="Maven: javax.servlet:servlet-api:2.5" level="project" />
+  </component>
+</module>
+

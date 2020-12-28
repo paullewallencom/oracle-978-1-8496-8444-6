@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<?eclipse version='3.0'?>
+<plugin id='com.bea.alsb.transports.websocket'
+        name='Oracle Service Bus Transport (WebSocket)'
+        version='1.1.0'
+        provider-name='Oracle'>
+
+    <extension point='org.eclipse.help.toc'>
+        <toc file='/help/en/toc.xml' primary='false'/>
+    </extension>
+
+    <extension point='org.eclipse.help.contexts'>
+        <contexts file='/help/en/context.xml' plugin='com.bea.alsb.transports.websocket'/>
+    </extension>
+
+    <extension id="websocket"
+               name="WebSocket Transport"
+               point="com.bea.alsb.core.transports">
+        <transport transport-provider="com.bea.alsb.transports.websocket.WebSocketTransportProviderFactory"/>
+    </extension>
+
+    <runtime>
+        <library name='../../../lib/transports/websocket_transport.jar'>
+            <export name='*'/>
+        </library>
+    </runtime>
+
+    <requires>
+        <import plugin='system.bundle'/>
+        <import plugin='com.bea.alsb.core'/>
+    </requires>
+</plugin>

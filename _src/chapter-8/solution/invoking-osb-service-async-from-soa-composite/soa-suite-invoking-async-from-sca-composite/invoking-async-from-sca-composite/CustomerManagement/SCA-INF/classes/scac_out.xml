@@ -1,0 +1,13 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Faults>
+   <Fault>
+      <severity>warning</severity>
+      <loc/>
+      <line/>
+      <col/>
+      <file>CustomerManagementAsync.mplan</file>
+      <msg>
+         <![CDATA[Assigning source "{http://osb-cookbook/CustomerManagement}FindCustomer" and target "{http://osb-cookbook/CustomerManagementAsync}FindCustomer" of different QName which may generate non-valid xml as per the xsd in case of non-leaf node. If required verify manually]]>
+      </msg>
+   </Fault>
+</Faults>

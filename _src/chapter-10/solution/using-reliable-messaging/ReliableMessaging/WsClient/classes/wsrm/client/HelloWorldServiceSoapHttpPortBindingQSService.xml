@@ -1,0 +1,18 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<oracle-webservice-clients xmlns:ns2="http://java.sun.com/xml/ns/javaee">
+   <webservice-client>
+      <service-qname localpart="HelloWorldServiceSoapHttpPortBindingQSService"
+                     namespaceURI="http://wsrm.osbbook"/>
+      <port-info>
+         <wsdl-port localpart="HelloWorldServiceSoapHttpPortBindingQSPort"
+                    namespaceURI="http://wsrm.osbbook"/>
+         <runtime/>
+         <policy-references>
+            <policy-reference uri="oracle/wsrm10_policy" category="wsrm"/>
+         </policy-references>
+         <operations>
+            <operation name="sayHelloOneWay"/>
+         </operations>
+      </port-info>
+   </webservice-client>
+</oracle-webservice-clients>

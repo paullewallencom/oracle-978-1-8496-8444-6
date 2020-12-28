@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xml-fragment xmlns:ser="http://www.bea.com/wli/sb/services" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:env="http://www.bea.com/wli/config/env" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:con="http://www.bea.com/wli/sb/pipeline/config" xmlns:con1="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con2="http://www.bea.com/wli/sb/stages/config" xmlns:con3="http://www.bea.com/wli/sb/services/security/config">
+  <ser:coreEntry isProxy="true" isEnabled="true">
+    <ser:security>
+      <con3:inboundWss processWssHeader="true"/>
+    </ser:security>
+    <ser:binding type="SOAP" isSoap12="false" xsi:type="con3:SoapBindingType" xmlns:con3="http://www.bea.com/wli/sb/services/bindings/config">
+      <con3:wsdl ref="securing-a-proxy-service-with-cert-auth-and-msg-protect/wsdl/CustomerManagement"/>
+      <con3:binding>
+        <con3:name>CustomerManagementSOAP</con3:name>
+        <con3:namespace>http://osb-cookbook/CustomerManagement</con3:namespace>
+      </con3:binding>
+      <con3:selector type="SOAP body"/>
+    </ser:binding>
+    <ser:monitoring isEnabled="false">
+      <ser:aggregationInterval>10</ser:aggregationInterval>
+      <ser:pipelineMonitoringLevel>Pipeline</ser:pipelineMonitoringLevel>
+    </ser:monitoring>
+    <ser:reporting>true</ser:reporting>
+    <ser:logging isEnabled="true">
+      <ser:logLevel>debug</ser:logLevel>
+    </ser:logging>
+    <ser:sla-alerting isEnabled="true">
+      <ser:alertLevel>normal</ser:alertLevel>
+    </ser:sla-alerting>
+    <ser:pipeline-alerting isEnabled="true">
+      <ser:alertLevel>normal</ser:alertLevel>
+    </ser:pipeline-alerting>
+    <ser:ws-policy>
+      <ser:binding-mode>owsm-policy-bindings</ser:binding-mode>
+      <ser:policies>
+        <ser:service-policy>
+          <ser:owsm-policy-ref ID="oracle/wss11_x509_token_with_message_protection_service_policy"/>
+        </ser:service-policy>
+      </ser:policies>
+    </ser:ws-policy>
+  </ser:coreEntry>
+  <ser:endpointConfig>
+    <tran:provider-id>http</tran:provider-id>
+    <tran:inbound>true</tran:inbound>
+    <tran:URI>
+      <env:value>/securing-a-proxy-service-with-cert-auth-and-msg-protect/proxy/CustomerManagement</env:value>
+    </tran:URI>
+    <tran:inbound-properties/>
+    <tran:all-headers>false</tran:all-headers>
+    <tran:provider-specific>
+      <http:inbound-properties/>
+    </tran:provider-specific>
+  </ser:endpointConfig>
+  <ser:router>
+    <con:pipeline type="request" name="CustomerPipelinePairNode_request"/>
+    <con:pipeline type="response" name="CustomerPipelinePairNode_response">
+      <con:stage name="ResponseStage">
+        <con:context/>
+        <con:actions>
+          <con1:replace varName="body" contents-only="true">
+            <con2:id>_ActionId-5163997820811026499-6bf04119.13100f0de8b.-7f3b</con2:id>
+            <con1:location>
+              <con2:xpathText>.</con2:xpathText>
+            </con1:location>
+            <con1:expr>
+              <con2:xqueryText><![CDATA[<cus:FindCustomerResponse 
+  xmlns:cus="http://osb-cookbook/CustomerManagement" 
+  xmlns:cus1="http://osb-cookbook/customer" 
+  xmlns:cred="http://osb-cookbook/creditcard">
+         <Customer>
+            <cus1:ID>100</cus1:ID>
+            <cus1:FirstName>Larry</cus1:FirstName>
+            <cus1:LastName>Ellison</cus1:LastName>
+            <cus1:EmailAddress>larry.ellison@oracle.com</cus1:EmailAddress>
+            <cus1:Addresses/>
+            <cus1:BirthDate>1967-08-13</cus1:BirthDate>
+            <cus1:Rating>A</cus1:Rating>
+            <cus1:Gender>Male</cus1:Gender>
+            <cus1:CreditCard>
+               <cred:CardIssuer>visa</cred:CardIssuer>
+               <cred:CardNumber>123</cred:CardNumber>
+               <cred:CardholderName>Larry</cred:CardholderName>
+               <cred:ExpirationDate>2020-01-01</cred:ExpirationDate>
+               <cred:CardValidationCode>1233</cred:CardValidationCode>
+            </cus1:CreditCard>
+         </Customer>
+</cus:FindCustomerResponse>]]></con2:xqueryText>
+            </con1:expr>
+          </con1:replace>
+        </con:actions>
+      </con:stage>
+    </con:pipeline>
+    <con:flow>
+      <con:pipeline-node name="CustomerPipelinePairNode">
+        <con:request>CustomerPipelinePairNode_request</con:request>
+        <con:response>CustomerPipelinePairNode_response</con:response>
+      </con:pipeline-node>
+    </con:flow>
+  </ser:router>
+</xml-fragment>

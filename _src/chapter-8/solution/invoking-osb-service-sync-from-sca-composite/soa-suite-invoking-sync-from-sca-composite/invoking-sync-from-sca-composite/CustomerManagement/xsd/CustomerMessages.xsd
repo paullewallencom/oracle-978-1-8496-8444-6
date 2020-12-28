@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<xsd:schema targetNamespace="http://osb-cookbook/CustomerManagement"
+            elementFormDefault="qualified"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:cus="http://osb-cookbook/customer">
+ <xsd:import namespace="http://osb-cookbook/customer"
+             schemaLocation="Customer.xsd"/>
+ <xsd:element name="FindCustomer">
+  <xsd:complexType>
+   <xsd:sequence>
+    <xsd:element name="ID" type="xsd:long"/>
+   </xsd:sequence>
+  </xsd:complexType>
+ </xsd:element>
+ <xsd:element name="FindCustomerResponse">
+  <xsd:complexType>
+   <xsd:sequence>
+    <xsd:element name="Customer" type="cus:CustomerTyp"/>
+   </xsd:sequence>
+  </xsd:complexType>
+ </xsd:element>
+</xsd:schema>

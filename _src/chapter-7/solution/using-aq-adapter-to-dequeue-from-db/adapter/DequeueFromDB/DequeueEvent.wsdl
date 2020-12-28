@@ -1,0 +1,29 @@
+<wsdl:definitions
+     name="DequeueEvent"
+     targetNamespace="http://xmlns.oracle.com/pcbpel/adapter/aq/osbbook_ejb/DequeueFromDB/DequeueEvent"
+     xmlns:jca="http://xmlns.oracle.com/pcbpel/wsdl/jca/"
+     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+     xmlns:tns="http://xmlns.oracle.com/pcbpel/adapter/aq/osbbook_ejb/DequeueFromDB/DequeueEvent"
+     xmlns:obj1="http://xmlns.oracle.com/xdb/OSB_COOKBOOK"
+     xmlns:pc="http://xmlns.oracle.com/pcbpel/"
+     xmlns:plt="http://schemas.xmlsoap.org/ws/2003/05/partner-link/"
+    >
+  <plt:partnerLinkType name="Dequeue_plt" >
+    <plt:role name="Dequeue_role" >
+      <plt:portType name="tns:Dequeue_ptt" />
+    </plt:role>
+  </plt:partnerLinkType>
+    <wsdl:types>
+      <schema xmlns="http://www.w3.org/2001/XMLSchema" >
+        <import namespace="http://xmlns.oracle.com/xdb/OSB_COOKBOOK" schemaLocation="xsd/OSB_COOKBOOK_EVENT_TYP.xsd" />
+      </schema>
+    </wsdl:types>
+    <wsdl:message name="EVENT_TYP_msg">
+        <wsdl:part name="EVENT_TYP" element="obj1:EVENT_TYP"/>
+    </wsdl:message>
+    <wsdl:portType name="Dequeue_ptt">
+        <wsdl:operation name="Dequeue">
+            <wsdl:input message="tns:EVENT_TYP_msg"/>
+        </wsdl:operation>
+    </wsdl:portType>
+</wsdl:definitions>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xml-fragment xmlns:ser="http://www.bea.com/wli/sb/services" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:env="http://www.bea.com/wli/config/env" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:con="http://www.bea.com/wli/sb/pipeline/config" xmlns:con1="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con2="http://www.bea.com/wli/sb/stages/config" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:con3="http://www.bea.com/wli/sb/stages/transform/config">
+  <ser:coreEntry isProxy="true" isEnabled="true">
+    <ser:binding type="abstract XML"/>
+    <ser:monitoring isEnabled="false">
+      <ser:aggregationInterval>10</ser:aggregationInterval>
+      <ser:pipelineMonitoringLevel>Pipeline</ser:pipelineMonitoringLevel>
+    </ser:monitoring>
+    <ser:reporting>true</ser:reporting>
+    <ser:logging isEnabled="true">
+      <ser:logLevel>debug</ser:logLevel>
+    </ser:logging>
+    <ser:sla-alerting isEnabled="true">
+      <ser:alertLevel>normal</ser:alertLevel>
+    </ser:sla-alerting>
+    <ser:pipeline-alerting isEnabled="true">
+      <ser:alertLevel>normal</ser:alertLevel>
+    </ser:pipeline-alerting>
+  </ser:coreEntry>
+  <ser:endpointConfig>
+    <tran:provider-id>http</tran:provider-id>
+    <tran:inbound>true</tran:inbound>
+    <tran:URI>
+      <env:value>/using-aq-adapter-to-enqueue-to-db/proxy/Enqueue</env:value>
+    </tran:URI>
+    <tran:inbound-properties/>
+    <tran:all-headers>false</tran:all-headers>
+    <tran:provider-specific>
+      <http:inbound-properties/>
+    </tran:provider-specific>
+  </ser:endpointConfig>
+  <ser:router>
+    <con:flow>
+      <con:route-node name="RouteNode1">
+        <con:context/>
+        <con:actions>
+          <con1:route>
+            <con2:id>_ActionId-6393386136770251937-500e755b.13374172d6b.-7f81</con2:id>
+            <con1:service ref="using-aq-adapter-to-enqueue-to-db/business/EnqueueCustomer_aq" xsi:type="ref:BusinessServiceRef" xmlns:ref="http://www.bea.com/wli/sb/reference"/>
+            <con1:operation>Enqueue</con1:operation>
+            <con1:outboundTransform>
+              <con3:transport-headers>
+                <con2:id>_ActionId-6393386136770251937-500e755b.13374172d6b.-7f49</con2:id>
+                <con3:header-set>outbound-request</con3:header-set>
+                <con3:header name="jca.aq.Correlation" value="expression">
+                  <con2:xqueryText>'ABC'</con2:xqueryText>
+                </con3:header>
+              </con3:transport-headers>
+            </con1:outboundTransform>
+            <con1:responseTransform/>
+          </con1:route>
+        </con:actions>
+      </con:route-node>
+    </con:flow>
+  </ser:router>
+</xml-fragment>

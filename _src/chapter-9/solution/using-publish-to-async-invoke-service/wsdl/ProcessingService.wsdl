@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="ProcessingService" targetNamespace="http://www.osbcookbook.org/ProcessingService/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://www.osbcookbook.org/ProcessingService/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://www.osbcookbook.org/ProcessingService/">
+      <xsd:element name="ProcessIt">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" name="id" type="xsd:long"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="ProcessItResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="process" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="ProcessItResponse">
+    <wsdl:part name="parameters" element="tns:ProcessItResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="ProcessItRequest">
+    <wsdl:part name="parameters" element="tns:ProcessIt">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="ProcessingService">
+    <wsdl:operation name="ProcessIt">
+      <wsdl:input message="tns:ProcessItRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:ProcessItResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ProcessingServiceSOAP" type="tns:ProcessingService">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="ProcessIt">
+      <soap:operation soapAction="http://www.crm.org/ProcessingService/ProcessIt"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ProcessingService">
+    <wsdl:port name="ProcessingServiceSOAP" binding="tns:ProcessingServiceSOAP">
+      <soap:address location="be-defined-later"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

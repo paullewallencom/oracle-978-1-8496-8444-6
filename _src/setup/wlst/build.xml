@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="Book Source Code Builder" basedir=".">
+	<!-- set global properties for this build -->
+	<!--
+		The bea.home property hold that name of the directory where you
+		installed ALSB 3.0. you need to change this value so that it matches
+		your installation directory.
+	-->
+	<property environment="env"/>
+	<property name="fmw.home" value="${env.FMW_HOME}" />
+	<property name="weblogic.home" value="${fmw.home}/wlserver_10.3" />
+
+	<property file="wlst-build.properties" />
+
+	<path id="wlst.class.path">
+		<fileset dir="${weblogic.home}/server/lib">
+			<include name="weblogic.jar" />
+			<include name="webserviceclient.jar" />
+		</fileset>
+	</path>
+
+	<target name="configureServerResources">
+		<java classname="weblogic.WLST" fork="yes" classpathref="wlst.class.path">
+			<arg line="configureResources.py" />
+		</java>
+	</target>
+
+	<target name="deleteServerResources">
+		<java classname="weblogic.WLST" fork="yes" classpathref="wlst.class.path">
+			<arg line="deleteResources.py" />
+		</java>
+	</target>
+</project>

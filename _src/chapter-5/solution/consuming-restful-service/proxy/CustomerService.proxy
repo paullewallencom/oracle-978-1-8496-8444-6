@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xml-fragment xmlns:ser="http://www.bea.com/wli/sb/services" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:env="http://www.bea.com/wli/config/env" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:con="http://www.bea.com/wli/sb/stages/config" xmlns:con1="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con2="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con3="http://www.bea.com/wli/sb/pipeline/config">
+  <ser:coreEntry isProxy="true" isEnabled="true">
+    <ser:binding type="SOAP" isSoap12="false" xsi:type="con:SoapBindingType" xmlns:con="http://www.bea.com/wli/sb/services/bindings/config">
+      <con:wsdl ref="consuming-restful-service/wsdl/CustomerServiceCRM"/>
+      <con:port>
+        <con:name>CustomerServiceSOAP</con:name>
+        <con:namespace>http://www.crm.org/CustomerService/</con:namespace>
+      </con:port>
+      <con:selector type="SOAP body"/>
+      <con:WSI-compliant>false</con:WSI-compliant>
+    </ser:binding>
+    <ser:monitoring isEnabled="false">
+      <ser:aggregationInterval>10</ser:aggregationInterval>
+      <ser:pipelineMonitoringLevel>Pipeline</ser:pipelineMonitoringLevel>
+    </ser:monitoring>
+    <ser:reporting>true</ser:reporting>
+    <ser:logging isEnabled="true">
+      <ser:logLevel>debug</ser:logLevel>
+    </ser:logging>
+    <ser:sla-alerting isEnabled="true">
+      <ser:alertLevel>normal</ser:alertLevel>
+    </ser:sla-alerting>
+    <ser:pipeline-alerting isEnabled="true">
+      <ser:alertLevel>normal</ser:alertLevel>
+    </ser:pipeline-alerting>
+    <ser:ws-policy>
+      <ser:binding-mode>wsdl-policy-attachments</ser:binding-mode>
+    </ser:ws-policy>
+  </ser:coreEntry>
+  <ser:endpointConfig>
+    <tran:provider-id>http</tran:provider-id>
+    <tran:inbound>true</tran:inbound>
+    <tran:URI>
+      <env:value>/consuming-restful-service/proxy/CustomerService</env:value>
+    </tran:URI>
+    <tran:inbound-properties/>
+    <tran:all-headers>false</tran:all-headers>
+    <tran:provider-specific>
+      <http:inbound-properties/>
+    </tran:provider-specific>
+  </ser:endpointConfig>
+  <ser:router>
+    <con3:pipeline type="request" name="UnsupportedOpPipeline_request">
+      <con3:stage name="RaiseErrorStage">
+        <con3:context/>
+        <con3:actions>
+          <con2:Error>
+            <con:id>_ActionId-5986864927245353184--400b2e0d.132d4da5506.-7b25</con:id>
+            <con2:errCode>OPERATION_NOT_SUPPORTED</con2:errCode>
+            <con2:message>The operation is not yet supported!</con2:message>
+          </con2:Error>
+        </con3:actions>
+      </con3:stage>
+    </con3:pipeline>
+    <con3:pipeline type="response" name="UnsupportedOpPipeline_response"/>
+    <con:flow xmlns:con="http://www.bea.com/wli/sb/pipeline/config">
+      <con:branch-node type="operation" name="OperationalBranch">
+        <con:context/>
+        <con:branch-table>
+          <con:branch name="RetrieveCustomerByCriteria">
+            <con:operator>equals</con:operator>
+            <con:value/>
+            <con:flow>
+              <con:route-node name="InvokeGetRoute">
+                <con:context>
+                  <con3:userNsDecl namespace="http://www.somecorp.com/customer" prefix="cus1" xmlns:con3="http://www.bea.com/wli/sb/stages/config"/>
+                  <con3:varNsDecl namespace="http://www.crm.org/CustomerService/" prefix="cus" xmlns:con3="http://www.bea.com/wli/sb/stages/config"/>
+                </con:context>
+                <con:actions>
+                  <con1:route xmlns:con1="http://www.bea.com/wli/sb/stages/routing/config">
+                    <con2:id xmlns:con2="http://www.bea.com/wli/sb/stages/config">_ActionId-5986864927245353184--400b2e0d.132d4da5506.-7dbc</con2:id>
+                    <con1:service ref="consuming-restful-service/proxy/CustomerService" xsi:type="ref:BusinessServiceRef" xmlns:ref="http://www.bea.com/wli/sb/reference"/>
+                    <con1:outboundTransform>
+                      <con2:transport-headers copy-all="true">
+                        <con3:id xmlns:con3="http://www.bea.com/wli/sb/stages/config">_ActionId-5986864927245353184--400b2e0d.132d4da5506.-7d84</con3:id>
+                        <con2:header-set>outbound-request</con2:header-set>
+                      </con2:transport-headers>
+                      <con2:insert varName="outbound">
+                        <con3:id xmlns:con3="http://www.bea.com/wli/sb/stages/config">_ActionId-5986864927245353184--400b2e0d.132d4da5506.-7d11</con3:id>
+                        <con2:location>
+                          <con3:xpathText xmlns:con3="http://www.bea.com/wli/sb/stages/config">./ctx:transport/ctx:request</con3:xpathText>
+                        </con2:location>
+                        <con2:where>first-child</con2:where>
+                        <con2:expr>
+                          <con3:xqueryText xmlns:con3="http://www.bea.com/wli/sb/stages/config">&lt;http:http-method>GET&lt;/http:http-method></con3:xqueryText>
+                        </con2:expr>
+                      </con2:insert>
+                      <con2:insert varName="outbound">
+                        <con3:id xmlns:con3="http://www.bea.com/wli/sb/stages/config">_ActionId-5986864927245353184--400b2e0d.132d4da5506.-7cf2</con3:id>
+                        <con2:location>
+                          <con3:xpathText xmlns:con3="http://www.bea.com/wli/sb/stages/config">./ctx:transport/ctx:request</con3:xpathText>
+                        </con2:location>
+                        <con2:where>first-child</con2:where>
+                        <con2:expr>
+                          <con3:xqueryTransform xmlns:con3="http://www.bea.com/wli/sb/stages/config">
+                            <con3:resource ref="consuming-restful-service/transformation/SoapToHttpGet"/>
+                            <con3:param name="retrieveCustomerByCriteria1">
+                              <con3:path>$body/cus:RetrieveCustomerByCriteria</con3:path>
+                            </con3:param>
+                          </con3:xqueryTransform>
+                        </con2:expr>
+                      </con2:insert>
+                    </con1:outboundTransform>
+                    <con1:responseTransform>
+                      <con2:replace varName="body" contents-only="true">
+                        <con3:id xmlns:con3="http://www.bea.com/wli/sb/stages/config">_ActionId-5986864927245353184--400b2e0d.132d4da5506.-7cb4</con3:id>
+                        <con2:expr>
+                          <con3:xqueryTransform xmlns:con3="http://www.bea.com/wli/sb/stages/config">
+                            <con3:resource ref="consuming-restful-service/transformation/HttpGetToSoap"/>
+                            <con3:param name="customer1">
+                              <con3:path>$body/cus1:Customer</con3:path>
+                            </con3:param>
+                          </con3:xqueryTransform>
+                        </con2:expr>
+                      </con2:replace>
+                    </con1:responseTransform>
+                  </con1:route>
+                </con:actions>
+              </con:route-node>
+            </con:flow>
+          </con:branch>
+          <con:default-branch>
+            <con:flow>
+              <con:pipeline-node name="UnsupportedOpPipeline">
+                <con:request>UnsupportedOpPipeline_request</con:request>
+                <con:response>UnsupportedOpPipeline_response</con:response>
+              </con:pipeline-node>
+            </con:flow>
+          </con:default-branch>
+        </con:branch-table>
+      </con:branch-node>
+    </con:flow>
+  </ser:router>
+</xml-fragment>

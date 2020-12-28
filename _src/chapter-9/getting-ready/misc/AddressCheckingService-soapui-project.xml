@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project name="AddressCheckingService" resourceRoot="" soapui-version="4.0.1" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="AddressCheckingServiceSOAP" type="wsdl" bindingName="{http://www.osbcookbook.org/AddressCheckingService/}AddressCheckingServiceSOAP" soapVersion="1_1" anonymous="optional" definition="file:/C:/workspace/osb-cookbook/trunk/book-handout/chapter-9/work/using-foreach-to-process-collections/wsdl/AddressCheckingService.wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="file:/C:/workspace/osb-cookbook/trunk/book-handout/chapter-9/work/using-foreach-to-process-collections/wsdl/AddressCheckingService.wsdl"><con:part><con:url>file:/C:/workspace/osb-cookbook/trunk/book-handout/chapter-9/work/using-foreach-to-process-collections/wsdl/AddressCheckingService.wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="AddressCheckingService" targetNamespace="http://www.osbcookbook.org/AddressCheckingService/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://www.osbcookbook.org/AddressCheckingService/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://www.osbcookbook.org/AddressCheckingService/" xmlns:cus="http://www.somecorp.com/customer">
+      <xsd:import namespace="http://www.somecorp.com/customer" schemaLocation="../xsd/Customer.xsd"/>
+      <xsd:element name="CheckAddress">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" ref="cus:Address"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="CheckAddressResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="isValid" type="xsd:boolean"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="CheckAddressResponse">
+    <wsdl:part name="parameters" element="tns:CheckAddressResponse"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="CheckAddressRequest">
+    <wsdl:part name="parameters" element="tns:CheckAddress"></wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="AddressCheckingService">
+    <wsdl:operation name="CheckAddress">
+      <wsdl:input message="tns:CheckAddressRequest"></wsdl:input>
+      <wsdl:output message="tns:CheckAddressResponse"></wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="AddressCheckingServiceSOAP" type="tns:AddressCheckingService">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="CheckAddress">
+      <soap:operation soapAction="http://www.crm.org/AddressCheckingService/CheckAddress"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="AddressCheckingService">
+    <wsdl:port name="AddressCheckingServiceSOAP" binding="tns:AddressCheckingServiceSOAP">
+      <soap:address location="be-defined-later"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part><con:part><con:url>file:\C:\workspace\osb-cookbook\trunk\book-handout\chapter-9\work\using-foreach-to-process-collections\xsd\Customer.xsd</con:url><con:content><![CDATA[<xs:schema targetNamespace="http://www.somecorp.com/customer" elementFormDefault="qualified" attributeFormDefault="unqualified" xmlns:tns="http://www.somecorp.com/customer" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:credit="http://www.somecorp.com/creditcard">
+  <xs:import namespace="http://www.somecorp.com/creditcard" schemaLocation="CreditCard.xsd"/>
+  <xs:element name="Customer" type="tns:CustomerTyp"/>
+  <xs:element name="Address" type="tns:AddressTyp"/>
+  <xs:complexType name="CustomerTyp">
+    <xs:sequence>
+      <xs:element name="ID" type="xs:long"/>
+      <xs:element name="FirstName" type="xs:string"/>
+      <xs:element name="LastName" type="xs:string"/>
+      <xs:element name="EmailAddress" type="xs:string"/>
+      <xs:element name="Addresses" type="tns:AddressesTyp"/>
+      <xs:element name="BirthDate" type="xs:date"/>
+      <xs:element name="Rating" type="tns:RatingTyp"/>
+      <xs:element name="Gender" type="xs:string"/>
+      <xs:element name="CreditCard" type="credit:CreditCardTyp"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="AddressesTyp">
+    <xs:sequence>
+      <xs:element name="Address" type="tns:AddressTyp" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="AddressTyp">
+    <xs:sequence>
+      <xs:element name="Street" type="xs:string"/>
+      <xs:element name="PostalCode" type="xs:string"/>
+      <xs:element name="City" type="xs:string"/>
+      <xs:element name="Country" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:simpleType name="RatingTyp">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="A"/>
+      <xs:enumeration value="AA"/>
+      <xs:enumeration value="AAA"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>]]></con:content><con:type>http://www.w3.org/2001/XMLSchema</con:type></con:part><con:part><con:url>file:\C:\workspace\osb-cookbook\trunk\book-handout\chapter-9\work\using-foreach-to-process-collections\xsd\CreditCard.xsd</con:url><con:content><![CDATA[<xs:schema targetNamespace="http://www.somecorp.com/creditcard" elementFormDefault="qualified" attributeFormDefault="unqualified" xmlns:tns="http://www.somecorp.com/creditcard" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="CreditCard" type="tns:CreditCardTyp"/>
+  <xs:complexType name="CreditCardTyp">
+    <xs:sequence>
+      <xs:element name="CardIssuer" type="tns:CardIssuerTyp"/>
+      <xs:element name="CardNumber" type="xs:string"/>
+      <xs:element name="CardholderName" type="xs:string"/>
+      <xs:element name="ExpirationDate" type="xs:string"/>
+      <xs:element name="CardValidationCode" type="xs:long"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:simpleType name="CardIssuerTyp">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="visa"/>
+      <xs:enumeration value="amexco"/>
+      <xs:enumeration value="mastercard"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>]]></con:content><con:type>http://www.w3.org/2001/XMLSchema</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>be-defined-later</con:endpoint><con:endpoint>http://soavm11:8088/mockAddressCheckingServiceSOAP</con:endpoint></con:endpoints><con:operation isOneWay="false" action="http://www.crm.org/AddressCheckingService/CheckAddress" name="CheckAddress" bindingOperationName="CheckAddress" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 2"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>be-defined-later</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:add="http://www.osbcookbook.org/AddressCheckingService/" xmlns:cus="http://www.somecorp.com/customer">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <add:CheckAddress>
+         <cus:Address>
+            <cus:Street>?</cus:Street>
+            <cus:PostalCode>?</cus:PostalCode>
+            <cus:City>?</cus:City>
+            <cus:Country>?</cus:Country>
+         </cus:Address>
+      </add:CheckAddress>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.crm.org/AddressCheckingService/CheckAddress"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:mockService port="8088" path="/mockAddressCheckingServiceSOAP" host="localhost" name="AddressCheckingServiceSOAP MockService" bindToHostOnly="false" docroot=""><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.mock.WsdlMockService@require-soap-action">false</con:setting></con:settings><con:mockOperation name="CheckAddress" interface="AddressCheckingServiceSOAP" operation="CheckAddress"><con:settings/><con:dispatchStyle>SEQUENCE</con:dispatchStyle><con:defaultResponse>Response 1</con:defaultResponse><con:response name="Response 1" encoding="UTF-8"><con:settings/><con:script>def req = new XmlSlurper().parseText(mockRequest.requestContent) 
+
+long waitTime  = 4
+t0 =  System.currentTimeMillis();
+t1 = 0;
+while ((t1 - t0) &lt; (waitTime * 1000))
+   t1 = System.currentTimeMillis();
+
+
+</con:script><con:responseContent><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:add="http://www.osbcookbook.org/AddressCheckingService/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <add:CheckAddressResponse>
+         <isValid>true</isValid>
+      </add:CheckAddressResponse>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:responseContent><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.crm.org/AddressCheckingService/CheckAddress"/></con:response><con:dispatchConfig/></con:mockOperation><con:properties/></con:mockService><con:properties/><con:wssContainer/></con:soapui-project>

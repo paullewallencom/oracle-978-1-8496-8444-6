@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+	http://www.springframework.org/schema/context 
+    http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+
+	<context:mbean-export/>	
+	
+	<bean id="crc32" class="java.util.zip.CRC32">
+	</bean>
+
+	<bean id="adler32" class="java.util.zip.Adler32">
+	</bean>
+	
+	<bean id="configuration" class="osbcookbook.util.checksum.ChecksumConfiguration">
+		<property name="checksumImplementation" value="crc32"/>
+	</bean>
+	
+</beans>

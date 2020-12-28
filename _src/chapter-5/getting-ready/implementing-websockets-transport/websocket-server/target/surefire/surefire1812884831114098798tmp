@@ -1,0 +1,5 @@
+#surefire
+#Tue Oct 04 13:55:14 CEST 2011
+user.dir=C\:\\workspace\\osb-cookbook\\trunk\\book-handout\\chapter-5\\work\\websocket-server
+localRepository=C\:\\Documents and Settings\\Administrator\\.m2\\repository
+basedir=C\:\\workspace\\osb-cookbook\\trunk\\book-handout\\chapter-5\\work\\websocket-server

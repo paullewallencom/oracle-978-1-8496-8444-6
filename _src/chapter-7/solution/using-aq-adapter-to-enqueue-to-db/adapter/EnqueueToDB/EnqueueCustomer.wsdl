@@ -1,0 +1,28 @@
+<wsdl:definitions
+     name="EnqueueCustomer"
+     targetNamespace="http://xmlns.oracle.com/pcbpel/adapter/aq/SgsApplication/EnqueueToDB/EnqueueCustomer"
+     xmlns:jca="http://xmlns.oracle.com/pcbpel/wsdl/jca/"
+     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+     xmlns:tns="http://xmlns.oracle.com/pcbpel/adapter/aq/SgsApplication/EnqueueToDB/EnqueueCustomer"
+     xmlns:msg_out="http://www.somecorp.com/customer"
+     xmlns:plt="http://schemas.xmlsoap.org/ws/2003/05/partner-link/"
+    >
+  <plt:partnerLinkType name="Enqueue_plt" >
+    <plt:role name="Enqueue_role" >
+      <plt:portType name="tns:Enqueue_ptt" />
+    </plt:role>
+  </plt:partnerLinkType>
+    <wsdl:types>
+      <schema xmlns="http://www.w3.org/2001/XMLSchema" >
+        <import namespace="http://www.somecorp.com/customer" schemaLocation="xsd/Customer.xsd" />
+      </schema>
+    </wsdl:types>
+    <wsdl:message name="Customer_msg">
+        <wsdl:part name="Customer" element="msg_out:Customer"/>
+    </wsdl:message>
+    <wsdl:portType name="Enqueue_ptt">
+        <wsdl:operation name="Enqueue">
+            <wsdl:input message="tns:Customer_msg"/>
+        </wsdl:operation>
+    </wsdl:portType>
+</wsdl:definitions>

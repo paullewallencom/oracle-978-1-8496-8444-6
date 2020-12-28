@@ -1,0 +1,357 @@
+<project name="websocket-transport" default="build" basedir=".">
+
+    <!-- set global properties for this build -->
+    <property environment="env"/>
+
+    <taskdef name="wldeploy"
+             classname="weblogic.ant.taskdefs.management.WLDeploy"/>
+
+    <!-- removing spaces in the properties file -->
+    <loadproperties srcfile="${basedir}/build.properties">
+        <filterchain>
+            <tokenfilter>
+                <trim/>
+            </tokenfilter>
+        </filterchain>
+    </loadproperties>
+
+    <!-- This is the jar file containing the WebSocket server built by the websocket-server project -->
+    <property name="websocket-server.jar"            value="../websocket-server/target/websocket-server.jar"/>
+
+    <!--    names defining the websocket transport     -->
+    <property name="websocket.transport.name"            value="WebSocket Transport"/>
+    <property name="websocket.transport.jar"             value="websocket_transport.jar"/>
+    <property name="websocket.transport.ear"             value="websocket_transport.ear"/>
+    <property name="websocket.transport.eclipse.name"    value="com.bea.alsb.transports.websocket"/>
+    <property name="websocket.transport.eclipse.version" value="1.1.0"/>
+
+
+    <!--    source directories      -->
+    <property name="websocket.transports.dir"            value="."/>
+    <property name="websocket.transports.src.dir"        value="${websocket.transports.dir}/src"/>
+    <property name="websocket.transports.l10n.dir"       value="${websocket.transports.dir}/l10n"/>
+    <property name="websocket.transports.schemas.dir"    value="${websocket.transports.dir}/schemas"/>
+    <property name="websocket.transports.resources.dir"  value="${websocket.transports.dir}/resources"/>
+    <property name="websocket.transports.eclipse.dir"    value="${websocket.transports.dir}/eclipse"/>
+    <property name="websocket.transports.offline.dir"    value="${websocket.transports.dir}/offline"/>
+
+    <!--    build directories, files and archive variables  -->
+    <property name="build.dir.transports.websocket"
+              value="${websocket.transports.dir}/build"/>
+    <property name="build.dir.transports.generated.src"
+              value="${build.dir.transports.websocket}/generatedsrc"/>
+    <property name="build.dir.transports.websocket.classes"
+              value="${build.dir.transports.websocket}/classes"/>
+    <property name="build.dir.transports.websocket.ear"
+              value="${build.dir.transports.websocket}/ear"/>
+
+    <property name="build.websocket.transport.jar"
+              value="${build.dir.transports.websocket}/${websocket.transport.jar}"/>
+    <property name="build.websocket.transport.ear"
+              value="${build.dir.transports.websocket}/${websocket.transport.ear}"/>
+
+    <!--    installation directories / files    -->
+    <property name="osb.lib.dir"                location="${osb.install.dir}/lib"/>
+    <property name="osb.lib.transports.dir"     location="${osb.lib.dir}/transports"/>
+    <property name="osb.eclipse.plugin.dir"     location="${osb.install.dir}/eclipse120/plugins"/>
+    <property name="osb.offline.plugin.dir"     location="${osb.install.dir}/config/plugins"/>
+
+
+    <!--    classpath libraries     -->
+    <property name="weblogic.jar"
+              location="${wl.home}/server/lib/weblogic.jar"/>
+    <property name="apache-xbean.jar"
+              location="${mw.home}/modules/com.bea.core.xml.xmlbeans_${version.com.bea.core.xml.xmlbeans}.jar"/>
+
+    <property name="sb-kernel-api.jar"
+              value="${osb.lib.dir}/sb-kernel-api.jar"/>
+    <property name="configfwk.jar"
+              value="${osb.install.dir}/modules/com.bea.common.configfwk_${version.com.bea.common.configfwk}.jar"/>
+
+
+    <!-- Test client variables -->
+    <property name="websocket.test-client.dir"
+              value="${websocket.transports.dir}/test"/>
+    <property name="websocket.test-client.build"
+              value="${websocket.test-client.dir}/build"/>
+    <property name="websocket.test-client.classes"
+              value="${websocket.test-client.build}/classes"/>
+    <property name="websocket.test-client.src"
+              value="${websocket.test-client.dir}/src"/>
+    <property name="websocket.test-client.jar"
+              value="${websocket.test-client.build}/test-client.jar"/>
+
+
+    <!-- ==================================================================== -->
+    <!--        clean : clean the build directories                          -->
+    <!-- ==================================================================== -->
+
+    <target name="clean" description="Clean the build">
+        <echo message="--------------------------------------------------"/>
+        <echo message="|         WebSocket transport clean started      |"/>
+        <echo message="--------------------------------------------------"/>
+
+        <delete dir="${build.dir.transports.websocket}" failonerror="true"/>
+        <delete dir="${websocket.test-client.build}" failonerror="true"/>
+
+        <delete file="${osb.lib.transports.dir}/${websocket.transport.jar}"/>
+        <delete file="${osb.lib.transports.dir}/${websocket.transport.ear}"/>
+        <delete file="${osb.eclipse.plugin.dir}/${websocket.transport.eclipse.name}_${websocket.transport.eclipse.version}"/>
+        <delete file="${osb.offline.plugin.dir}/transport-websocket.xml"/>
+
+        <antcall target="create_directories"/>
+
+        <echo message="--------------------------------------------------"/>
+        <echo message="|          WebSocket transport clean completed   |"/>
+        <echo message="--------------------------------------------------"/>
+    </target>
+
+
+    <!-- ==================================================================== -->
+    <!--        build : build sources and create archives                     -->
+    <!-- ==================================================================== -->
+
+    <!--    root build target   -->
+    <target name="build" description="Builds the WebSocket XBus transport.">
+        <echo message="--------------------------------------------------"/>
+        <echo message="|            WebSocket transport build started     |"/>
+        <echo message="--------------------------------------------------"/>
+
+        <antcall target="create_directories"/>
+
+        <antcall target="compile"/>
+
+        <antcall target="create_jar"/>
+        <antcall target="create_ear"/>
+        <antcall target="create_test_client_jar"/>
+
+        <echo message="--------------------------------------------------"/>
+        <echo message="|        WebSocket transport build completed     |"/>
+        <echo message="--------------------------------------------------"/>
+    </target>
+
+
+    <!--    create the build directory structure    -->
+    <target name="create_directories">
+        <echo message=">>>>>> create_directories >>>>>>"/>
+
+        <mkdir dir="${build.dir.transports.websocket}"/>
+        <mkdir dir="${build.dir.transports.websocket.classes}"/>
+        <mkdir dir="${build.dir.transports.websocket.ear}"/>
+        <mkdir dir="${websocket.test-client.build}"/>
+
+        <mkdir dir="${build.dir.transports.generated.src}"/>
+        <mkdir dir="${build.dir.transports.generated.src}/catalogs"/>
+        <mkdir dir="${build.dir.transports.generated.src}/xbean"/>
+
+        <echo message=">>>>>> Done create_directories >>>>>>"/>
+    </target>
+
+
+    <!--    main compilation target -->
+    <target name="compile">
+        <echo message=">>>>>> compiling sources started >>>>>>"/>
+        <echo message="debug = ${debug}, optimize = ${optimize}, deprecation = ${deprecation}"/>
+
+        <antcall target="compile.i18n.catalogs"/>
+        <antcall target="compile.schemas"/>
+        <antcall target="compile.resources"/>
+
+        <javac deprecation="${deprecation}" debug="${debug}" optimize="${optimize}"
+               source="1.5" fork="true"
+               srcdir="${websocket.transports.src.dir}"
+               destdir="${build.dir.transports.websocket.classes}">
+            <classpath>
+                <pathelement path="${apache-xbean.jar}"/>
+                <pathelement path="${configfwk.jar}"/>
+                <pathelement path="${sb-kernel-api.jar}"/>
+                <pathelement path="${websocket-server.jar}"/>
+            </classpath>
+       </javac>
+
+        <echo message=">>>>>> compiling sources completed >>>>>>"/>
+    </target>
+
+
+    <!--    l10n compilation    -->
+    <target name="compile.i18n.catalogs">
+        <echo message=">>>>>> compiling i18n catalogs started >>>>>>"/>
+
+        <property name="params.msgcat.dir"          value="${websocket.transports.l10n.dir}"/>
+        <property name="params.build.dir"           value="${build.dir.transports.websocket.classes}"/>
+        <property name="params.generatedsrc.dir"    value="${build.dir.transports.generated.src}/catalogs"/>
+        <property name="params.module.name"         value="WebSocketTransport"/>
+
+        <java classname="weblogic.i18ngen" fork="true" failonerror="true">
+            <arg value="-l10n"/>
+            <arg value="-i18n"/>
+            <arg value="-compile"/>
+            <!-- arg value="-server"/-->
+            <arg value="-verbose"/>
+            <arg value="-keepgenerated"/>
+            <arg value="-d"/>
+            <arg value="${params.generatedsrc.dir}"/>
+            <arg value="${params.msgcat.dir}"/>
+            <classpath>
+                <pathelement location="${weblogic.jar}"/>
+                <pathelement location="${env.JAVA_HOME}/lib/tools.jar"/>
+            </classpath>
+        </java>
+        <copy todir="${params.build.dir}">
+            <fileset dir="${params.generatedsrc.dir}">
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+        <antcall target="fixup.i18n"/>
+
+        <echo message=">>>>>> compiling i18n catalogs completed >>>>>>"/>
+    </target>
+
+    <target name="fixup.i18n" if="params.noi18n">
+        <delete dir="${params.build.dir}/weblogic"/>
+    </target>
+
+
+    <!--    schema compilatiuon -->
+    <target name="compile.schemas">
+        <echo message=">>>>>> compiling schemas started >>>>>>"/>
+
+        <property name="params.schemas.dir"         value="${websocket.transports.schemas.dir}"/>
+        <property name="params.build.dir"           value="${build.dir.transports.websocket.classes}"/>
+        <property name="params.generatedsrc.dir"    value="${build.dir.transports.generated.src}/xbean"/>
+        <property name="extra-params"               value=""/>
+
+        <java classname="org.apache.xmlbeans.impl.tool.SchemaCompiler"
+              fork="true"
+              failonerror="yes">
+            <classpath>
+                <pathelement location="${apache-xbean.jar}"/>
+                <pathelement location="${sb-kernel-api.jar}"/>
+            </classpath>
+            <arg line="-d ${params.build.dir}
+                       ${params.schemas.dir}
+                       -src ${params.generatedsrc.dir}
+                       ${extra-params}"/>
+        </java>
+
+        <echo message=">>>>>> compiling schemas completed >>>>>>"/>
+    </target>
+
+
+    <!--    java resources   -->
+    <target name="compile.resources">
+        <copy todir="${build.dir.transports.websocket.classes}">
+            <fileset dir="${websocket.transports.resources.dir}">
+                <include name="**/*"/>
+            </fileset>
+        </copy>
+    </target>
+
+
+    <!--    create a jar containing all the compiled classes of the websocket transport. -->
+    <target name="create_jar">
+        <jar jarfile="${build.websocket.transport.jar}">
+            <fileset dir="${build.dir.transports.websocket.classes}">
+                <include name="**/**"/>
+            </fileset>
+        </jar>
+    </target>
+
+
+    <!--    create the transport ear -->
+    <target name="create_ear">
+
+        <!-- create help webapp -->
+        <copy todir="${build.dir.transports.websocket.ear}" overwrite="true">
+            <fileset dir="${websocket.transports.dir}">
+                <include name="webapp/**"/>
+            </fileset>
+        </copy>
+
+        <!-- prepare app -->
+        <mkdir dir="${build.dir.transports.websocket.ear}/APP-INF/lib"/>
+        <copy todir="${build.dir.transports.websocket.ear}/APP-INF/lib"
+              file="${build.websocket.transport.jar}"
+              overwrite="true"/>
+
+        <!-- create ear -->
+        <ear destfile="${build.websocket.transport.ear}"
+             appxml="${websocket.transports.dir}/META-INF/application.xml">
+            <fileset dir="${build.dir.transports.websocket.ear}"/>
+            <metainf dir="${websocket.transports.dir}/META-INF">
+                <include name="**/weblogic-application.xml"/>
+                <include name="**/*.mf"/>
+            </metainf>
+        </ear>
+    </target>
+
+
+    <!-- Compiles the test client sources and builds a jar. -->
+    <target name="create_test_client_jar">
+
+        <mkdir dir="${websocket.test-client.classes}"/>
+
+        <javac srcdir="${websocket.test-client.src}"
+               destdir="${websocket.test-client.classes}"
+               debug="${debug}" optimize="$optimize" source="1.5"/>
+
+        <jar jarfile="${websocket.test-client.jar}">
+            <fileset dir="${websocket.test-client.classes}">
+                <include name="**/**"/>
+            </fileset>
+        </jar>
+
+    </target>
+
+
+    <!-- ==================================================================== -->
+    <!--        stage : stage archives to install directories                 -->
+    <!-- ==================================================================== -->
+
+    <target name="stage">
+
+        <!-- stage the transport jar library -->
+        <copy file="${build.websocket.transport.jar}"
+              todir="${osb.lib.transports.dir}"/>
+
+        <!-- stage the transport ear -->
+        <copy file="${build.websocket.transport.ear}"
+              todir="${osb.lib.transports.dir}"/>
+
+        <!-- stage the eclipse plugin -->
+        <copy todir="${osb.eclipse.plugin.dir}/${websocket.transport.eclipse.name}_${websocket.transport.eclipse.version}">
+            <fileset dir="${websocket.transports.eclipse.dir}">
+                <include name="**/*"/>
+            </fileset>
+        </copy>
+
+        <!-- stage the OSB offline-mode plugin -->
+        <copy file="${websocket.transports.offline.dir}/transport-websocket.xml"
+              todir="${osb.offline.plugin.dir}"/>
+
+    </target>
+
+
+    <!-- ==================================================================== -->
+    <!--        deploy : dynamic deployment of the websocket transport on WLS -->
+    <!-- ==================================================================== -->
+
+    <!-- Deploys the websocket_transport.ear on the configured server. -->
+    <target name="deploy">
+        <echo message="-------------------------------------------------------------"/>
+        <echo message="|     Deploying WebSocket Transport on ${wls.server.name}   |"/>
+        <echo message="-------------------------------------------------------------"/>
+
+        <wldeploy action="deploy"
+                  name="${websocket.transport.name}" source="${osb.lib.transports.dir}/${websocket.transport.ear}"
+                  user="${wls.username}" password="${wls.password}"
+                  adminurl="t3://${wls.hostname}:${wls.port}"
+                  targets="${wls.server.name}"
+                  verbose="true"/>
+
+        <echo message="-------------------------------------------------------------"/>
+        <echo message="|      Deployment completed                                 |"/>
+        <echo message="-------------------------------------------------------------"/>
+    </target>
+
+</project>

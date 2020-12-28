@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE message_catalog PUBLIC "weblogic-message-catalog-dtd"
+  "http://www.bea.com/servers/wls810/dtd/msgcat.dtd">
+
+
+<message_catalog
+  i18n_package="com.bea.alsb.transports.websocket"
+  l10n_package="com.bea.alsb.transports.websocket"
+  subsystem="OSB Cookbook WebSocket Transport"
+  version="1.0"
+  loggables="true"
+  >
+
+  <message messageid="SERVER_PORT">
+    <messagebody>
+      Server Port
+    </messagebody>
+  </message>
+
+  <message messageid="SERVER_PORT_INFO">
+    <messagebody>
+      The port where the WebSocket web server runs on. Must be the same for all endpoints.
+    </messagebody>
+  </message>
+
+
+  <message messageid="SERVER_CONTEXT_PATH">
+    <messagebody>
+      Server Context Path
+    </messagebody>
+  </message>
+
+  <message messageid="SERVER_CONTEXT_PATH_INFO">
+    <messagebody>
+      The context path of the WebSocket web application. Must be the same for all endpoints.
+    </messagebody>
+  </message>
+
+  <message messageid="STATIC_FILES_DIR">
+    <messagebody>
+      WebApp Static Files Directory
+    </messagebody>
+  </message>
+
+  <message messageid="STATIC_FILES_DIR_INFO">
+    <messagebody>
+      The directory where the static files of the web application are located.
+    </messagebody>
+  </message>
+
+
+  <message messageid="SERVLET_CLASS">
+    <messagebody>
+      Servlet Class Name
+    </messagebody>
+  </message>
+
+  <message messageid="SERVLET_CLASS_INFO">
+    <messagebody>
+      The full qualified class name of the WebSocket serlvet
+    </messagebody>
+  </message>
+
+    <message messageid="DISPATCH_POLICY">
+      <messagebody>
+        Dispatch policy
+      </messagebody>
+    </message>
+
+    <message messageid="DISPATCH_POLICY_INFO">
+      <messagebody>
+        Dispatch policy to be applied for this service.
+      </messagebody>
+    </message>
+
+
+</message_catalog>

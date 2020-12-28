@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="http://www.bea.com/wli/sb/transports/http"
+    xmlns="http://www.bea.com/wli/sb/transports/http"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:ts="http://www.bea.com/wli/sb/transports"
+    xmlns:refs="http://www.bea.com/wli/sb/reference"
+    elementFormDefault="qualified">
+
+    <xs:import namespace="http://www.bea.com/wli/sb/transports"
+        schemaLocation="TransportCommon.xsd"/>
+
+    <!-- definition of HTTP transport-specific portion of end point configuration -->
+    <xs:complexType name="HttpEndPointConfiguration">
+        <xs:sequence>
+            <xs:choice>
+                <xs:element name="outbound-properties" type="HttpOutboundPropertiesType"/>
+                <xs:element name="inbound-properties" type="HttpInboundPropertiesType"/>
+            </xs:choice>
+            <!-- WLS dispatch policy (name of the WLS work manager or Execute Queue
+                 to use for this endpoint). If not specified, the default WLS work
+                 manager will be used -->
+            <xs:element name="dispatch-policy" type="xs:string" minOccurs="0" />
+            <!-- character set encoding on the request -->
+            <xs:element name="request-encoding" type="xs:string" minOccurs="0" />
+            <!-- character set encoding on the response -->
+            <xs:element name="response-encoding" type="xs:string" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="HttpInboundPropertiesType">
+        <xs:sequence>
+            <!-- if true the request must come through a TLS/SSL port, otherwise -->
+            <!-- request may come through a clear-text port or TLS/SSL port -->
+            <xs:element name="use-https" type="xs:boolean" minOccurs="0"/>
+            <!-- if present, the next element describes how ALSB authenticates client requests -->
+            <xs:element name="client-authentication" type="AuthenticationConfigurationType" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="HttpOutboundPropertiesType">
+        <xs:sequence>
+            <!-- The method for the URL request, one of: GET or POST -->
+            <xs:element name="request-method" type="HttpRequestMethodEnum"/>
+            <!-- Read Timeout value, in seconds -->
+            <xs:element name="timeout" type="xs:int" minOccurs="0"/>
+            <!-- Connection timeout, in seconds -->
+            <xs:element name="connection-timeout" type="xs:int" minOccurs="0"/>
+            <!-- if present, the next element describes how ALSB must authenticate to this endpoint -->
+            <!-- service account is only applicable if outbound-authentication is HTTP basic -->
+            <!-- reference to a proxy server for routing requests over the proxy -->
+            <!-- whether HTTP redirects (requests with response code 3xx) should be automatically followed -->
+            <xs:element name="follow-redirects" type="xs:boolean" minOccurs="0"/>
+            <!-- whether or not chunked streaming mode will be used when sending outbound request -->
+            <xs:element name="chunked-streaming-mode" type="xs:boolean" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:simpleType name="HttpRequestMethodEnum">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="GET"/>
+            <xs:enumeration value="POST"/>
+            <xs:enumeration value="PUT"/>
+            <xs:enumeration value="HEAD"/>
+            <xs:enumeration value="DELETE"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="AuthenticationConfigurationType" abstract="true">
+        <xs:annotation>
+            <xs:documentation>
+                This is the abstract base type for all concrete authentication
+                configuration types
+            </xs:documentation>
+        </xs:annotation>
+    </xs:complexType>
+
+    <xs:complexType name="HttpBasicAuthenticationType">
+        <xs:complexContent>
+            <xs:extension base="AuthenticationConfigurationType"/>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="SSLClientAuthenticationType">
+        <xs:complexContent>
+            <xs:extension base="AuthenticationConfigurationType"/>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="CustomTokenAuthenticationType">
+        <xs:complexContent>
+            <xs:extension base="AuthenticationConfigurationType">
+                <xs:sequence>
+                    <xs:element name="token-type" type="xs:string" nillable="false"/>
+                    <xs:element name="header-name" type="xs:string" nillable="false"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="HttpRequestMetaData">
+        <xs:complexContent>
+            <xs:extension base="ts:RequestMetaDataXML">
+                <xs:sequence>
+                    <!-- the relative URI of the request -->
+                    <xs:element name="relative-URI" type="xs:string" minOccurs="0"/>
+                    <!-- the query string that is contained in the request URL after the path -->
+                    <xs:element name="query-string" type="xs:string" minOccurs="0"/>
+                    <!-- param name-value pairs -->
+                    <xs:element name="query-parameters" type="query-parameters-type" minOccurs="0"/>
+                    <!-- The fully qualified name of the client that sent the request -->
+                    <xs:element name="client-host" type="xs:string" minOccurs="0"/>
+                    <!-- the Internet Protocol (IP) address of the client that sent the request -->
+                    <xs:element name="client-address" type="xs:string" minOccurs="0"/>
+                    <!-- the HTTP method name of the request -->
+                    <xs:element name="http-method" type="xs:string" minOccurs="0"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+	<xs:element name="query-parameters" type="query-parameters-type"/>
+
+    <xs:complexType name="query-parameters-type">
+        <xs:sequence>
+            <xs:element name="parameter" type="parameter-type" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="parameter-type">
+        <xs:attribute name="name" type="xs:string" />
+        <xs:attribute name="value" type="xs:string" />
+    </xs:complexType>
+
+    <xs:complexType name="HttpRequestHeaders">
+        <xs:annotation>
+            <xs:documentation>
+                 See http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html for
+                 description of standard HTTP header fields
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="ts:RequestHeadersXML">
+                <xs:sequence>
+                    <xs:element name="Accept" type="xs:string" minOccurs="0"/>
+                    <xs:element name="Accept-Encoding" type="xs:string" minOccurs="0"/>
+                    <xs:element name="Accept-Language" type="xs:string" minOccurs="0"/>
+                    <xs:element name="Connection" type="xs:string" minOccurs="0"/>
+                    <xs:element name="Content-Encoding" type="xs:string" minOccurs="0"/>
+                    <xs:element name="Content-Length" type="xs:string" minOccurs="0" ts:outboundWrite="false"/>
+                    <xs:element name="Content-Type" type="xs:string" minOccurs="0"/>
+                    <xs:element name="Cookie" type="xs:string" minOccurs="0"/>
+                    <xs:element name="Host" type="xs:string" minOccurs="0"/>
+                    <xs:element name="SOAPAction" type="xs:string" minOccurs="0"/>
+                    <xs:element name="Transfer-Encoding" type="xs:string" minOccurs="0" ts:outboundWrite="false" />
+                    <xs:element name="User-Agent" type="xs:string" minOccurs="0"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="HttpResponseMetaData">
+        <xs:complexContent>
+            <xs:extension base="ts:ResponseMetaDataXML">
+                <xs:sequence>
+                    <!-- HTTP-specific status/response code -->
+                    <xs:element name="http-response-code" type="xs:int" minOccurs="0"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="HttpResponseHeaders">
+        <xs:annotation>
+            <xs:documentation>
+                 See http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html for
+                 description of standard HTTP header fields
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="ts:ResponseHeadersXML">
+                <xs:sequence>
+                    <xs:element name="Accept-Ranges" type="xs:string" minOccurs="0"/>
+                    <xs:element name="Age" type="xs:string" minOccurs="0"/>
+                    <xs:element name="Cache-Control" type="xs:string" minOccurs="0"/>
+                    <xs:element name="Connection" type="xs:string" minOccurs="0"/>
+                    <xs:element name="Content-Length" type="xs:string" minOccurs="0" ts:inboundWrite="false"/>
+                    <xs:element name="Content-Type" type="xs:string" minOccurs="0"/>
+                    <xs:element name="Date" type="xs:string" minOccurs="0"/>
+                    <xs:element name="ETag" type="xs:string" minOccurs="0"/>
+                    <xs:element name="Location" type="xs:string" minOccurs="0"/>
+                    <xs:element name="Pragma" type="xs:string" minOccurs="0"/>
+                    <xs:element name="Proxy-Authenticate" type="xs:string" minOccurs="0"/>
+                    <xs:element name="Retry-After" type="xs:string" minOccurs="0"/>
+                    <xs:element name="Server" type="xs:string" minOccurs="0"/>
+                    <xs:element name="Set-Cookie" type="xs:string" minOccurs="0"/>
+                    <xs:element name="Trailer" type="xs:string" minOccurs="0"/>
+                    <xs:element name="Transfer-Encoding" type="xs:string" minOccurs="0" ts:inboundWrite="false"/>
+                    <xs:element name="Upgrade" type="xs:string" minOccurs="0"/>
+                    <xs:element name="Vary" type="xs:string" minOccurs="0"/>
+                    <xs:element name="Via" type="xs:string" minOccurs="0"/>
+                    <xs:element name="Warning" type="xs:string" minOccurs="0"/>
+                    <xs:element name="WWW-Authenticate" type="xs:string" minOccurs="0"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:element name="cookie-values" type="CookieValuesType" />
+
+    <xs:complexType name="CookieValuesType">
+        <xs:sequence>
+            <xs:element name="value" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>

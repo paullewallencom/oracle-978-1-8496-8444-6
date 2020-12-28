@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xml-fragment xmlns:ser="http://www.bea.com/wli/sb/services" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:env="http://www.bea.com/wli/config/env" xmlns:con="http://www.bea.com/wli/sb/pipeline/config" xmlns:con1="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con2="http://www.bea.com/wli/sb/stages/config" xmlns:con3="http://www.bea.com/wli/sb/stages/logging/config">
+  <ser:coreEntry isProxy="true" isEnabled="true" isAutoPublish="false">
+    <ser:description/>
+    <ser:binding type="Mixed" xsi:type="con:MixedBindingType" xmlns:con="http://www.bea.com/wli/sb/services/bindings/config">
+      <con:request type="Text"/>
+      <con:response type="Text"/>
+    </ser:binding>
+    <ser:monitoring isEnabled="false">
+      <ser:aggregationInterval>10</ser:aggregationInterval>
+    </ser:monitoring>
+    <ser:reporting>true</ser:reporting>
+    <ser:logging isEnabled="true">
+      <ser:logLevel>debug</ser:logLevel>
+    </ser:logging>
+    <ser:sla-alerting isEnabled="true">
+      <ser:alertLevel>normal</ser:alertLevel>
+    </ser:sla-alerting>
+    <ser:pipeline-alerting isEnabled="true">
+      <ser:alertLevel>normal</ser:alertLevel>
+    </ser:pipeline-alerting>
+  </ser:coreEntry>
+  <ser:endpointConfig>
+    <tran:provider-id>http</tran:provider-id>
+    <tran:inbound>true</tran:inbound>
+    <tran:URI>
+      <env:value>/BreweryService</env:value>
+    </tran:URI>
+    <tran:inbound-properties/>
+    <tran:all-headers>false</tran:all-headers>
+    <tran:provider-specific>
+      <http:inbound-properties/>
+    </tran:provider-specific>
+  </ser:endpointConfig>
+  <ser:router>
+    <con:flow>
+      <con:route-node name="RouteTo_BreweryService">
+        <con:context/>
+        <con:actions>
+          <con1:route xmlns:con1="http://www.bea.com/wli/sb/stages/routing/config">
+            <conid1:id xmlns:conid1="http://www.bea.com/wli/sb/stages/config">_ActionId-6639911877208944541--5b2b5b4c.134361e721e.-7f57</conid1:id>
+            <con1:service ref="creating-generic-restful-gateway/business/BreweryService" xsi:type="ref:BusinessServiceRef" xmlns:ref="http://www.bea.com/wli/sb/reference"/>
+            <con1:outboundTransform>
+              <con4:insert varName="outbound" xmlns:con4="http://www.bea.com/wli/sb/stages/transform/config">
+                <con2:id>_ActionId-6639911877208944541--5b2b5b4c.134361e721e.-7eca</con2:id>
+                <con4:location>
+                  <con2:xpathText>./ctx:transport/ctx:request</con2:xpathText>
+                </con4:location>
+                <con4:where>first-child</con4:where>
+                <con4:expr>
+                  <con2:xqueryText>&lt;http:http-method>{$inbound/ctx:transport/ctx:request/http:http-method}&lt;/http:http-method></con2:xqueryText>
+                </con4:expr>
+              </con4:insert>
+              <con4:insert varName="outbound" xmlns:con4="http://www.bea.com/wli/sb/stages/transform/config">
+                <con2:id>_ActionId-6639911877208944541--5b2b5b4c.134361e721e.-7f1e</con2:id>
+                <con4:location>
+                  <con2:xpathText>./ctx:transport/ctx:request</con2:xpathText>
+                </con4:location>
+                <con4:where>first-child</con4:where>
+                <con4:expr>
+                  <con2:xqueryText>&lt;http:query-string>{$inbound/ctx:transport/ctx:request/http:query-string}&lt;/http:query-string></con2:xqueryText>
+                </con4:expr>
+              </con4:insert>
+              <con4:insert varName="outbound" xmlns:con4="http://www.bea.com/wli/sb/stages/transform/config">
+                <con2:id>_ActionId-6639911877208944541--5b2b5b4c.134361e721e.-7e76</con2:id>
+                <con4:location>
+                  <con2:xpathText>./ctx:transport/ctx:request</con2:xpathText>
+                </con4:location>
+                <con4:where>first-child</con4:where>
+                <con4:expr>
+                  <con2:xqueryText>&lt;http:relative-URI>{$inbound/ctx:transport/ctx:request/http:relative-URI}&lt;/http:relative-URI></con2:xqueryText>
+                </con4:expr>
+              </con4:insert>
+            </con1:outboundTransform>
+            <con1:responseTransform>
+              <con3:log>
+                <con2:id>_ActionId-6639911877208944541--5b2b5b4c.134361e721e.-7e3e</con2:id>
+                <con3:logLevel>warning</con3:logLevel>
+                <con3:expr>
+                  <con2:xqueryText>$body</con2:xqueryText>
+                </con3:expr>
+              </con3:log>
+            </con1:responseTransform>
+          </con1:route>
+        </con:actions>
+      </con:route-node>
+    </con:flow>
+  </ser:router>
+</xml-fragment>

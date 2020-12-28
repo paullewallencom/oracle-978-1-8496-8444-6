@@ -1,0 +1,39 @@
+<xs:schema xmlns:tns="http://www.somecorp.com/order" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:cus="http://www.somecorp.com/customer" targetNamespace="http://www.somecorp.com/order" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:import namespace="http://www.somecorp.com/customer" schemaLocation="Customer.xsd"/>
+	<xs:element name="Order" type="tns:OrderTyp"/>
+	<xs:element name="Product" type="tns:ProductTyp"/>
+	<xs:complexType name="OrderTyp">
+		<xs:sequence>
+			<xs:element name="OrderID" type="xs:long"/>
+			<xs:element name="OrderDate" type="xs:date"/>
+			<xs:element name="OrderStatus" type="xs:string"/>
+			<xs:element name="OrderTotal" type="xs:string"/>
+			<xs:element name="Customer" type="cus:CustomerTyp"/>
+			<xs:element name="ShippingAddress" type="cus:AddressTyp"/>
+			<xs:element name="BillingAddress" type="cus:AddressTyp"/>
+			<xs:element name="OrderLines" type="tns:OrderLinesTyp"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="OrderLinesTyp">
+		<xs:sequence>
+			<xs:element name="Order" type="tns:OrderTyp" minOccurs="1" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="OrderLineTyp">
+		<xs:sequence>
+			<xs:element name="Quantity" type="xs:long"/>
+			<xs:element name="DiscountInPercent" type="xs:decimal"/>
+			<xs:element name="UnitPrice" type="xs:decimal"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ProductTyp">
+		<xs:sequence>
+			<xs:element name="ProductID" type="xs:long"/>
+			<xs:element name="ProductCode" type="xs:string"/>
+			<xs:element name="Name" type="xs:string"/>
+			<xs:element name="Decscription" type="xs:string"/>
+			<xs:element name="ListPrice" type="xs:decimal"/>
+			<xs:element name="MinPrice" type="xs:decimal"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

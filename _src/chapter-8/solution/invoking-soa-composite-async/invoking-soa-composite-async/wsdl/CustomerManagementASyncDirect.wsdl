@@ -1,0 +1,78 @@
+<wsdl:definitions name="CustomerManagementASync" targetNamespace="http://xmlns.oracle.com/invoking_soa_composite_async/CustomerManagement/CustomerManagementASync" xmlns:ns1="http://osb-cookbook/CustomerManagement" xmlns:plnk="http://schemas.xmlsoap.org/ws/2003/05/partner-link/" xmlns:client="http://xmlns.oracle.com/invoking_soa_composite_async/CustomerManagement/CustomerManagementASync" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+    <wsdl:documentation>
+        <abstractWSDL>http://192.168.219.135:7001/soa-infra/directWsdl/default/CustomerManagement!1.0/CustomerManagementASyncDirect?resource=%2FCustomerManagementASync.wsdl</abstractWSDL>
+    </wsdl:documentation>
+  <plnk:partnerLinkType name="CustomerManagementASync">
+    <plnk:role name="CustomerManagementASyncProvider">
+      <plnk:portType name="client:CustomerManagementASync"/>
+    </plnk:role>
+    <plnk:role name="CustomerManagementASyncRequester">
+      <plnk:portType name="client:CustomerManagementASyncCallback"/>
+    </plnk:role>
+  </plnk:partnerLinkType>
+    <wsdl:types>
+        <schema xmlns="http://www.w3.org/2001/XMLSchema">
+            <import namespace="http://osb-cookbook/CustomerManagement" schemaLocation="../xsd/CustomerMessages.xsd"/>
+        </schema>
+    </wsdl:types>
+    <wsdl:message name="CustomerManagementASyncResponseMessage">
+        <wsdl:part name="payload" element="ns1:FindCustomerResponse"/>
+    </wsdl:message>
+    <wsdl:message name="CustomerManagementASyncRequestMessage">
+        <wsdl:part name="payload" element="ns1:FindCustomer"/>
+    </wsdl:message>
+    <wsdl:portType name="CustomerManagementASyncCallback">
+        <wsdl:operation name="processResponse">
+            <wsdl:input message="client:CustomerManagementASyncResponseMessage"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:portType name="CustomerManagementASync">
+        <wsdl:operation name="process">
+            <wsdl:input message="client:CustomerManagementASyncRequestMessage"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="CustomerManagementASyncDirectBinding1.1" type="client:CustomerManagementASync">
+        <soap:binding transport="http://xmlns.oracle.com/soa/direct" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"/>
+        <wsdl:operation name="process">
+            <soap:operation style="document" soapAction="process" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"/>
+            <wsdl:input>
+                <soap:body use="literal" namespace="http://xmlns.oracle.com/invoking_soa_composite_async/CustomerManagement/CustomerManagementASync" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"/>
+            </wsdl:input>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:binding name="CustomerManagementASyncDirectBinding1.2" type="client:CustomerManagementASync">
+        <soap12:binding transport="http://xmlns.oracle.com/soa/direct" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/"/>
+        <wsdl:operation name="process">
+            <soap12:operation style="document" soapAction="process" soapActionRequired="false" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/"/>
+            <wsdl:input>
+                <soap12:body use="literal" namespace="http://xmlns.oracle.com/invoking_soa_composite_async/CustomerManagement/CustomerManagementASync" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/"/>
+            </wsdl:input>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:binding name="CustomerManagementASyncCallbackDirectBinding1.1" type="client:CustomerManagementASyncCallback">
+        <soap:binding transport="http://xmlns.oracle.com/soa/direct" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"/>
+        <wsdl:operation name="processResponse">
+            <soap:operation style="document" soapAction="processResponse" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"/>
+            <wsdl:input>
+                <soap:body use="literal" namespace="http://xmlns.oracle.com/invoking_soa_composite_async/CustomerManagement/CustomerManagementASync" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"/>
+            </wsdl:input>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:binding name="CustomerManagementASyncCallbackDirectBinding1.2" type="client:CustomerManagementASyncCallback">
+        <soap12:binding transport="http://xmlns.oracle.com/soa/direct" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/"/>
+        <wsdl:operation name="processResponse">
+            <soap12:operation style="document" soapAction="processResponse" soapActionRequired="false" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/"/>
+            <wsdl:input>
+                <soap12:body use="literal" namespace="http://xmlns.oracle.com/invoking_soa_composite_async/CustomerManagement/CustomerManagementASync" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/"/>
+            </wsdl:input>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="CustomerManagementASyncDirect">
+        <wsdl:port name="CustomerManagementASyncDirectDirectBindingPort12" binding="client:CustomerManagementASyncDirectBinding1.2">
+            <soap12:address location="t3://192.168.219.135:7001/default/CustomerManagement!1.0/CustomerManagementASyncDirect" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/"/>
+        </wsdl:port>
+        <wsdl:port name="CustomerManagementASyncDirectDirectBindingPort11" binding="client:CustomerManagementASyncDirectBinding1.1">
+            <soap:address location="t3://192.168.219.135:7001/default/CustomerManagement!1.0/CustomerManagementASyncDirect" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

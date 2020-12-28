@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xml-fragment xmlns:ser="http://www.bea.com/wli/sb/services" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:env="http://www.bea.com/wli/config/env" xmlns:jejb="http://www.bea.com/wli/sb/transports/jejb">
+  <ser:coreEntry isProxy="false" isEnabled="true">
+    <ser:binding type="SOAP" isSoap12="false" xsi:type="con:SoapBindingType" transport-typed="true" xmlns:con="http://www.bea.com/wli/sb/services/bindings/config">
+      <con:binding>
+        <con:name>JEJBServiceBinding</con:name>
+        <con:namespace>http://www.openuri.org/</con:namespace>
+      </con:binding>
+    </ser:binding>
+    <ser:monitoring isEnabled="false">
+      <ser:aggregationInterval>10</ser:aggregationInterval>
+    </ser:monitoring>
+    <ser:sla-alerting isEnabled="true">
+      <ser:alertLevel>normal</ser:alertLevel>
+    </ser:sla-alerting>
+  </ser:coreEntry>
+  <ser:endpointConfig>
+    <tran:provider-id>jejb</tran:provider-id>
+    <tran:inbound>false</tran:inbound>
+    <tran:URI>
+      <env:value>jejb::CustomerManagementService#cookbook.model.services.CustomerManagement</env:value>
+    </tran:URI>
+    <tran:outbound-properties>
+      <tran:load-balancing-algorithm>round-robin</tran:load-balancing-algorithm>
+      <tran:retry-count>0</tran:retry-count>
+      <tran:retry-interval>30</tran:retry-interval>
+      <tran:retry-application-errors>true</tran:retry-application-errors>
+    </tran:outbound-properties>
+    <tran:provider-specific>
+      <jejb:outbound-properties>
+        <jejb:security>
+          <jejb:passClientIdentity>false</jejb:passClientIdentity>
+        </jejb:security>
+      </jejb:outbound-properties>
+      <jejb:ejb-version>3.0</jejb:ejb-version>
+      <jejb:pass-by-value>true</jejb:pass-by-value>
+      <jejb:service>
+        <jejb:clientJar ref="exposing-session-bean-as-ejb/jar/customerManagementInterface"/>
+        <jejb:ejbObject classname="cookbook.model.services.CustomerManagement">
+          <jejb:method name="findAllCustomers" signature="java.util.List findAllCustomers()" exclude="false">
+            <jejb:invocationPoint>findAllCustomers</jejb:invocationPoint>
+            <jejb:return name="customers" type="java.util.List"/>
+          </jejb:method>
+          <jejb:method name="findCustomer" signature="cookbook.model.entities.Customer findCustomer(java.lang.Long)" exclude="false">
+            <jejb:invocationPoint>findCustomer</jejb:invocationPoint>
+            <jejb:param name="id" type="java.lang.Long"/>
+            <jejb:return name="customers" type="cookbook.model.entities.Customer"/>
+          </jejb:method>
+        </jejb:ejbObject>
+        <jejb:targetNamespace>http://www.openuri.org/</jejb:targetNamespace>
+      </jejb:service>
+    </tran:provider-specific>
+  </ser:endpointConfig>
+</xml-fragment>

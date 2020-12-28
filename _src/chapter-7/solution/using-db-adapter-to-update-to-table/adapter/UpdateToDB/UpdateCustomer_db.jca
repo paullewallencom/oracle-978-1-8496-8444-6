@@ -1,0 +1,16 @@
+<adapter-config name="UpdateCustomer" adapter="Database Adapter" wsdlLocation="UpdateCustomer.wsdl" xmlns="http://platform.integration.oracle/blocks/adapter/fw/metadata">
+  
+  <connection-factory location="eis/DB/OsbCookbookConnection" UIConnectionName="OsbCookbookConnection" adapterRef=""/>
+  <endpoint-interaction portType="UpdateCustomer_ptt" operation="merge">
+    <interaction-spec className="oracle.tip.adapter.db.DBWriteInteractionSpec">
+      <property name="DescriptorName" value="UpdateCustomer.CustomerT"/>
+      <property name="DmlType" value="merge"/>
+      <property name="OutputCompletedXml" value="true"/>
+      <property name="MappingsMetaDataURL" value="UpdateCustomer-or-mappings.xml"/>
+      <property name="OptimizeMerge" value="true"/>
+      <property name="DetectOmissions" value="true"/>
+      <property name="GetActiveUnitOfWork" value="false"/>
+    </interaction-spec>
+  </endpoint-interaction>
+
+</adapter-config>

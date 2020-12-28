@@ -1,0 +1,507 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="http://www.bea.com/wli/sb/transports"
+    xmlns="http://www.bea.com/wli/sb/transports"
+    xmlns:env="http://www.bea.com/wli/config/env"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    elementFormDefault="qualified">
+
+    <!-- env values-->
+    <xs:import namespace="http://www.bea.com/wli/config/env" schemaLocation="EnvValues.xsd"/>
+
+
+    <xs:element name="URITable" type="URITableType"/>
+
+    <xs:element name="URITableElement" type="URITableElementType"/>
+
+    <!-- A service URI is an environment-specific variable. Follows a definition of the
+         data type for service URI -->
+    <xs:complexType name="URIType">
+        <xs:complexContent>
+            <xs:extension base="env:EnvString">
+                <!-- weight is only required for business services for which
+                     the load-balancing algorithm is random-weighted -->
+        <xs:attribute name="weight" type="xs:int" use="optional"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="URITableType">
+        <xs:sequence>
+            <xs:element name="tableElement" type="URITableElementType" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="URITableElementType">
+        <xs:sequence>
+            <xs:element name="URI" type="xs:anyURI" minOccurs="1" maxOccurs="1 "/>
+            <xs:element name="weight" type="xs:int" minOccurs="1" maxOccurs="1 "/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- System dependent directory file paths defined in the Transport Providers, follows this definition -->
+    <xs:complexType name="FilePathType">
+        <xs:complexContent>
+            <xs:extension base="env:EnvString"/>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <!-- definition of service end point configuration -->
+    <xs:complexType name="EndPointConfiguration">
+        <xs:annotation>
+            <xs:documentation>
+                 The base type for end point configuration. An endpoint is an
+                 ALSB resource where messages are originated or targeted.
+                 End Point Configuration describes the complete set of parameters
+                 necessary for the deployment and operation of this inbound or
+                 outbound endpoint.
+            </xs:documentation>
+        </xs:annotation>
+
+        <xs:sequence>
+            <!-- id identifying the transport provider, e.g. "http" or "jms" -->
+            <xs:element name="provider-id" type="xs:string"/>
+
+            <!-- whether or not this is an inbound (proxy) or outbound (business)
+                 service endpoint -->
+            <xs:element name="inbound" type="xs:boolean"/>
+            <!-- set of endpoint URI(s). Proxy services are only associated with
+                 a single URI or zero for a local service, whereas business services can be associated with multiple
+                 URIs -->
+            <xs:element name="URI" type="URIType" minOccurs="0" maxOccurs="unbounded"/>
+
+            <!-- depending on whether or not this is an inbound endpoint one of the
+               following two choices is applicable -->
+            <xs:choice minOccurs="0">
+                <xs:element name="inbound-properties">
+                    <xs:annotation>
+                        <xs:documentation>
+                             The set of inbound properties common to all
+                             endpoints from different providers
+                        </xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                        <!-- nothing yet -->
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="outbound-properties">
+                    <xs:annotation>
+                        <xs:documentation>
+                             The set of properties common to all outbound endpoints
+                             from different providers
+                        </xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="load-balancing-algorithm" type="LoadBalancingAlgorithmEnum" />
+                            <xs:element name="retry-count" type="xs:short" />
+                            <xs:element name="retry-interval" type="xs:int" minOccurs="0"/>
+                            <xs:element name="retry-application-errors" type="xs:boolean" minOccurs="0"/>
+                            <xs:element name="delay-interval-configuration" type="DelayConfigurationType" minOccurs="0"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:choice>
+
+            <!-- These are properties common to all endpoints (inbound or outbound) -->
+
+            <xs:element name="all-headers" type="xs:boolean" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>
+                        Whether or not to retrieve all available transport-specific
+                        headers on an inbound request or outbound response.
+                        Defaults to true
+                     </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="user-header" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>
+                        If 'all-headers' is not true, then get these transport-specific
+                        headers on an inbound request or outbound response.
+                     </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+
+            <xs:element name="provider-specific" type="xs:anyType" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>
+                         Transport-provider-specific part of endpoint configuration
+                         See transport-specific schema for more information.
+                         E.g. for socket transport, look for the definition of
+                         SocketEndPointConfiuration in SocketTransport.xsd
+                    </xs:documentation>
+                </xs:annotation>
+           </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- Definition of load balancing algorithm enumeration for outbound endpoints -->
+    <xs:simpleType name="LoadBalancingAlgorithmEnum">
+        <xs:restriction base="xs:string">
+            <!-- outbound requests will be distributed between different URIs
+                 in round-robin fashion -->
+            <xs:enumeration value="round-robin"/>
+            <!-- outbound requests will be distributed between different URIs
+                 randomly -->
+            <xs:enumeration value="random"/>
+            <!-- outbound requests will be distributed between different URIs
+                 according to each URI weight -->
+            <xs:enumeration value="weighted-random"/>
+            <!-- If this is specified along with multiple URIs, it will always try
+                 the first one in the list failing over to the next one, etc. -->
+            <xs:enumeration value="none"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="RequestMetaDataXML" abstract="true">
+        <xs:annotation>
+            <xs:documentation>
+                The base type for a meta-data of an inbound or outbound request.
+                Meta data is not carried in the payload of the message, but
+                separately and is used as the "context" for processing the message.
+                Examples of such information might be transmitted in the mata data
+                are the Content Type header, security information, or locale
+                information
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="headers" type="RequestHeadersXML" minOccurs="0"/>
+            <!-- character set encoding for the request -->
+            <xs:element name="encoding" type="xs:string" minOccurs="0" />
+            <xs:element name="cache-token" type="xs:string" minOccurs="0"/>
+            <xs:element name="cache-ttl" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="RequestHeadersXML" abstract="true">
+        <xs:annotation>
+            <xs:documentation>
+                The base type for a set of inbound or outbound request headers.
+                For each header there is an optional boolean annotation:
+                - outboundWrite - if value is "true", the header can be set on outbound request
+                In the absence of this annotation, the value is presumed to be true
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="user-header" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>
+                        This element specifies the value of a user-specified message
+                        header or property
+                    </xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:attribute name="name" type="xs:string"/>
+                    <xs:attribute name="value" type="xs:string"/>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+     </xs:complexType>
+
+    <xs:complexType name="ResponseMetaDataXML" abstract="true">
+        <xs:annotation>
+            <xs:documentation>
+                The base type for a meta-data of a response to an inbound or outbound message
+            </xs:documentation>
+        </xs:annotation>
+
+        <xs:sequence>
+            <xs:element name="headers" type="ResponseHeadersXML" minOccurs="0"/>
+            <xs:element name="response-code" type="xs:int">
+                <xs:annotation>
+                    <xs:documentation>
+                        See TransportManager.java for list of possible response codes
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="response-message" type="xs:string" minOccurs="0"/>
+            <!-- character set encoding for the response -->
+            <xs:element name="encoding" type="xs:string" minOccurs="0" />
+            <xs:element name="cache-token" type="xs:string" minOccurs="0"/>
+            <xs:element name="cache-originated" type="xs:boolean" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="ResponseHeadersXML" abstract="true">
+        <xs:annotation>
+            <xs:documentation>
+                The base type for a set of response headers
+                For each header there is an optional boolean annotation:
+                - inboundWrite - if value is "true", the header can be set on inbound response
+                In the absence of this annotation, the value is presumed to be true
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="user-header" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>
+                        This element specifies the value of a user-specified message
+                        header or property
+                    </xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:attribute name="name" type="xs:string"/>
+                    <xs:attribute name="value" type="xs:string"/>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- The transport provider configuration is an instance of this element -->
+    <xs:element name="ProviderConfiguration" type="TransportProviderConfiguration"/>
+
+    <!-- The following types define static meta data for transport provider registration -->
+    <xs:complexType name="TransportProviderConfiguration">
+        <xs:sequence>
+            <!-- whether or not this provider supports inbound (proxy) endpoints -->
+            <xs:element name="inbound-direction-supported" type="xs:boolean"/>
+            <!-- whether or not this provider supports outbound (business service) endpoints -->
+            <xs:element name="outbound-direction-supported" type="xs:boolean"/>
+            <!-- whether this provider generates service description (e.g. WSDL) for its endpoints-->
+            <xs:element name="self-described" type="xs:boolean" minOccurs="0"/>
+            <!-- UDDI-related information, if applicable to this provider -->
+            <xs:element name="UDDI" type="UDDIType" minOccurs="0"/>
+            <!-- whether or not this provider declares application errors -->
+            <xs:element name="declare-application-errors" type="xs:boolean" minOccurs="0"/>
+            <!-- custom env value type definitions -->
+            <xs:element name="env-value-type" type="EnvValueType" minOccurs="0" maxOccurs="unbounded"/>
+            <!-- static transport uris for wsdl generation -->
+            <xs:element name="supported-transport-uris" type="TransportURIType" minOccurs="0" maxOccurs="1"/>
+            <!-- supported operation selection algorithms for xml, by default all xml operations are supported -->
+            <xs:element name="supported-xml-selectors" type="SupportedXmlSelectorsType"  minOccurs="0" maxOccurs="1"/>
+            <!-- supported operation selection algorithms for soap, by default soap operations are supported -->
+            <xs:element name="supported-soap-selectors" type="SupportedSoapSelectorsType"  minOccurs="0" maxOccurs="1"/>
+            <!-- list of external resources these transport endpoints are sensitive to -->
+            <xs:element name="dependency" type="DependencyType"  minOccurs="0" maxOccurs="unbounded"/>
+            <!-- whether or not this provider supports XOP/MTOM.
+               In the absense of value it is assumed that it does not -->
+            <xs:element name="supportsXopMtom" type="xs:boolean" minOccurs="0"/>
+            <!-- whether or not this provider supports paging of attachments
+               In the absense of value it is assumed that it does not -->
+            <xs:element name="supportsPageAttachments" type="xs:boolean" minOccurs="0"/>
+            <!-- supported message pattern explicitely supported by the transport. This optional element allows
+                the UI to display options that can only be applied to specific patterns.
+                In the absense of value, the UI assumes that the transport can support any message pattern -->
+            <xs:element name="suppported-message-patterns" type="SupportedMessagePatternsType" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="UDDIType">
+        <xs:sequence>
+            <!-- see Transport SDK specification for description of this element -->
+            <xs:element name="TModelDefinition" type="xs:anyType" minOccurs="0" maxOccurs="1" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="PropertiesType">
+      <xs:annotation>
+          <xs:documentation>
+            A list of name/value pairs.
+          </xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+          <xs:element name="property" type="PropertyType" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="PropertyType">
+      <xs:sequence>
+          <xs:element name="name" type="xs:string"/>
+          <xs:element name="value" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="DelayConfigurationType">
+        <xs:sequence>
+            <xs:element name="delay-interval" type="xs:int" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute name="isEnabled" type="xs:boolean" use="required"/>
+    </xs:complexType>
+
+    <xs:complexType name="SupportedSoapSelectorsType">
+        <xs:annotation>
+            <xs:documentation>
+                The optional list of Soap Selectors supported by this transport.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="name" type="SoapSelectorChoice" minOccurs="1" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="SupportedMessagePatternsType">
+        <xs:annotation>
+            <xs:documentation>
+                The optional list of Message Patterns explicitely supported by this transport.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="pattern" type="MessagePatternChoice" minOccurs="1" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="SupportedXmlSelectorsType">
+        <xs:annotation>
+            <xs:documentation>
+                The optional list of Xml Selectors supported by this transport.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="name" type="XmlSelectorChoice" minOccurs="1" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <!-- Definition of custom env values -->
+    <xs:complexType name="EnvValueType">
+        <xs:annotation>
+            <xs:documentation>
+                Custom environment values definition. Transport provider can
+                declare new environment values types and their associated
+                properties (category, custom-data etc...) in their xml
+                configuration file.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="name" type="xs:string"/>
+            <xs:choice minOccurs="0">
+                <xs:element name="display-name" type="xs:string" minOccurs="0"/>
+                <xs:element name="localized-display-name" type="LocalizedTextType" minOccurs="0"/>
+            </xs:choice>
+            <xs:choice minOccurs="0">
+                <xs:element name="description" type="xs:string" minOccurs="0"/>
+                <xs:element name="localized-description" type="LocalizedTextType" minOccurs="0"/>
+            </xs:choice>
+            <xs:element name="simple-value" type="xs:boolean" default="false"/>
+            <xs:element name="category" type="EnvValueTypeCategoryEnum"/>
+            <xs:choice minOccurs="0">
+                 <xs:element name="int-data" type="xs:int"/>
+                 <xs:element name="boolean-data" type="xs:boolean"/>
+                 <xs:element name="string-data" type="xs:string"/>
+                 <xs:element name="custom-data" type="xs:anyType"/>
+            </xs:choice>
+        </xs:sequence>
+    </xs:complexType>
+
+     <!--Definition of env value type category enumeration-->
+    <xs:simpleType name="EnvValueTypeCategoryEnum">
+        <xs:annotation>
+            <xs:documentation>
+               Category for Env value types.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="environment"/>
+            <xs:enumeration value="operational"/>
+            <xs:enumeration value="security"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!--Definition localized text -->
+    <xs:complexType name="LocalizedTextType">
+        <xs:annotation>
+            <xs:documentation>
+               Localized Text defined by its localizer class and message id
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="localizer-class" type="xs:string" minOccurs="1"/>
+            <xs:element name="message-id" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- Definition of transport uri values -->
+    <xs:complexType name="TransportURIType">
+        <xs:annotation>
+            <xs:documentation>
+                List of transport URIs that the transport supports.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="default-transport-uri" type="xs:string" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="transport-uri" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:simpleType name="MessagePatternChoice">
+        <xs:annotation>
+            <xs:documentation>
+                Type of message pattern explicitely supported by the transport
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="ONE_WAY"/>
+            <xs:enumeration value="SYNCHRONOUS"/>
+            <xs:enumeration value="ASYNCHRONOUS"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="XmlSelectorChoice">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Transport Header"/>
+            <xs:enumeration value="Payload Type"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="SoapSelectorChoice">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Transport Header"/>
+            <xs:enumeration value="WS-Addressing"/>
+            <xs:enumeration value="SOAP header"/>
+            <xs:enumeration value="SOAP body"/>
+            <xs:enumeration value="SOAP action"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="DependencyType">
+        <xs:annotation>
+            <xs:documentation>
+                A dependency declares that an service of a particular type
+                (ProxyService, Business services or *) will be notified
+                via the TransportProvider.updateEndPoint() and
+                TransportWLSArtifactDeployer.makeWLSChangesOnUpdate() callbacks
+				that a resource it depends on has changed. Only the
+                changes on resources of types listed in the "resource" list will
+                trigger such notifications.
+
+                The type of the resource is a string corresponding
+                to the Ref type id (ServiceAccount, WSDL, Policy, etc...).
+
+                To declare that endpoints of a particular service type are
+                sensitive to any resource update, use the wild card value "*"
+                for the resource element.
+
+                To declare that endpoints of any service type are
+                sensitive to a resource update, use the wild card value "*"
+                for the "service" element.
+
+                Similarly, endpoints can optionally be made sensitive to
+                any of their configuration changes (e.g. Security, Policy,
+                Monitoring, etc...) by using the wild card value "*" for the
+                "setting" element.
+
+                Set the "excludesIndirect" attribute to false if the endpoint must
+				receive updates due to changes on resources that it indirectly
+                depends on.
+
+                Note that the endpoints will always receive updates due to indirect
+                dependencies if the reference path to the modified resource only
+                consists of types declared in the "resource" array.
+
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="service" type="ServiceTypeEnum" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="resource" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="setting" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+		<xs:attribute name="excludesIndirect" type="xs:boolean" use="optional" default="true"/>
+    </xs:complexType>
+
+    <xs:simpleType name="ServiceTypeEnum">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="*"/>
+            <xs:enumeration value="ProxyService"/>
+            <xs:enumeration value="BusinessService"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+</xs:schema>

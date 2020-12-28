@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xml-fragment xmlns:ser="http://www.bea.com/wli/sb/services" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:env="http://www.bea.com/wli/config/env" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:con="http://www.bea.com/wli/sb/pipeline/config" xmlns:con1="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con2="http://www.bea.com/wli/sb/stages/config">
+  <ser:coreEntry isProxy="true" isEnabled="true">
+    <ser:binding type="abstract XML"/>
+    <ser:monitoring isEnabled="false">
+      <ser:aggregationInterval>10</ser:aggregationInterval>
+      <ser:pipelineMonitoringLevel>Pipeline</ser:pipelineMonitoringLevel>
+    </ser:monitoring>
+    <ser:reporting>true</ser:reporting>
+    <ser:logging isEnabled="true">
+      <ser:logLevel>debug</ser:logLevel>
+    </ser:logging>
+    <ser:sla-alerting isEnabled="true">
+      <ser:alertLevel>normal</ser:alertLevel>
+    </ser:sla-alerting>
+    <ser:pipeline-alerting isEnabled="true">
+      <ser:alertLevel>normal</ser:alertLevel>
+    </ser:pipeline-alerting>
+  </ser:coreEntry>
+  <ser:endpointConfig>
+    <tran:provider-id>local</tran:provider-id>
+    <tran:inbound>true</tran:inbound>
+    <tran:inbound-properties/>
+    <tran:all-headers>true</tran:all-headers>
+  </ser:endpointConfig>
+  <ser:router>
+    <con:pipeline type="request" name="TracingPipeline_request">
+      <con:stage name="TracingStage">
+        <con:context/>
+        <con:actions>
+          <con1:log>
+            <con2:id>_ActionId-1713229555061314677-4e9795d6.13379497fcc.-6f85</con2:id>
+            <con1:logLevel>warning</con1:logLevel>
+            <con1:expr>
+              <con2:xqueryText>$body/custom/correlationID/text()</con2:xqueryText>
+            </con1:expr>
+            <con1:message>Message recived with ID</con1:message>
+          </con1:log>
+          <con1:report>
+            <con2:id>_ActionId-1713229555061314677-4e9795d6.13379497fcc.-6f68</con2:id>
+            <con1:expr>
+              <con2:xqueryText>$body</con2:xqueryText>
+            </con1:expr>
+            <con1:labels>
+              <con1:key>CorrelationId</con1:key>
+              <con1:varName>body</con1:varName>
+              <con1:value>
+                <con2:xpathText>./custom/correlationID</con2:xpathText>
+              </con1:value>
+            </con1:labels>
+          </con1:report>
+        </con:actions>
+      </con:stage>
+    </con:pipeline>
+    <con:pipeline type="response" name="TracingPipeline_response"/>
+    <con:flow>
+      <con:pipeline-node name="TracingPipeline">
+        <con:request>TracingPipeline_request</con:request>
+        <con:response>TracingPipeline_response</con:response>
+      </con:pipeline-node>
+    </con:flow>
+  </ser:router>
+</xml-fragment>

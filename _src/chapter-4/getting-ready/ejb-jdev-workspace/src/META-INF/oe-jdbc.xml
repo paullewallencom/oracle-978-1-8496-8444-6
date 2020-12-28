@@ -1,0 +1,25 @@
+<?xml version = '1.0' encoding = 'windows-1252'?>
+<jdbc-data-source xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://www.bea.com/ns/weblogic/jdbc-data-source http://www.bea.com/ns/weblogic/jdbc-data-source/1.0/jdbc-data-source.xsd"
+                  xmlns="http://www.bea.com/ns/weblogic/jdbc-data-source">
+    <name>oe</name>
+    <jdbc-driver-params>
+        <url>jdbc:oracle:thin:@localhost:1521:orcl</url>
+        <driver-name>oracle.jdbc.OracleDriver</driver-name>
+        <properties>
+            <property>
+                <name>user</name>
+                <value>oe</value>
+            </property>
+        </properties>
+        <password-encrypted>14BCF8808910499F69B9BB2EBA961216</password-encrypted>
+    </jdbc-driver-params>
+    <jdbc-connection-pool-params>
+        <test-table-name>SQL SELECT 1 FROM DUAL</test-table-name>
+    </jdbc-connection-pool-params>
+    <jdbc-data-source-params>
+        <jndi-name>jdbc/oeDS</jndi-name>
+        <scope>Application</scope>
+        <global-transactions-protocol>EmulateTwoPhaseCommit</global-transactions-protocol>
+    </jdbc-data-source-params>
+</jdbc-data-source>

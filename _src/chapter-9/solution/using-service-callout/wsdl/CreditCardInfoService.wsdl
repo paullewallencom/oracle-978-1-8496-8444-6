@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="CreditCardInfoService" targetNamespace="http://www.crm.org/CreditCardInfoService/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://www.crm.org/CreditCardInfoService/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://www.crm.org/CreditCardInfoService/">
+      <xsd:complexType name="CreditCardTyp">
+        <xsd:sequence>
+          <xsd:element name="creditCardType" type="xsd:string"/>
+          <xsd:element name="creditCardNumber" type="xsd:int"/>
+          <xsd:element name="cardHolderName" type="xsd:string"/>
+          <xsd:element name="expiration" type="xsd:string"/>
+          <xsd:element name="cvc" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="RetrieveCreditCardById">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" name="id" type="xsd:long"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="RetrieveCreditCardByIdResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="creditCard" type="tns:CreditCardTyp"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="RetrieveCreditCardByIdResponse">
+    <wsdl:part name="parameters" element="tns:RetrieveCreditCardByIdResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="RetrieveCreditCardByIdRequest">
+    <wsdl:part name="parameters" element="tns:RetrieveCreditCardById">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="CreditCardInfoService">
+    <wsdl:operation name="RetrieveCreditCardById">
+      <wsdl:input message="tns:RetrieveCreditCardByIdRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:RetrieveCreditCardByIdResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="CreditCardInfoServiceSOAP" type="tns:CreditCardInfoService">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="RetrieveCreditCardById">
+      <soap:operation soapAction="http://www.crm.org/CreditCardInfoService/RetrieveCreditCardById"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="CreditCardInfoService">
+    <wsdl:port name="CreditCardInfoServiceSOAP" binding="tns:CreditCardInfoServiceSOAP">
+      <soap:address location="http://localhost:8090/mockCreditCardInfoServiceSOAP"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

@@ -1,0 +1,20 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<xs:schema targetNamespace="http://xmlns.oracle.com/pcbpel/adapter/db/ExecuteCustomSql" xmlns="http://xmlns.oracle.com/pcbpel/adapter/db/ExecuteCustomSql" elementFormDefault="qualified" attributeFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+   <xs:element name="ExecuteCustomSqlInput" type="ExecuteCustomSqlInput"/>
+   <xs:complexType name="ExecuteCustomSqlInput">
+      <xs:sequence>
+         <xs:element name="value" type="xs:string" nillable="true"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:element name="ExecuteCustomSqlOutputCollection" type="ExecuteCustomSqlOutputCollection"/>
+   <xs:complexType name="ExecuteCustomSqlOutputCollection">
+      <xs:sequence>
+         <xs:element name="ExecuteCustomSqlOutput" type="ExecuteCustomSqlOutput" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="ExecuteCustomSqlOutput">
+      <xs:sequence>
+         <xs:element name="hashValue" type="xs:decimal" nillable="true"/>
+      </xs:sequence>
+   </xs:complexType>
+</xs:schema>

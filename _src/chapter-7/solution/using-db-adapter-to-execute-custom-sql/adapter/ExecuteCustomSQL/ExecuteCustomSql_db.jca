@@ -1,0 +1,13 @@
+<adapter-config name="ExecuteCustomSql" adapter="Database Adapter" wsdlLocation="ExecuteCustomSql.wsdl" xmlns="http://platform.integration.oracle/blocks/adapter/fw/metadata">
+  
+  <connection-factory location="eis/DB/OsbCookbookConnection" UIConnectionName="OsbCookbookConnection" adapterRef=""/>
+  <endpoint-interaction portType="ExecuteCustomSql_ptt" operation="ExecuteCustomSql">
+    <interaction-spec className="oracle.tip.adapter.db.DBPureSQLInteractionSpec">
+      <property name="SqlString" value="SELECT ORA_HASH(#value) as hashValue FROM dual"/>
+      <property name="GetActiveUnitOfWork" value="false"/>
+    </interaction-spec>
+    <input/>
+    <output/>
+  </endpoint-interaction>
+
+</adapter-config>

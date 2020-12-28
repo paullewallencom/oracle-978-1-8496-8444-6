@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xml-fragment xmlns:ser="http://www.bea.com/wli/sb/services" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:env="http://www.bea.com/wli/config/env" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jms="http://www.bea.com/wli/sb/transports/jms" xmlns:con="http://www.bea.com/wli/sb/pipeline/config" xmlns:con1="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con2="http://www.bea.com/wli/sb/stages/config">
+  <ser:coreEntry isProxy="true" isEnabled="true">
+    <ser:binding type="Mixed" xsi:type="con:MixedBindingType" xmlns:con="http://www.bea.com/wli/sb/services/bindings/config">
+      <con:request type="Text"/>
+    </ser:binding>
+    <ser:monitoring isEnabled="false">
+      <ser:aggregationInterval>10</ser:aggregationInterval>
+      <ser:pipelineMonitoringLevel>Pipeline</ser:pipelineMonitoringLevel>
+    </ser:monitoring>
+    <ser:reporting>true</ser:reporting>
+    <ser:logging isEnabled="true">
+      <ser:logLevel>debug</ser:logLevel>
+    </ser:logging>
+    <ser:sla-alerting isEnabled="true">
+      <ser:alertLevel>normal</ser:alertLevel>
+    </ser:sla-alerting>
+    <ser:pipeline-alerting isEnabled="true">
+      <ser:alertLevel>normal</ser:alertLevel>
+    </ser:pipeline-alerting>
+  </ser:coreEntry>
+  <ser:endpointConfig>
+    <tran:provider-id>jms</tran:provider-id>
+    <tran:inbound>true</tran:inbound>
+    <tran:URI>
+      <env:value>jms://localhost:7001/weblogic.jms.XAConnectionFactory/jms.SourceTopic</env:value>
+    </tran:URI>
+    <tran:inbound-properties/>
+    <tran:all-headers>false</tran:all-headers>
+    <tran:provider-specific>
+      <jms:is-queue>false</jms:is-queue>
+      <jms:is-secure>false</jms:is-secure>
+      <jms:inbound-properties>
+        <jms:response-required>false</jms:response-required>
+        <jms:topic-messages-distribution>OneCopyPerApplication</jms:topic-messages-distribution>
+        <jms:XA-required>false</jms:XA-required>
+      </jms:inbound-properties>
+      <jms:request-encoding>UTF-8</jms:request-encoding>
+      <jms:jndi-timeout>0</jms:jndi-timeout>
+    </tran:provider-specific>
+  </ser:endpointConfig>
+  <ser:router>
+    <con:pipeline type="request" name="ConsumerPipelinePair_request">
+      <con:stage name="ProcessingStage">
+        <con:context/>
+        <con:actions>
+          <con1:log>
+            <con2:id>_ActionId-5607487413790774190--2ba070b6.13157bb22c3.-7d52</con2:id>
+            <con1:logLevel>warning</con1:logLevel>
+            <con1:expr>
+              <con2:xqueryText>$inbound/@name,$body</con2:xqueryText>
+            </con1:expr>
+            <con1:message>Content of $body in Response</con1:message>
+          </con1:log>
+        </con:actions>
+      </con:stage>
+    </con:pipeline>
+    <con:pipeline type="response" name="ConsumerPipelinePair_response"/>
+    <con:flow>
+      <con:pipeline-node name="ConsumerPipelinePair">
+        <con:request>ConsumerPipelinePair_request</con:request>
+        <con:response>ConsumerPipelinePair_response</con:response>
+      </con:pipeline-node>
+    </con:flow>
+  </ser:router>
+</xml-fragment>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions targetNamespace="http://xmlns.oracle.com/pcbpel/adapter/db/osbbook_ejb/UpdateToDB/UpdateCustomer" name="UpdateCustomer-concrete" xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://xmlns.oracle.com/pcbpel/adapter/db/osbbook_ejb/UpdateToDB/UpdateCustomer" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+  <import namespace="http://xmlns.oracle.com/pcbpel/adapter/db/osbbook_ejb/UpdateToDB/UpdateCustomer" location="../adapter/UpdateToDB/UpdateCustomer.wsdl"/>
+  <binding name="UpdateCustomer_ptt-binding" type="tns:UpdateCustomer_ptt">
+    <soap:binding style="document" transport="http://www.bea.com/wli/sb/transports/jca"/>
+    <operation name="merge">
+      <soap:operation soapAction="merge"/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+    </operation>
+  </binding>
+  <service name="UpdateCustomer-service">
+    <port name="UpdateCustomer-port" binding="tns:UpdateCustomer_ptt-binding">
+      <soap:address location="jca://eis/DB/OsbCookbookConnection"/>
+    </port>
+  </service>
+</definitions>

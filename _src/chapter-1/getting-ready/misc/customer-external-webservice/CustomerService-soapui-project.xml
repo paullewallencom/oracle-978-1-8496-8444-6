@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project name="CustomerService" resourceRoot="" soapui-version="4.0.1" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="CustomerServiceSOAP" type="wsdl" bindingName="{http://www.crm.org/CustomerService/}CustomerServiceSOAP" soapVersion="1_1" anonymous="optional" definition="http://localhost:7001/osb-cookbook/proxy/CustomerService?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="http://localhost:7001/osb-cookbook/proxy/CustomerService?wsdl"><con:part><con:url>http://localhost:7001/osb-cookbook/proxy/CustomerService?wsdl</con:url><con:content><![CDATA[<WL5G3N0:definitions name="CustomerService" targetNamespace="http://www.crm.org/CustomerService/" xmlns:WL5G3N0="http://schemas.xmlsoap.org/wsdl/" xmlns:WL5G3N1="http://www.crm.org/CustomerService/" xmlns:WL5G3N2="http://schemas.xmlsoap.org/wsdl/soap/">
+  <WL5G3N0:types>
+    <xsd:schema targetNamespace="http://www.crm.org/CustomerService/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://www.crm.org/CustomerService/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <xsd:complexType name="AddressTyp">
+        <xsd:sequence>
+          <xsd:element name="street" type="xsd:string"/>
+          <xsd:element name="nr" type="xsd:string"/>
+          <xsd:element name="zipcode" type="xsd:string"/>
+          <xsd:element name="city" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="CustomerTyp">
+        <xsd:sequence>
+          <xsd:element name="id" type="xsd:int"/>
+          <xsd:element name="firstname" type="xsd:string"/>
+          <xsd:element name="lastname" type="xsd:string"/>
+          <xsd:element name="gender" type="xsd:string"/>
+          <xsd:element name="emailAddress" type="xsd:string"/>
+          <xsd:element name="rating" type="xsd:string"/>
+          <xsd:element name="address" type="tns:AddressTyp"/>
+          <xsd:element name="userdef1" type="xsd:string"/>
+          <xsd:element name="userdef2" type="xsd:string"/>
+          <xsd:element name="userdef3" type="xsd:string"/>
+          <xsd:element name="userdef4" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="CriteriasType">
+        <xsd:sequence>
+          <xsd:element maxOccurs="unbounded" minOccurs="1" name="criteria" type="tns:CriteriaType"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="CriteriaType">
+        <xsd:sequence>
+          <xsd:element name="criteriaField" type="xsd:string"/>
+          <xsd:element name="criteriaValue" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="CreateNewCustomer">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="customer" type="tns:CustomerTyp"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="CreateNewCustomerResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="id" type="xsd:int"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="UpdateExistingCustomer">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="customer" type="tns:CustomerTyp"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="UpdateExistingCustomerResponse">
+        <xsd:complexType>
+          <xsd:sequence></xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="RetrieveCustomerByCriteria">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" name="criterias" type="tns:CriteriasType"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="RetrieveCustomerByCriteriaResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="customers" type="tns:CustomerTyp"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="CreateNewCustomerFault">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="CreateNewCustomerFault" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="UpdateExistingCustomerFault">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="UpdateExistingCustomerFault" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+  </WL5G3N0:types>
+  <WL5G3N0:message name="CreateNewCustomerRequest">
+    <WL5G3N0:part element="WL5G3N1:CreateNewCustomer" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="CreateNewCustomerResponse">
+    <WL5G3N0:part element="WL5G3N1:CreateNewCustomerResponse" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="CreateNewCustomerFault">
+    <WL5G3N0:part element="WL5G3N1:CreateNewCustomerFault" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="UpdateExistingCustomerRequest">
+    <WL5G3N0:part element="WL5G3N1:UpdateExistingCustomer" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="UpdateExistingCustomerResponse">
+    <WL5G3N0:part element="WL5G3N1:UpdateExistingCustomerResponse" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="UpdateExistingCustomerFault">
+    <WL5G3N0:part element="WL5G3N1:UpdateExistingCustomerFault" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="RetrieveCustomerByCriteriaRequest">
+    <WL5G3N0:part element="WL5G3N1:RetrieveCustomerByCriteria" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="RetrieveCustomerByCriteriaResponse">
+    <WL5G3N0:part element="WL5G3N1:RetrieveCustomerByCriteriaResponse" name="parameters"/>
+  </WL5G3N0:message>
+  <WL5G3N0:portType name="CustomerService">
+    <WL5G3N0:operation name="CreateNewCustomer">
+      <WL5G3N0:input message="WL5G3N1:CreateNewCustomerRequest"/>
+      <WL5G3N0:output message="WL5G3N1:CreateNewCustomerResponse"/>
+      <WL5G3N0:fault message="WL5G3N1:CreateNewCustomerFault" name="fault"/>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="UpdateExistingCustomer">
+      <WL5G3N0:input message="WL5G3N1:UpdateExistingCustomerRequest"/>
+      <WL5G3N0:output message="WL5G3N1:UpdateExistingCustomerResponse"/>
+      <WL5G3N0:fault message="WL5G3N1:UpdateExistingCustomerFault" name="fault"/>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="RetrieveCustomerByCriteria">
+      <WL5G3N0:input message="WL5G3N1:RetrieveCustomerByCriteriaRequest"/>
+      <WL5G3N0:output message="WL5G3N1:RetrieveCustomerByCriteriaResponse"/>
+    </WL5G3N0:operation>
+  </WL5G3N0:portType>
+  <WL5G3N0:binding name="CustomerServiceSOAP" type="WL5G3N1:CustomerService">
+    <WL5G3N2:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <WL5G3N0:operation name="CreateNewCustomer">
+      <WL5G3N2:operation soapAction="http://www.crm.org/CustomerService/CreateNewCustomer"/>
+      <WL5G3N0:input>
+        <WL5G3N2:body use="literal"/>
+      </WL5G3N0:input>
+      <WL5G3N0:output>
+        <WL5G3N2:body use="literal"/>
+      </WL5G3N0:output>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="UpdateExistingCustomer">
+      <WL5G3N2:operation soapAction="http://www.crm.org/CustomerService/UpdateExistingCustomer"/>
+      <WL5G3N0:input>
+        <WL5G3N2:body use="literal"/>
+      </WL5G3N0:input>
+      <WL5G3N0:output>
+        <WL5G3N2:body use="literal"/>
+      </WL5G3N0:output>
+    </WL5G3N0:operation>
+    <WL5G3N0:operation name="RetrieveCustomerByCriteria">
+      <WL5G3N2:operation soapAction="http://www.crm.org/CustomerService/RetrieveCustomerByCriteria"/>
+      <WL5G3N0:input>
+        <WL5G3N2:body use="literal"/>
+      </WL5G3N0:input>
+      <WL5G3N0:output>
+        <WL5G3N2:body use="literal"/>
+      </WL5G3N0:output>
+    </WL5G3N0:operation>
+  </WL5G3N0:binding>
+  <WL5G3N0:service name="CustomerService">
+    <WL5G3N0:port binding="WL5G3N1:CustomerServiceSOAP" name="CustomerServiceSOAP">
+      <WL5G3N2:address location="http://192.168.219.128:7001/osb-cookbook/proxy/CustomerService"/>
+    </WL5G3N0:port>
+  </WL5G3N0:service>
+</WL5G3N0:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://192.168.219.128:7001/osb-cookbook/proxy/CustomerService</con:endpoint></con:endpoints><con:operation isOneWay="false" action="http://www.crm.org/CustomerService/CreateNewCustomer" name="CreateNewCustomer" bindingOperationName="CreateNewCustomer" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://192.168.219.128:7001/osb-cookbook/proxy/CustomerService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:cus="http://www.crm.org/CustomerService/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <cus:CreateNewCustomer>
+         <customer>
+            <id>?</id>
+            <firstname>?</firstname>
+            <lastname>?</lastname>
+            <gender>?</gender>
+            <emailAddress>?</emailAddress>
+            <rating>?</rating>
+            <address>
+               <street>?</street>
+               <nr>?</nr>
+               <zipcode>?</zipcode>
+               <city>?</city>
+            </address>
+            <userdef1>?</userdef1>
+            <userdef2>?</userdef2>
+            <userdef3>?</userdef3>
+            <userdef4>?</userdef4>
+         </customer>
+      </cus:CreateNewCustomer>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.crm.org/CustomerService/CreateNewCustomer"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation isOneWay="false" action="http://www.crm.org/CustomerService/RetrieveCustomerByCriteria" name="RetrieveCustomerByCriteria" bindingOperationName="RetrieveCustomerByCriteria" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://192.168.219.128:7001/osb-cookbook/proxy/CustomerService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:cus="http://www.crm.org/CustomerService/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <cus:RetrieveCustomerByCriteria>
+         <criterias>
+            <!--1 or more repetitions:-->
+            <criteria>
+               <criteriaField>id</criteriaField>
+               <criteriaValue>1</criteriaValue>
+            </criteria>
+         </criterias>
+      </cus:RetrieveCustomerByCriteria>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.crm.org/CustomerService/RetrieveCustomerByCriteria"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation isOneWay="false" action="http://www.crm.org/CustomerService/UpdateExistingCustomer" name="UpdateExistingCustomer" bindingOperationName="UpdateExistingCustomer" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://192.168.219.128:7001/osb-cookbook/proxy/CustomerService</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:cus="http://www.crm.org/CustomerService/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <cus:UpdateExistingCustomer>
+         <customer>
+            <id>?</id>
+            <firstname>?</firstname>
+            <lastname>?</lastname>
+            <gender>?</gender>
+            <emailAddress>?</emailAddress>
+            <rating>?</rating>
+            <address>
+               <street>?</street>
+               <nr>?</nr>
+               <zipcode>?</zipcode>
+               <city>?</city>
+            </address>
+            <userdef1>?</userdef1>
+            <userdef2>?</userdef2>
+            <userdef3>?</userdef3>
+            <userdef4>?</userdef4>
+         </customer>
+      </cus:UpdateExistingCustomer>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.crm.org/CustomerService/UpdateExistingCustomer"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:properties/><con:wssContainer/></con:soapui-project>

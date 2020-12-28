@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions targetNamespace="http://xmlns.oracle.com/pcbpel/adapter/db/SgsApplication/ExecuteCustomSQL/ExecuteCustomSql" name="ExecuteCustomSql-concrete" xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://xmlns.oracle.com/pcbpel/adapter/db/SgsApplication/ExecuteCustomSQL/ExecuteCustomSql" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+  <import namespace="http://xmlns.oracle.com/pcbpel/adapter/db/SgsApplication/ExecuteCustomSQL/ExecuteCustomSql" location="../adapter/ExecuteCustomSQL/ExecuteCustomSql.wsdl"/>
+  <binding name="ExecuteCustomSql_ptt-binding" type="tns:ExecuteCustomSql_ptt">
+    <soap:binding style="document" transport="http://www.bea.com/wli/sb/transports/jca"/>
+    <operation name="ExecuteCustomSql">
+      <soap:operation soapAction="ExecuteCustomSql"/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+    </operation>
+  </binding>
+  <service name="ExecuteCustomSql-service">
+    <port name="ExecuteCustomSql-port" binding="tns:ExecuteCustomSql_ptt-binding">
+      <soap:address location="jca://eis/DB/OsbCookbookConnection"/>
+    </port>
+  </service>
+</definitions>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xml-fragment xmlns:ser="http://www.bea.com/wli/sb/services" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:env="http://www.bea.com/wli/config/env" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:con="http://www.bea.com/wli/sb/pipeline/config">
+  <ser:coreEntry isProxy="true" isEnabled="true">
+    <ser:binding type="SOAP" isSoap12="false" xsi:type="con1:SoapBindingType" xmlns:con1="http://www.bea.com/wli/sb/services/bindings/config">
+      <con1:wsdl ref="copying-nodes-actions/wsdl/CustomerManagement"/>
+      <con1:port>
+        <con1:name>CustomerManagementSOAP</con1:name>
+        <con1:namespace>http://www.somecorp.org/CustomerManagement</con1:namespace>
+      </con1:port>
+      <con1:selector type="SOAP body"/>
+    </ser:binding>
+    <ser:monitoring isEnabled="false">
+      <ser:aggregationInterval>10</ser:aggregationInterval>
+      <ser:pipelineMonitoringLevel>Pipeline</ser:pipelineMonitoringLevel>
+    </ser:monitoring>
+    <ser:reporting>true</ser:reporting>
+    <ser:logging isEnabled="true">
+      <ser:logLevel>debug</ser:logLevel>
+    </ser:logging>
+    <ser:sla-alerting isEnabled="true">
+      <ser:alertLevel>normal</ser:alertLevel>
+    </ser:sla-alerting>
+    <ser:pipeline-alerting isEnabled="true">
+      <ser:alertLevel>normal</ser:alertLevel>
+    </ser:pipeline-alerting>
+    <ser:ws-policy>
+      <ser:binding-mode>wsdl-policy-attachments</ser:binding-mode>
+    </ser:ws-policy>
+  </ser:coreEntry>
+  <ser:endpointConfig>
+    <tran:provider-id>http</tran:provider-id>
+    <tran:inbound>true</tran:inbound>
+    <tran:URI>
+      <env:value>/copying-nodes-actions/proxy/CustomerManagementSecond</env:value>
+    </tran:URI>
+    <tran:inbound-properties/>
+    <tran:all-headers>false</tran:all-headers>
+    <tran:provider-specific>
+      <http:inbound-properties/>
+    </tran:provider-specific>
+  </ser:endpointConfig>
+  <ser:router>
+    <con:flow>
+      <con:branch-node type="operation" name="OperationalBranch">
+        <con:context/>
+        <con:branch-table>
+          <con:branch name="FindCustomer">
+            <con:operator>equals</con:operator>
+            <con:value/>
+            <con:flow>
+              <con:route-node name="FindCustomerRoute">
+                <con:context/>
+              </con:route-node>
+            </con:flow>
+          </con:branch>
+          <con:branch name="StoreCustomer">
+            <con:operator>equals</con:operator>
+            <con:value/>
+            <con:flow>
+              <con:route-node name="StoreCustomerRoute">
+                <con:context/>
+              </con:route-node>
+            </con:flow>
+          </con:branch>
+          <con:default-branch>
+            <con:flow/>
+          </con:default-branch>
+        </con:branch-table>
+      </con:branch-node>
+    </con:flow>
+  </ser:router>
+</xml-fragment>

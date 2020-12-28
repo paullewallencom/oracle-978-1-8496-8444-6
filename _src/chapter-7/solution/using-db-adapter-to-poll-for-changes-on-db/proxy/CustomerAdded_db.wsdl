@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions targetNamespace="http://xmlns.oracle.com/pcbpel/adapter/db/OWSM/CustomerChangeDB/CustomerAdded" name="CustomerAdded-concrete" xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://xmlns.oracle.com/pcbpel/adapter/db/OWSM/CustomerChangeDB/CustomerAdded" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+  <import namespace="http://xmlns.oracle.com/pcbpel/adapter/db/OWSM/CustomerChangeDB/CustomerAdded" location="../adapter/CustomerAdded.wsdl"/>
+  <binding name="CustomerAdded_ptt-binding" type="tns:CustomerAdded_ptt">
+    <soap:binding style="document" transport="http://www.bea.com/wli/sb/transports/jca"/>
+    <operation name="receive">
+      <soap:operation soapAction="receive"/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+    </operation>
+  </binding>
+  <service name="CustomerAdded-service">
+    <port name="CustomerAdded-port" binding="tns:CustomerAdded_ptt-binding">
+      <soap:address location="jca://eis/DB/OsbCookbookConnection"/>
+    </port>
+  </service>
+</definitions>

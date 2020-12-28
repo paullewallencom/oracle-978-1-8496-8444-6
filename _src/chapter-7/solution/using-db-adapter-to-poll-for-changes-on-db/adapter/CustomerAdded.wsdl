@@ -1,0 +1,21 @@
+<?binding.jca CustomerAdded_db.jca?>
+<wsdl:definitions name="CustomerAdded" targetNamespace="http://xmlns.oracle.com/pcbpel/adapter/db/OWSM/CustomerChangeDB/CustomerAdded" xmlns:tns="http://xmlns.oracle.com/pcbpel/adapter/db/OWSM/CustomerChangeDB/CustomerAdded" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:plt="http://schemas.xmlsoap.org/ws/2003/05/partner-link/" xmlns:top="http://xmlns.oracle.com/pcbpel/adapter/db/top/CustomerAdded">
+    <plt:partnerLinkType name="CustomerAdded_plt">
+        <plt:role name="CustomerAdded_role">
+            <plt:portType name="tns:CustomerAdded_ptt"/>
+        </plt:role>
+    </plt:partnerLinkType>
+    <wsdl:types>
+        <schema xmlns="http://www.w3.org/2001/XMLSchema">
+            <import namespace="http://xmlns.oracle.com/pcbpel/adapter/db/top/CustomerAdded" schemaLocation="xsd/CustomerAdded_table.xsd"/>
+        </schema>
+    </wsdl:types>
+    <wsdl:message name="CustomerTCollection_msg">
+        <wsdl:part name="CustomerTCollection" element="top:CustomerTCollection"/>
+    </wsdl:message>
+    <wsdl:portType name="CustomerAdded_ptt">
+        <wsdl:operation name="receive">
+            <wsdl:input message="tns:CustomerTCollection_msg"/>
+        </wsdl:operation>
+    </wsdl:portType>
+</wsdl:definitions>

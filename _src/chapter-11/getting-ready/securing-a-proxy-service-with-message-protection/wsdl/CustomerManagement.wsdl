@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:tns="http://osb-cookbook/CustomerManagement" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:cus="http://osb-cookbook/customer"
+	name="CustomerManagement" targetNamespace="http://osb-cookbook/CustomerManagement">
+	<wsdl:types>
+		<xsd:schema targetNamespace="http://osb-cookbook/CustomerManagement">
+			<xsd:import namespace="http://osb-cookbook/customer"
+				schemaLocation="../xsd/Customer.xsd" />
+			<xsd:element name="FindCustomer">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="ID" type="xsd:long" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="FindCustomerResponse">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="Customer" type="cus:CustomerTyp" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:schema>
+	</wsdl:types>
+	<wsdl:message name="FindCustomerRequest">
+		<wsdl:part element="tns:FindCustomer" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="FindCustomerResponse">
+		<wsdl:part element="tns:FindCustomerResponse" name="parameters" />
+	</wsdl:message>
+	<wsdl:portType name="CustomerManagement">
+		<wsdl:operation name="FindCustomer">
+			<wsdl:input message="tns:FindCustomerRequest" />
+			<wsdl:output message="tns:FindCustomerResponse" />
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="CustomerManagementSOAP" type="tns:CustomerManagement">
+		<soap:binding style="document"
+			transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="FindCustomer">
+			<soap:operation
+				soapAction="http://osb-cookbook/CustomerManagement/FindCustomer" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+</wsdl:definitions>

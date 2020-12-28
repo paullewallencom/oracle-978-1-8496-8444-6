@@ -1,0 +1,57 @@
+<WL5G3N4:definitions
+     name="HelloWorldService"
+     targetNamespace="http://wsrm.osbbook"
+     xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy"
+     xmlns:WL5G3N6="http://schemas.xmlsoap.org/wsdl/soap/"
+     xmlns:WL5G3N5="http://wsrm.osbbook"
+     xmlns:WL5G3N4="http://schemas.xmlsoap.org/wsdl/"
+     xmlns:WL5G3N3="http://www.bea.com/wsrm/policy"
+     xmlns:WL5G3N2="http://schemas.xmlsoap.org/ws/2005/02/rm/policy"
+     xmlns:WL5G3N0="http://schemas.xmlsoap.org/ws/2004/09/policy"
+     xmlns:WL5G3N1="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"
+    >
+    <WL5G3N0:Policy WL5G3N1:Id="LongRunningReliability.xml">
+        <WL5G3N2:RMAssertion>
+            <WL5G3N2:InactivityTimeout Milliseconds="86400000"/>
+            <WL5G3N2:BaseRetransmissionInterval Milliseconds="3000"/>
+            <WL5G3N2:ExponentialBackoff/>
+            <WL5G3N2:AcknowledgementInterval Milliseconds="200"/>
+            <WL5G3N3:Expires Expires="P1M"/>
+        </WL5G3N2:RMAssertion>
+    </WL5G3N0:Policy>
+    <wsp:UsingPolicy WL5G3N4:Required="true"/>
+    <WL5G3N4:types>
+        <xsd:schema xmlns:WL5G3N0="http://schemas.xmlsoap.org/wsdl/" xmlns:WL5G3N1="http://wsrm.osbbook"
+             xmlns:WL5G3N2="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:WL5G3N3="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:WL5G3N4="http://wsrm.osbbook" xmlns:WL5G3N5="http://schemas.xmlsoap.org/wsdl/soap/"
+             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://wsrm.osbbook"
+             xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+            <xsd:import namespace="http://wsrm.osbbook" schemaLocation="b0a297a488a34f41.xsd"/>
+        </xsd:schema>
+    </WL5G3N4:types>
+    <WL5G3N4:message name="sayHelloOneWay">
+        <WL5G3N4:part name="parameters" element="WL5G3N5:sayHelloOneWay"/>
+    </WL5G3N4:message>
+    <WL5G3N4:portType name="HelloWorldService">
+        <WL5G3N4:operation name="sayHelloOneWay">
+            <WL5G3N4:input message="WL5G3N5:sayHelloOneWay"/>
+        </WL5G3N4:operation>
+    </WL5G3N4:portType>
+    <WL5G3N4:binding name="HelloWorldServiceSoapHttpPortBinding" type="WL5G3N5:HelloWorldService">
+        <wsp:Policy>
+            <wsp:PolicyReference URI="#LongRunningReliability.xml"/>
+        </wsp:Policy>
+        <WL5G3N6:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <WL5G3N4:operation name="sayHelloOneWay">
+            <WL5G3N6:operation/>
+            <WL5G3N4:input>
+                <WL5G3N6:body use="literal"/>
+            </WL5G3N4:input>
+        </WL5G3N4:operation>
+    </WL5G3N4:binding>
+    <WL5G3N4:service name="HelloWorldServiceSoapHttpPortBindingQSService">
+        <WL5G3N4:port name="HelloWorldServiceSoapHttpPortBindingQSPort" binding="WL5G3N5:HelloWorldServiceSoapHttpPortBinding">
+            <WL5G3N6:address location="http://localhost:7001/using-reliable-msg-with-ws-transport/Provider"/>
+        </WL5G3N4:port>
+    </WL5G3N4:service>
+</WL5G3N4:definitions>

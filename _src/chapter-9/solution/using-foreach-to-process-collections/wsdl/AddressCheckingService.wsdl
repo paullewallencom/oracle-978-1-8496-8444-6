@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="AddressCheckingService" targetNamespace="http://www.osbcookbook.org/AddressCheckingService/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://www.osbcookbook.org/AddressCheckingService/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://www.osbcookbook.org/AddressCheckingService/" 
+    			xmlns:cus="http://www.somecorp.com/customer">
+    <xsd:import namespace="http://www.somecorp.com/customer" schemaLocation="../xsd/Customer.xsd"/>
+      <xsd:element name="CheckAddress">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" ref="cus:Address"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="CheckAddressResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="isValid" type="xsd:boolean"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="CheckAddressResponse">
+    <wsdl:part name="parameters" element="tns:CheckAddressResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="CheckAddressRequest">
+    <wsdl:part name="parameters" element="tns:CheckAddress">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="AddressCheckingService">
+    <wsdl:operation name="CheckAddress">
+      <wsdl:input message="tns:CheckAddressRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:CheckAddressResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="AddressCheckingServiceSOAP" type="tns:AddressCheckingService">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="CheckAddress">
+      <soap:operation soapAction="http://www.crm.org/AddressCheckingService/CheckAddress"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="AddressCheckingService">
+    <wsdl:port name="AddressCheckingServiceSOAP" binding="tns:AddressCheckingServiceSOAP">
+      <soap:address location="be-defined-later"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

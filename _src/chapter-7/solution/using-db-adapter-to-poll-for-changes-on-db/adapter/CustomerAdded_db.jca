@@ -1,0 +1,20 @@
+<adapter-config name="CustomerAdded" adapter="Database Adapter" wsdlLocation="CustomerAdded.wsdl" xmlns="http://platform.integration.oracle/blocks/adapter/fw/metadata">
+  
+  <connection-factory location="eis/DB/OsbCookbookConnection" UIConnectionName="OsbCookbookConnection" adapterRef=""/>
+  <endpoint-activation portType="CustomerAdded_ptt" operation="receive">
+    <activation-spec className="oracle.tip.adapter.db.DBActivationSpec">
+      <property name="DescriptorName" value="CustomerAdded.CustomerT"/>
+      <property name="QueryName" value="CustomerAddedSelect"/>
+      <property name="MappingsMetaDataURL" value="CustomerAdded-or-mappings.xml"/>
+      <property name="PollingStrategy" value="FileSequencingPollingStrategy"/>
+      <property name="SequencingFileName" value="C:\workspace\soacommunity\osb-cookbook\trunk\book-handout\chapter-2\working\using-db-adapter-to-poll-for-changes-on-db\sequencing.txt"/>
+      <property name="SequencingColumn" value="ID"/>
+      <property name="PollingInterval" value="5"/>
+      <property name="MaxRaiseSize" value="1"/>
+      <property name="MaxTransactionSize" value="10"/>
+      <property name="NumberOfThreads" value="1"/>
+      <property name="ReturnSingleResultSet" value="false"/>
+    </activation-spec>
+  </endpoint-activation>
+
+</adapter-config>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project name="ProcessingService" resourceRoot="" soapui-version="4.0.1" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="ProcessingServiceSOAP" type="wsdl" bindingName="{http://www.osbcookbook.org/ProcessingService/}ProcessingServiceSOAP" soapVersion="1_1" anonymous="optional" definition="file:/C:/workspace/osb-cookbook/trunk/book-handout/chapter-9/work/using-publish-to-async-invoke-service/wsdl/ProcessingService.wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="file:\C:\workspace\osb-cookbook\trunk\book-handout\chapter-9\work\using-publish-to-async-invoke-service\wsdl\ProcessingService.wsdl"><con:part><con:url>file:\C:\workspace\osb-cookbook\trunk\book-handout\chapter-9\work\using-publish-to-async-invoke-service\wsdl\ProcessingService.wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="ProcessingService" targetNamespace="http://www.osbcookbook.org/ProcessingService/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://www.osbcookbook.org/ProcessingService/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://www.osbcookbook.org/ProcessingService/">
+      <xsd:element name="ProcessIt">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" name="id" type="xsd:long"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="ProcessItResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="process" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="ProcessItResponse">
+    <wsdl:part name="parameters" element="tns:ProcessItResponse"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="ProcessItRequest">
+    <wsdl:part name="parameters" element="tns:ProcessIt"></wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="ProcessingService">
+    <wsdl:operation name="ProcessIt">
+      <wsdl:input message="tns:ProcessItRequest"></wsdl:input>
+      <wsdl:output message="tns:ProcessItResponse"></wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ProcessingServiceSOAP" type="tns:ProcessingService">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="ProcessIt">
+      <soap:operation soapAction="http://www.crm.org/ProcessingService/ProcessIt"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ProcessingService">
+    <wsdl:port name="ProcessingServiceSOAP" binding="tns:ProcessingServiceSOAP">
+      <soap:address location="be-defined-later"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>be-defined-later</con:endpoint><con:endpoint>http://soavm11:8088/mockProcessingServiceSOAP</con:endpoint></con:endpoints><con:operation isOneWay="false" action="http://www.crm.org/ProcessingService/ProcessIt" name="ProcessIt" bindingOperationName="ProcessIt" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://soavm11:8088/mockProcessingServiceSOAP</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:proc="http://www.osbcookbook.org/ProcessingService/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <proc:ProcessIt>
+         <id>5</id>
+      </proc:ProcessIt>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.crm.org/ProcessingService/ProcessIt"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:mockService port="8088" path="/mockProcessingServiceSOAP" host="soavm11" name="ProcessingServiceSOAP MockService"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.mock.WsdlMockService@require-soap-action">false</con:setting></con:settings><con:mockOperation name="ProcessIt" interface="ProcessingServiceSOAP" operation="ProcessIt"><con:settings/><con:dispatchStyle>SEQUENCE</con:dispatchStyle><con:defaultResponse>Response 1</con:defaultResponse><con:response name="Response 1" encoding="UTF-8"><con:settings/><con:script>def req = new XmlSlurper().parseText(mockRequest.requestContent) 
+
+long waitTime  = new Long(req.Body.ProcessIt.id.toString())
+t0 =  System.currentTimeMillis();
+t1 = 0;
+while ((t1 - t0) &lt; (waitTime * 1000))
+   t1 = System.currentTimeMillis();
+
+
+</con:script><con:responseContent><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:proc="http://www.osbcookbook.org/ProcessingService/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <proc:ProcessItResponse>
+         <process>100000</process>
+      </proc:ProcessItResponse>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:responseContent><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.crm.org/ProcessingService/ProcessIt"/></con:response><con:dispatchConfig/></con:mockOperation><con:properties/></con:mockService><con:properties/><con:wssContainer/></con:soapui-project>

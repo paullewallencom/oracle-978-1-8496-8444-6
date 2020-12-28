@@ -1,0 +1,12 @@
+<!DOCTYPE weblogic-application PUBLIC
+  "-//BEA Systems, Inc.//DTD WebLogic Application 8.1.0//EN"
+  "http://www.bea.com/servers/wls810/dtd/weblogic-application_2_0.dtd">
+
+<weblogic-application>
+  <listener>
+    <!-- This class gives callbacks for the deployment lifecycle and websocket
+    transport is registered with OSB whenever the application is started. -->
+    <listener-class>com.bea.alsb.transports.websocket.ApplicationListener</listener-class>
+  </listener>
+
+</weblogic-application>

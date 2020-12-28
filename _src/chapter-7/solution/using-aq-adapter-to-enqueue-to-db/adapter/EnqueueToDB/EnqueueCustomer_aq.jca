@@ -1,0 +1,10 @@
+<adapter-config name="EnqueueCustomer" adapter="AQ Adapter" wsdlLocation="EnqueueCustomer.wsdl" xmlns="http://platform.integration.oracle/blocks/adapter/fw/metadata">
+  
+  <connection-factory location="eis/aq/OsbCookbookConnection" UIConnectionName="OsbCookbookConnection"/>
+  <endpoint-interaction portType="Enqueue_ptt" operation="Enqueue">
+    <interaction-spec className="oracle.tip.adapter.aq.outbound.AQEnqueueInteractionSpec">
+      <property name="QueueName" value="CUSTOMER_QUEUE"/>
+    </interaction-spec>
+  </endpoint-interaction>
+
+</adapter-config>

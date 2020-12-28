@@ -1,0 +1,12 @@
+<adapter-config name="DequeueEvent" adapter="AQ Adapter" wsdlLocation="DequeueEvent.wsdl" xmlns="http://platform.integration.oracle/blocks/adapter/fw/metadata">
+  
+  <connection-factory location="eis/aq/OsbCookbookConnection" UIConnectionName="OsbCookbookConnection"/>
+  <endpoint-activation portType="Dequeue_ptt" operation="Dequeue">
+    <activation-spec className="oracle.tip.adapter.aq.inbound.AQDequeueActivationSpec">
+      <property name="DequeueCondition" value=""/>
+      <property name="SchemaValidation" value="false"/>
+      <property name="QueueName" value="EVENT_QUEUE"/>
+    </activation-spec>
+  </endpoint-activation>
+
+</adapter-config>

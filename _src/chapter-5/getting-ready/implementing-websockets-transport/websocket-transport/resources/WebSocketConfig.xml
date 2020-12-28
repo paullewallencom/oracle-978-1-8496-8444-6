@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ProviderConfiguration xmlns="http://www.bea.com/wli/sb/transports">
+  <inbound-direction-supported>true</inbound-direction-supported>
+  <outbound-direction-supported>true</outbound-direction-supported>
+  <UDDI>
+    <TModelDefinition>
+      <tModel tModelKey="uddi:bea.uddi.org:transport:websocket">
+        <name>uddi-org:websocket</name>
+        <description>WebSocket transport based webservice</description>
+        <overviewDoc>
+          <overviewURL useType="text">
+            http://www.bea.com/wli/sb/UDDIMapping#websocket
+          </overviewURL>
+        </overviewDoc>
+        <categoryBag>
+          <keyedReference keyName="uddi-org:types:transport"
+                          keyValue="transport"
+                          tModelKey="uddi:uddi.org:categorization:types"/>
+        </categoryBag>
+      </tModel>
+    </TModelDefinition>
+  </UDDI>
+</ProviderConfiguration>

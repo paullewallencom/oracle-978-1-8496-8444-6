@@ -1,0 +1,25 @@
+<?binding.jca ExecuteCustomSql_db.jca?>
+<wsdl:definitions name="ExecuteCustomSql" targetNamespace="http://xmlns.oracle.com/pcbpel/adapter/db/SgsApplication/ExecuteCustomSQL/ExecuteCustomSql" xmlns:db="http://xmlns.oracle.com/pcbpel/adapter/db/ExecuteCustomSql" xmlns:tns="http://xmlns.oracle.com/pcbpel/adapter/db/SgsApplication/ExecuteCustomSQL/ExecuteCustomSql" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:plt="http://schemas.xmlsoap.org/ws/2003/05/partner-link/">
+    <plt:partnerLinkType name="ExecuteCustomSql_plt">
+        <plt:role name="ExecuteCustomSql_role">
+            <plt:portType name="tns:ExecuteCustomSql_ptt"/>
+        </plt:role>
+    </plt:partnerLinkType>
+    <wsdl:types>
+        <schema xmlns="http://www.w3.org/2001/XMLSchema">
+            <import namespace="http://xmlns.oracle.com/pcbpel/adapter/db/ExecuteCustomSql" schemaLocation="xsd/ExecuteCustomSql.xsd"/>
+        </schema>
+    </wsdl:types>
+    <wsdl:message name="ExecuteCustomSqlInput_msg">
+        <wsdl:part name="ExecuteCustomSqlInput_msg" element="db:ExecuteCustomSqlInput"/>
+    </wsdl:message>
+    <wsdl:message name="ExecuteCustomSqlOutputCollection_msg">
+        <wsdl:part name="ExecuteCustomSqlOutputCollection" element="db:ExecuteCustomSqlOutputCollection"/>
+    </wsdl:message>
+    <wsdl:portType name="ExecuteCustomSql_ptt">
+        <wsdl:operation name="ExecuteCustomSql">
+            <wsdl:input message="tns:ExecuteCustomSqlInput_msg"/>
+            <wsdl:output message="tns:ExecuteCustomSqlOutputCollection_msg"/>
+        </wsdl:operation>
+    </wsdl:portType>
+</wsdl:definitions>

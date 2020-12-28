@@ -1,0 +1,4 @@
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
+  <system systemId="http://localhost:7001/using-reliable-msg-with-ws-transport/Provider?wsdl"
+          uri="../wsrm/client/HelloWorldServiceSoapHttpPortBindingQSService.wsdl"/>
+</catalog>

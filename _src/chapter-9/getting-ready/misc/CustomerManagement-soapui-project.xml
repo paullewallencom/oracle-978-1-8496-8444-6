@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project name="CustomerManagement" resourceRoot="" soapui-version="4.0.1" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="CustomerManagementSOAP" type="wsdl" bindingName="{http://www.somecorp.org/CustomerManagement}CustomerManagementSOAP" soapVersion="1_1" anonymous="optional" definition="file:/C:/workspace/osb-cookbook/trunk/book-handout/chapter-9/work/using-service-callout/wsdl/CustomerManagement.wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="file:\C:\workspace\osb-cookbook\trunk\book-handout\chapter-9\work\using-service-callout\wsdl\CustomerManagement.wsdl"><con:part><con:url>file:\C:\workspace\osb-cookbook\trunk\book-handout\chapter-9\work\using-service-callout\wsdl\CustomerManagement.wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="CustomerManagement" targetNamespace="http://www.somecorp.org/CustomerManagement" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://www.somecorp.org/CustomerManagement" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:cus="http://www.somecorp.com/customer">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://www.somecorp.org/CustomerManagement">
+      <xsd:import namespace="http://www.somecorp.com/customer" schemaLocation="../xsd/Customer.xsd"/>
+      <xsd:element name="FindCustomer">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="ID" type="xsd:long"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="FindCustomerResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="Customer" type="cus:CustomerTyp"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="StoreCustomer">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="Customer" type="cus:CustomerTyp"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="StoreCustomerResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="ID" type="xsd:long"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="FindCustomerRequest">
+    <wsdl:part element="tns:FindCustomer" name="parameters"/>
+  </wsdl:message>
+  <wsdl:message name="FindCustomerResponse">
+    <wsdl:part element="tns:FindCustomerResponse" name="parameters"/>
+  </wsdl:message>
+  <wsdl:message name="StoreCustomerRequest">
+    <wsdl:part name="parameters" element="tns:StoreCustomer"/>
+  </wsdl:message>
+  <wsdl:message name="StoreCustomerResponse">
+    <wsdl:part name="parameters" element="tns:StoreCustomerResponse"/>
+  </wsdl:message>
+  <wsdl:portType name="CustomerManagement">
+    <wsdl:operation name="FindCustomer">
+      <wsdl:input message="tns:FindCustomerRequest"/>
+      <wsdl:output message="tns:FindCustomerResponse"/>
+    </wsdl:operation>
+    <wsdl:operation name="StoreCustomer">
+      <wsdl:input message="tns:StoreCustomerRequest"/>
+      <wsdl:output message="tns:StoreCustomerResponse"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="CustomerManagementSOAP" type="tns:CustomerManagement">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="FindCustomer">
+      <soap:operation soapAction="http://www.somecorp.org/CustomerManagement/FindCustomer"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="StoreCustomer">
+      <soap:operation soapAction="http://www.somecorp.org/CustomerManagement/StoreCustomer"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="CustomerManagement">
+    <wsdl:port binding="tns:CustomerManagementSOAP" name="CustomerManagementSOAP">
+      <soap:address location="http://to-be-defined-by-user"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part><con:part><con:url>file:\C:\workspace\osb-cookbook\trunk\book-handout\chapter-9\work\using-service-callout\xsd\Customer.xsd</con:url><con:content><![CDATA[<xs:schema targetNamespace="http://www.somecorp.com/customer" elementFormDefault="qualified" attributeFormDefault="unqualified" xmlns:tns="http://www.somecorp.com/customer" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:credit="http://www.somecorp.com/creditcard">
+  <xs:import namespace="http://www.somecorp.com/creditcard" schemaLocation="CreditCard.xsd"/>
+  <xs:element name="Customer" type="tns:CustomerTyp"/>
+  <xs:complexType name="CustomerTyp">
+    <xs:sequence>
+      <xs:element name="ID" type="xs:long"/>
+      <xs:element name="FirstName" type="xs:string"/>
+      <xs:element name="LastName" type="xs:string"/>
+      <xs:element name="EmailAddress" type="xs:string"/>
+      <xs:element name="Addresses" type="tns:AddressesTyp"/>
+      <xs:element name="BirthDate" type="xs:date" minOccurs="0"/>
+      <xs:element name="Rating" type="tns:RatingTyp"/>
+      <xs:element name="Gender" type="xs:string"/>
+      <xs:element name="CreditCard" type="credit:CreditCardTyp" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="AddressesTyp">
+    <xs:sequence>
+      <xs:element name="Address" type="tns:AddressTyp" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="AddressTyp">
+    <xs:sequence>
+      <xs:element name="Street" type="xs:string"/>
+      <xs:element name="PostalCode" type="xs:string"/>
+      <xs:element name="City" type="xs:string"/>
+      <xs:element name="Country" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:simpleType name="RatingTyp">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="A"/>
+      <xs:enumeration value="AA"/>
+      <xs:enumeration value="AAA"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>]]></con:content><con:type>http://www.w3.org/2001/XMLSchema</con:type></con:part><con:part><con:url>file:\C:\workspace\osb-cookbook\trunk\book-handout\chapter-9\work\using-service-callout\xsd\CreditCard.xsd</con:url><con:content><![CDATA[<xs:schema targetNamespace="http://www.somecorp.com/creditcard" elementFormDefault="qualified" attributeFormDefault="unqualified" xmlns:tns="http://www.somecorp.com/creditcard" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="CreditCard" type="tns:CreditCardTyp"/>
+  <xs:complexType name="CreditCardTyp">
+    <xs:sequence>
+      <xs:element name="CardIssuer" type="tns:CardIssuerTyp"/>
+      <xs:element name="CardNumber" type="xs:string"/>
+      <xs:element name="CardholderName" type="xs:string"/>
+      <xs:element name="ExpirationDate" type="xs:string"/>
+      <xs:element name="CardValidationCode" type="xs:long"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:simpleType name="CardIssuerTyp">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="visa"/>
+      <xs:enumeration value="amexco"/>
+      <xs:enumeration value="mastercard"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>]]></con:content><con:type>http://www.w3.org/2001/XMLSchema</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://localhost:7001/using-service-callout/proxy/CustomerManagement</con:endpoint></con:endpoints><con:operation isOneWay="false" action="http://www.somecorp.org/CustomerManagement/FindCustomer" name="FindCustomer" bindingOperationName="FindCustomer" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:7001/using-service-callout/proxy/CustomerManagement</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:cus="http://www.somecorp.org/CustomerManagement">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <cus:FindCustomer>
+         <ID>1</ID>
+      </cus:FindCustomer>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.somecorp.org/CustomerManagement/FindCustomer"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation isOneWay="false" action="http://www.somecorp.org/CustomerManagement/StoreCustomer" name="StoreCustomer" bindingOperationName="StoreCustomer" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:7001/using-service-callout/proxy/CustomerManagement</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:cus="http://www.somecorp.org/CustomerManagement" xmlns:cus1="http://www.somecorp.com/customer" xmlns:cred="http://www.somecorp.com/creditcard">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <cus:StoreCustomer>
+         <Customer>
+            <cus1:ID>?</cus1:ID>
+            <cus1:FirstName>?</cus1:FirstName>
+            <cus1:LastName>?</cus1:LastName>
+            <cus1:EmailAddress>?</cus1:EmailAddress>
+            <cus1:Addresses>
+               <!--Zero or more repetitions:-->
+               <cus1:Address>
+                  <cus1:Street>?</cus1:Street>
+                  <cus1:PostalCode>?</cus1:PostalCode>
+                  <cus1:City>?</cus1:City>
+                  <!--Optional:-->
+                  <cus1:Country>?</cus1:Country>
+               </cus1:Address>
+            </cus1:Addresses>
+            <!--Optional:-->
+            <cus1:BirthDate>?</cus1:BirthDate>
+            <cus1:Rating>?</cus1:Rating>
+            <cus1:Gender>?</cus1:Gender>
+            <!--Optional:-->
+            <cus1:CreditCard>
+               <cred:CardIssuer>?</cred:CardIssuer>
+               <cred:CardNumber>?</cred:CardNumber>
+               <cred:CardholderName>?</cred:CardholderName>
+               <cred:ExpirationDate>?</cred:ExpirationDate>
+               <cred:CardValidationCode>?</cred:CardValidationCode>
+            </cus1:CreditCard>
+         </Customer>
+      </cus:StoreCustomer>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.somecorp.org/CustomerManagement/StoreCustomer"/></con:call></con:operation></con:interface><con:properties/><con:wssContainer/></con:soapui-project>

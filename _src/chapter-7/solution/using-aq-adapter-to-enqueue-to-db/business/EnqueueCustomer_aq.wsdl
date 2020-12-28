@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions targetNamespace="http://xmlns.oracle.com/pcbpel/adapter/aq/SgsApplication/EnqueueToDB/EnqueueCustomer" name="EnqueueCustomer-concrete" xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://xmlns.oracle.com/pcbpel/adapter/aq/SgsApplication/EnqueueToDB/EnqueueCustomer" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+  <import namespace="http://xmlns.oracle.com/pcbpel/adapter/aq/SgsApplication/EnqueueToDB/EnqueueCustomer" location="../adapter/EnqueueToDB/EnqueueCustomer.wsdl"/>
+  <binding name="Enqueue_ptt-binding" type="tns:Enqueue_ptt">
+    <soap:binding style="document" transport="http://www.bea.com/wli/sb/transports/jca"/>
+    <operation name="Enqueue">
+      <soap:operation soapAction="Enqueue"/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+    </operation>
+  </binding>
+  <service name="EnqueueCustomer-service">
+    <port name="EnqueueCustomer-port" binding="tns:Enqueue_ptt-binding">
+      <soap:address location="jca://eis/aq/OsbCookbookConnection"/>
+    </port>
+  </service>
+</definitions>

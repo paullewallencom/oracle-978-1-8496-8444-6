@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project name="CustomerServiceFromCRM" resourceRoot="" soapui-version="4.0.0" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="CustomerServiceSOAP" type="wsdl" bindingName="{http://www.crm.org/CustomerService/}CustomerServiceSOAP" soapVersion="1_1" anonymous="optional" definition="file:/C:/workspace/osb-cookbook/trunk/book-handout/chapter-5/getting-ready/exposing-restful-service/CustomerServiceCRM.wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="file:/C:/workspace/osb-cookbook/trunk/book-handout/chapter-5/getting-ready/exposing-restful-service/CustomerServiceCRM.wsdl"><con:part><con:url>file:/C:/workspace/osb-cookbook/trunk/book-handout/chapter-5/getting-ready/exposing-restful-service/CustomerServiceCRM.wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="CustomerService" targetNamespace="http://www.crm.org/CustomerService/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://www.crm.org/CustomerService/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://www.crm.org/CustomerService/">
+      <xsd:complexType name="AddressTyp">
+        <xsd:sequence>
+          <xsd:element name="street" type="xsd:string"/>
+          <xsd:element name="nr" type="xsd:string"/>
+          <xsd:element name="zipcode" type="xsd:string"/>
+          <xsd:element name="city" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="CustomerTyp">
+        <xsd:sequence>
+          <xsd:element name="id" type="xsd:int"/>
+          <xsd:element name="firstname" type="xsd:string"/>
+          <xsd:element name="lastname" type="xsd:string"/>
+          <xsd:element name="gender" type="xsd:string"/>
+          <xsd:element name="emailAddress" type="xsd:string"/>
+          <xsd:element name="rating" type="xsd:string"/>
+          <xsd:element name="address" type="tns:AddressTyp"/>
+          <xsd:element name="userdef1" type="xsd:string"/>
+          <xsd:element name="userdef2" type="xsd:string"/>
+          <xsd:element name="userdef3" type="xsd:string"/>
+          <xsd:element name="userdef4" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="CriteriasType">
+        <xsd:sequence>
+          <xsd:element maxOccurs="unbounded" minOccurs="1" name="criteria" type="tns:CriteriaType"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="CriteriaType">
+        <xsd:sequence>
+          <xsd:element name="criteriaField" type="xsd:string"/>
+          <xsd:element name="criteriaValue" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="CreateNewCustomer">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="customer" type="tns:CustomerTyp"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="CreateNewCustomerResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="id" type="xsd:int"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="UpdateExistingCustomer">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="customer" type="tns:CustomerTyp"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="UpdateExistingCustomerResponse">
+        <xsd:complexType>
+          <xsd:sequence/>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="RetrieveCustomerByCriteria">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" name="criterias" type="tns:CriteriasType"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="RetrieveCustomerByCriteriaResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="customers" type="tns:CustomerTyp"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="DeleteExistingCustomer">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="customer" type="tns:CustomerTyp"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="DeleteExistingCustomerResponse">
+        <xsd:complexType>
+          <xsd:sequence/>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="CreateNewCustomerFault">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="CreateNewCustomerFault" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="UpdateExistingCustomerFault">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="UpdateExistingCustomerFault" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="UpdateExistingCustomerFault">
+    <wsdl:part name="parameters" element="tns:UpdateExistingCustomerFault"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="RetrieveCustomerByCriteriaRequest">
+    <wsdl:part name="parameters" element="tns:RetrieveCustomerByCriteria"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="CreateNewCustomerResponse">
+    <wsdl:part name="parameters" element="tns:CreateNewCustomerResponse"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="DeleteExistingCustomerRequest">
+    <wsdl:part name="parameters" element="tns:DeleteExistingCustomer"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="CreateNewCustomerFault">
+    <wsdl:part name="parameters" element="tns:CreateNewCustomerFault"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="DeleteExistingCustomerResponse">
+    <wsdl:part name="parameters" element="tns:DeleteExistingCustomerResponse"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="UpdateExistingCustomerRequest">
+    <wsdl:part name="parameters" element="tns:UpdateExistingCustomer"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="UpdateExistingCustomerResponse">
+    <wsdl:part name="parameters" element="tns:UpdateExistingCustomerResponse"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="CreateNewCustomerRequest">
+    <wsdl:part name="parameters" element="tns:CreateNewCustomer"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="RetrieveCustomerByCriteriaResponse">
+    <wsdl:part name="parameters" element="tns:RetrieveCustomerByCriteriaResponse"></wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="CustomerService">
+    <wsdl:operation name="CreateNewCustomer">
+      <wsdl:input message="tns:CreateNewCustomerRequest"></wsdl:input>
+      <wsdl:output message="tns:CreateNewCustomerResponse"></wsdl:output>
+      <wsdl:fault name="fault" message="tns:CreateNewCustomerFault"></wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateExistingCustomer">
+      <wsdl:input message="tns:UpdateExistingCustomerRequest"></wsdl:input>
+      <wsdl:output message="tns:UpdateExistingCustomerResponse"></wsdl:output>
+      <wsdl:fault name="fault" message="tns:UpdateExistingCustomerFault"></wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="RetrieveCustomerByCriteria">
+      <wsdl:input message="tns:RetrieveCustomerByCriteriaRequest"></wsdl:input>
+      <wsdl:output message="tns:RetrieveCustomerByCriteriaResponse"></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteExistingCustomer">
+      <wsdl:input message="tns:DeleteExistingCustomerRequest"></wsdl:input>
+      <wsdl:output message="tns:DeleteExistingCustomerResponse"></wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="CustomerServiceSOAP" type="tns:CustomerService">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="CreateNewCustomer">
+      <soap:operation soapAction="http://www.crm.org/CustomerService/CreateNewCustomer"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateExistingCustomer">
+      <soap:operation soapAction="http://www.crm.org/CustomerService/UpdateExistingCustomer"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RetrieveCustomerByCriteria">
+      <soap:operation soapAction="http://www.crm.org/CustomerService/RetrieveCustomerByCriteria"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteExistingCustomer">
+      <soap:operation soapAction="http://www.crm.org/CustomerService/DeleteExistingCustomer"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="CustomerService">
+    <wsdl:port name="CustomerServiceSOAP" binding="tns:CustomerServiceSOAP">
+      <soap:address location="http://soavm11:8088/mockCustomerServiceSOAP"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://www.example.org/</con:endpoint><con:endpoint>http://localhost:8088/mockCustomerServiceSOAP</con:endpoint><con:endpoint>to-be-defined</con:endpoint><con:endpoint>http://soavm11:8088/mockCustomerServiceSOAP</con:endpoint></con:endpoints><con:operation isOneWay="false" action="http://www.crm.org/CustomerService/CreateNewCustomer" name="CreateNewCustomer" bindingOperationName="CreateNewCustomer" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://soavm11:8088/mockCustomerServiceSOAP</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:cus="http://www.crm.org/CustomerService/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <cus:CreateNewCustomer>
+         <customer>
+            <id>?</id>
+            <firstname>?</firstname>
+            <lastname>?</lastname>
+            <gender>?</gender>
+            <emailAddress>?</emailAddress>
+            <rating>?</rating>
+            <address>
+               <street>?</street>
+               <nr>?</nr>
+               <zipcode>?</zipcode>
+               <city>?</city>
+            </address>
+            <userdef1>?</userdef1>
+            <userdef2>?</userdef2>
+            <userdef3>?</userdef3>
+            <userdef4>?</userdef4>
+         </customer>
+      </cus:CreateNewCustomer>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.crm.org/CustomerService/CreateNewCustomer"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation isOneWay="false" action="http://www.crm.org/CustomerService/RetrieveCustomerByCriteria" name="RetrieveCustomerByCriteria" bindingOperationName="RetrieveCustomerByCriteria" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://soavm11:8088/mockCustomerServiceSOAP</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:cus="http://www.crm.org/CustomerService/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <cus:RetrieveCustomerByCriteria>
+         <criterias>
+            <!--1 or more repetitions:-->
+            <criteria>
+               <criteriaField>id</criteriaField>
+               <criteriaValue>101</criteriaValue>
+            </criteria>
+         </criterias>
+      </cus:RetrieveCustomerByCriteria>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.crm.org/CustomerService/RetrieveCustomerByCriteria"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation isOneWay="false" action="http://www.crm.org/CustomerService/UpdateExistingCustomer" name="UpdateExistingCustomer" bindingOperationName="UpdateExistingCustomer" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://soavm11:8088/mockCustomerServiceSOAP</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:cus="http://www.crm.org/CustomerService/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <cus:UpdateExistingCustomer>
+         <customer>
+            <id>?</id>
+            <firstname>?</firstname>
+            <lastname>?</lastname>
+            <gender>?</gender>
+            <emailAddress>?</emailAddress>
+            <rating>?</rating>
+            <address>
+               <street>?</street>
+               <nr>?</nr>
+               <zipcode>?</zipcode>
+               <city>?</city>
+            </address>
+            <userdef1>?</userdef1>
+            <userdef2>?</userdef2>
+            <userdef3>?</userdef3>
+            <userdef4>?</userdef4>
+         </customer>
+      </cus:UpdateExistingCustomer>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.crm.org/CustomerService/UpdateExistingCustomer"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation isOneWay="false" action="http://www.crm.org/CustomerService/DeleteExistingCustomer" name="DeleteExistingCustomer" bindingOperationName="DeleteExistingCustomer" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://soavm11:8088/mockCustomerServiceSOAP</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:cus="http://www.crm.org/CustomerService/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <cus:DeleteExistingCustomer>
+         <customer>
+            <id>?</id>
+            <firstname>?</firstname>
+            <lastname>?</lastname>
+            <gender>?</gender>
+            <emailAddress>?</emailAddress>
+            <rating>?</rating>
+            <address>
+               <street>?</street>
+               <nr>?</nr>
+               <zipcode>?</zipcode>
+               <city>?</city>
+            </address>
+            <userdef1>?</userdef1>
+            <userdef2>?</userdef2>
+            <userdef3>?</userdef3>
+            <userdef4>?</userdef4>
+         </customer>
+      </cus:DeleteExistingCustomer>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.crm.org/CustomerService/DeleteExistingCustomer"/></con:call></con:operation></con:interface><con:mockService port="8088" path="/mockCustomerServiceSOAP" host="soavm11" name="CustomerServiceSOAP MockService"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.mock.WsdlMockService@require-soap-action">false</con:setting></con:settings><con:mockOperation name="CreateNewCustomer" interface="CustomerServiceSOAP" operation="CreateNewCustomer"><con:settings/><con:dispatchStyle>SEQUENCE</con:dispatchStyle><con:defaultResponse>Response 1</con:defaultResponse><con:response name="Response 1" encoding="UTF-8"><con:settings/><con:responseContent><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:cus="http://www.crm.org/CustomerService/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <cus:CreateNewCustomerResponse>
+         <id>1</id>
+      </cus:CreateNewCustomerResponse>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:responseContent><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.crm.org/CustomerService/CreateNewCustomer"/></con:response><con:dispatchConfig/></con:mockOperation><con:mockOperation name="RetrieveCustomerByCriteria" interface="CustomerServiceSOAP" operation="RetrieveCustomerByCriteria"><con:settings/><con:dispatchStyle>QUERY_MATCH</con:dispatchStyle><con:defaultResponse>Response 101</con:defaultResponse><con:response name="Response 100" encoding="UTF-8"><con:settings/><con:responseContent><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:cus="http://www.crm.org/CustomerService/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <cus:RetrieveCustomerByCriteriaResponse>
+         <customers>
+            <id>100</id>
+            <firstname>Peter</firstname>
+            <lastname>Sample</lastname>
+            <gender>M</gender>
+            <emailAddress>peter.sample@osb.com</emailAddress>
+            <rating>A</rating>
+            <address>
+               <street>Somestreet</street>
+               <nr>10</nr>
+               <zipcode>98999</zipcode>
+               <city>Somewhere</city>
+            </address>
+            <userdef1></userdef1>
+            <userdef2></userdef2>
+            <userdef3></userdef3>
+            <userdef4></userdef4>
+         </customers>
+      </cus:RetrieveCustomerByCriteriaResponse>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:responseContent><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.crm.org/CustomerService/RetrieveCustomerByCriteria"/></con:response><con:response name="Response 101" encoding="UTF-8"><con:settings/><con:responseContent><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:cus="http://www.crm.org/CustomerService/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <cus:RetrieveCustomerByCriteriaResponse>
+         <customers>
+            <id>101</id>
+            <firstname>Paul</firstname>
+            <lastname>Sample</lastname>
+            <gender>M</gender>
+            <emailAddress>paul.sample@somewhere.com</emailAddress>
+            <rating>A</rating>
+            <address>
+               <street>Somewhere</street>
+               <nr>19</nr>
+               <zipcode>9999</zipcode>
+               <city>Somewhere</city>
+            </address>
+         </customers>
+      </cus:RetrieveCustomerByCriteriaResponse>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:responseContent><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.crm.org/CustomerService/RetrieveCustomerByCriteria"/></con:response><con:dispatchConfig xsi:type="con:MockOperationQueryMatchDispatch" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:query><con:name>100</con:name><con:query>declare namespace soapenv='http://schemas.xmlsoap.org/soap/envelope/';
+declare namespace cus='http://www.crm.org/CustomerService/';
+//criteriaValue</con:query><con:match>100</con:match><con:response>Response 100</con:response></con:query></con:dispatchConfig></con:mockOperation><con:mockOperation name="UpdateExistingCustomer" interface="CustomerServiceSOAP" operation="UpdateExistingCustomer"><con:settings/><con:dispatchStyle>SEQUENCE</con:dispatchStyle><con:defaultResponse>Response 1</con:defaultResponse><con:response name="Response 1" encoding="UTF-8"><con:settings/><con:responseContent><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:cus="http://www.crm.org/CustomerService/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <cus:UpdateExistingCustomerResponse/>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:responseContent><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.crm.org/CustomerService/UpdateExistingCustomer"/></con:response><con:dispatchConfig/></con:mockOperation><con:mockOperation name="DeleteExistingCustomer" interface="CustomerServiceSOAP" operation="DeleteExistingCustomer"><con:settings/><con:dispatchStyle>SEQUENCE</con:dispatchStyle><con:defaultResponse>Response 1</con:defaultResponse><con:response name="Response 1" encoding="UTF-8"><con:settings/><con:responseContent><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:cus="http://www.crm.org/CustomerService/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <cus:DeleteExistingCustomerResponse/>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:responseContent><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.crm.org/CustomerService/DeleteExistingCustomer"/></con:response><con:dispatchConfig/></con:mockOperation><con:properties/></con:mockService><con:properties/><con:wssContainer/></con:soapui-project>

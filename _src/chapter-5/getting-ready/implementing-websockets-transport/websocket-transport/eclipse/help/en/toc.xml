@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<?NLS TYPE="org.eclipse.help.toc"?>
+
+<toc label="Socket Transport Sample">
+	<topic label="WebSocket Transport Configuration Page (Business Services)" href="help/en/tpSOCKETTransportBizService.html"/>
+	<topic label="WebSocket Transport Configuration Page (Proxy Services)" href="help/en/tpSOCKETTransportProxyService.html"/>
+	<topic label="Configuring the WebSocket Transport (Oracle Service Bus Console)" href="help/en/example.html"/>
+</toc>

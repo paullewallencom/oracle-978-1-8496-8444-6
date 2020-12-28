@@ -1,0 +1,641 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE message_catalog PUBLIC "weblogic-message-catalog-dtd"
+  "http://www.bea.com/servers/wls810/dtd/msgcat.dtd">
+
+<message_catalog
+  i18n_package="com.bea.alsb.transports.websocket"
+  l10n_package="com.bea.alsb.transports.websocket"
+  subsystem="OSBCookbook.WebSocketTransport"
+  version="1.0"
+  baseid="800000"
+  endid="800100"
+  loggables="true"
+  prefix="OSBCookbook.WebSocketTransport"
+  >
+
+  <logmessage
+    messageid="800000"
+    severity="info"
+    method="registeredSuccessfully()"
+    >
+
+    <messagebody>
+      OSB Cookbook WebSocket transport is registered successfully.
+    </messagebody>
+    <messagedetail/>
+    <cause/>
+    <action/>
+  </logmessage>
+
+  <logmessage
+    messageid="800001"
+    severity="info"
+    method="responsePayload(String responsePayLoad)"
+    >
+
+    <messagebody>
+      responsePayload = {0}
+    </messagebody>
+    <messagedetail/>
+    <cause/>
+    <action/>
+  </logmessage>
+
+  <logmessage
+    messageid="800002"
+    severity="info"
+    method="noResponsePayload()"
+    >
+
+    <messagebody>
+      No response payload.
+    </messagebody>
+
+    <messagedetail/>
+    <cause/>
+    <action/>
+  </logmessage>
+
+  <logmessage
+    messageid="800003"
+    severity="info"
+    method="ipAddress(String host, int port)"
+    >
+
+    <messagebody>
+      Host={0} and port={1}
+    </messagebody>
+
+    <messagedetail/>
+    <cause/>
+    <action/>
+  </logmessage>
+
+  <logmessage
+    messageid="800004"
+    severity="info"
+    method="flushed()"
+    >
+
+    <messagebody>
+      Flushed the content to the external service.
+    </messagebody>
+
+    <messagedetail/>
+    <cause/>
+    <action/>
+  </logmessage>
+
+  <logmessage
+    messageid="800005"
+    severity="info"
+    method="oneWayEndpoint()"
+    >
+
+    <messagebody>
+      Endpoint is one way, and it is ignoring the response.
+    </messagebody>
+
+    <messagedetail/>
+    <cause/>
+    <action/>
+  </logmessage>
+
+  <logmessage
+    messageid="800006"
+    severity="info"
+    method="response(String response)"
+    >
+
+    <messagebody>
+      Response from the external service = {0}
+    </messagebody>
+
+    <messagedetail/>
+    <cause/>
+    <action/>
+  </logmessage>
+
+  <logmessage
+    messageid="800007"
+    severity="error"
+    method="invalidMessage()"
+    >
+
+    <messagebody>
+      Invalid message.
+    </messagebody>
+
+    <messagedetail/>
+    <cause/>
+    <action/>
+  </logmessage>
+
+  <logmessage
+    messageid="800008"
+    severity="warning"
+    method="invalidResponseMetadataType(String type)"
+    >
+
+    <messagebody>
+      Response metadata XML must be an instance of {0}
+    </messagebody>
+
+    <messagedetail/>
+    <cause/>
+    <action/>
+  </logmessage>
+
+  <logmessage
+    messageid="800009"
+    severity="error"
+    method="invalidURI()"
+    >
+
+    <messagebody>
+      Invalid URI.
+    </messagebody>
+
+    <messagedetail/>
+    <cause/>
+    <action/>
+  </logmessage>
+
+  <logmessage
+    messageid="800010"
+    severity="error"
+    method="wrongURIScheme()"
+    >
+
+    <messagebody>
+      URI does not starts with tcp://
+    </messagebody>
+
+    <messagedetail/>
+    <cause/>
+    <action/>
+  </logmessage>
+
+
+  <logmessage
+    messageid="800011"
+    severity="info"
+    method="refCreated(String ref)"
+    >
+
+    <messagebody>
+      Ref: {0} 's end-point is created successfully.
+    </messagebody>
+
+    <messagedetail/>
+    <cause/>
+    <action/>
+  </logmessage>
+
+  <logmessage
+    messageid="800012"
+    severity="info"
+    method="refResumed(String ref)"
+    >
+
+    <messagebody>
+      Ref: {0} 's end-point is resumed successfully.
+    </messagebody>
+
+    <messagedetail/>
+    <cause/>
+    <action/>
+  </logmessage>
+
+  <logmessage
+    messageid="800013"
+    severity="info"
+    method="refStopped(String ref)"
+    >
+
+    <messagebody>
+      Ref: {0} 's end-point is stopped successfully.
+    </messagebody>
+
+    <messagedetail/>
+    <cause/>
+    <action/>
+  </logmessage>
+
+  <logmessage
+    messageid="800014"
+    severity="info"
+    method="refSuspended(String ref)"
+    >
+
+    <messagebody>
+      Ref: {0} 's end-point is suspended successfully.
+    </messagebody>
+
+    <messagedetail/>
+    <cause/>
+    <action/>
+  </logmessage>
+
+  <logmessage
+    messageid="800015"
+    severity="info"
+    method="refActivated(String ref)"
+    >
+
+    <messagebody>
+      Ref: {0} is activated successfully.
+    </messagebody>
+
+    <messagedetail/>
+    <cause/>
+    <action/>
+  </logmessage>
+
+
+  <logmessage
+    messageid="800016"
+    severity="error"
+    method="suspendFailed(String ref)"
+    >
+
+    <messagebody>
+      Unable to suspend because ref: {0} could not be found.
+    </messagebody>
+
+    <messagedetail/>
+    <cause/>
+    <action/>
+  </logmessage>
+
+
+  <logmessage
+    messageid="800017"
+    severity="error"
+    method="noEndPoint(String ref)"
+    >
+
+    <messagebody>
+      No end-point is registered with ref: {0}
+    </messagebody>
+
+    <messagedetail/>
+    <cause/>
+    <action/>
+  </logmessage>
+
+  <logmessage
+    messageid="800018"
+    severity="info"
+    method="serverSocketAccepting(String serverSocket)"
+    >
+
+    <messagebody>
+      ServerSocket {0} is going to accept..
+    </messagebody>
+
+    <messagedetail/>
+    <cause/>
+    <action/>
+  </logmessage>
+
+  <logmessage
+    messageid="800019"
+    severity="error"
+    method="serverSocketError()"
+    >
+
+    <messagebody>
+      Unable to accept the connections and stopped listening on the server socket.
+    </messagebody>
+
+    <messagedetail/>
+    <cause/>
+    <action/>
+  </logmessage>
+
+  <logmessage
+    messageid="800020"
+    severity="error"
+    method="resumeFailed(String ref)"
+    >
+
+    <messagebody>
+      Unable to resume because ref: {0} could not be found.
+    </messagebody>
+
+    <messagedetail/>
+    <cause/>
+    <action/>
+  </logmessage>
+
+  <logmessage
+    messageid="800021"
+    severity="error"
+    method="startFailed(String ref)"
+    >
+
+    <messagebody>
+      Unable to start because ref: {0} could not be found.
+    </messagebody>
+
+    <messagedetail/>
+    <cause/>
+    <action/>
+  </logmessage>
+
+  <logmessage
+    messageid="800022"
+    severity="error"
+    method="deleteFailed(String ref)"
+    >
+
+    <messagebody>
+      Unable to delete because ref: {0} could not be found.
+    </messagebody>
+
+    <messagedetail/>
+    <cause/>
+    <action/>
+  </logmessage>
+
+  <logmessage
+    messageid="800023"
+    severity="info"
+    method="refDeleted(String ref)"
+    >
+
+    <messagebody>
+      Ref: {0} is deleted successfully.
+    </messagebody>
+
+    <messagedetail/>
+    <cause/>
+    <action/>
+  </logmessage>
+
+  <logmessage
+    messageid="800024"
+    severity="error"
+    method="noDispatchPolicies()"
+    >
+
+    <messagebody>
+      Unable to get dispatch policies.
+    </messagebody>
+
+    <messagedetail/>
+    <cause/>
+    <action/>
+  </logmessage>
+
+    <logmessage
+    messageid="800025"
+    severity="info"
+    method="uri(String uri)"
+    >
+
+    <messagebody>
+      URI is : {0}
+    </messagebody>
+
+    <messagedetail/>
+    <cause/>
+    <action/>
+  </logmessage>
+
+  <logmessage
+    messageid="800026"
+    severity="info"
+    method="canonicalHostName(String host)"
+    >
+
+    <messagebody>
+      Canonical host name is: {0}
+    </messagebody>
+
+    <messagedetail/>
+    <cause/>
+    <action/>
+  </logmessage>
+
+
+
+  <logmessage
+    messageid="800027"
+    severity="info"
+    method="connectionAccepted(String connection)"
+    >
+
+    <messagebody>
+      Connection is accepted for: {0}
+    </messagebody>
+
+    <messagedetail/>
+    <cause/>
+    <action/>
+  </logmessage>
+
+  <logmessage
+    messageid="800028"
+    severity="error"
+    method="registrationFailed()"
+    >
+
+    <messagebody>
+      Socket transport registraion is failed.
+    </messagebody>
+
+    <messagedetail/>
+    <cause/>
+    <action/>
+  </logmessage>
+
+
+  <logmessage
+    messageid="800029"
+    severity="error"
+    method="illegalTransportSender()"
+    >
+
+    <messagebody>
+      Illegal TransportSender type.
+    </messagebody>
+
+    <messagedetail/>
+    <cause/>
+    <action/>
+  </logmessage>
+
+  <logmessage
+    messageid="800030"
+    severity="error"
+    method="writeToClientFailed()"
+    >
+
+    <messagebody>
+      Writing of response to the client is failed.
+    </messagebody>
+
+    <messagedetail/>
+    <cause/>
+    <action/>
+  </logmessage>
+
+
+  <logmessage
+    messageid="800031"
+    severity="error"
+    method="startServiceFailed(String ref)"
+    >
+
+    <messagebody>
+      Unable to start the service: {0}
+    </messagebody>
+
+    <messagedetail/>
+    <cause/>
+    <action/>
+  </logmessage>
+
+
+  <logmessage
+    messageid="800032"
+    severity="error"
+    method="activationFailed(String refName)"
+    >
+
+    <messagebody>
+      Unable to activate the service: {0}
+    </messagebody>
+
+    <messagedetail/>
+    <cause/>
+    <action/>
+  </logmessage>
+
+  <logmessage
+    messageid="800033"
+    severity="error"
+    method="scheduleFailed()"
+    >
+
+    <messagebody>
+      Scheduling it to workmanager is failed.
+    </messagebody>
+
+    <messagedetail/>
+    <cause/>
+    <action/>
+  </logmessage>
+
+  <logmessage
+    messageid="800034"
+    severity="error"
+    method="socketReceiverFailed()"
+    >
+
+    <messagebody>
+      SocketTransport receiver is failed.
+    </messagebody>
+
+    <messagedetail/>
+    <cause/>
+    <action/>
+  </logmessage>
+
+
+  <logmessage
+    messageid="800035"
+    severity="info"
+    method="serverSocketStopped(String serverSocket)"
+    >
+
+    <messagebody>
+      ServerSocket [ {0} ] is stopped.
+    </messagebody>
+
+    <messagedetail/>
+    <cause/>
+    <action/>
+  </logmessage>
+
+  <logmessage
+    messageid="800036"
+    severity="warning"
+    method="uriConflict(String serviceRef)"
+    >
+
+    <messagebody>
+      Specified URI already exists with Proxy service: {0}
+    </messagebody>
+
+    <messagedetail/>
+    <cause/>
+    <action/>
+  </logmessage>
+
+
+
+  <logmessage
+    messageid="800037"
+    severity="error"
+    method="noJmxConnectorAvailble()"
+    >
+
+    <messagebody>
+      JmxConnector is not availble.
+    </messagebody>
+
+    <messagedetail/>
+    <cause/>
+    <action/>
+  </logmessage>
+
+  <logmessage
+    messageid="800038"
+    severity="warning"
+    method="noHelpPageAvailable()"
+    >
+
+    <messagebody>
+      Sample Transport Help Page not available.
+    </messagebody>
+
+    <messagedetail/>
+    <cause/>
+    <action/>
+  </logmessage>
+
+  <logmessage
+    messageid="800039"
+    severity="error"
+    method="invalidConfigMsg()"
+    >
+
+    <messagebody>
+      Invalid socket transport configuration document.
+    </messagebody>
+
+    <messagedetail/>
+    <cause/>
+    <action/>
+  </logmessage>
+
+  <logmessage
+    messageid="800040"
+    severity="error"
+    method="buildErrorMsg(String, line, String col, String errMsg)"
+    >
+
+    <messagebody>
+      Error location is line:{0}, column:{1} and message is: {2}
+    </messagebody>
+
+    <messagedetail/>
+    <cause/>
+    <action/>
+  </logmessage>
+
+</message_catalog>

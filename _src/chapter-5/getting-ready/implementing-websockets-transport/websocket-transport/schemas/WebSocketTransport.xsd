@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns="http://www.bea.com/alsb/transports/websocket"
+           targetNamespace="http://www.bea.com/alsb/transports/websocket"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:ts="http://www.bea.com/wli/sb/transports"
+           xmlns:refs="http://www.bea.com/wli/sb/reference"
+
+           elementFormDefault="qualified">
+  <xs:import namespace="http://www.bea.com/wli/sb/transports"
+             schemaLocation="TransportCommon.xsd"/>
+
+  <xs:complexType name="WebSocketEndpointConfiguration">
+    <xs:annotation>
+      <xs:documentation>
+        WebSocketTransport - specific configuration
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:choice>
+        <xs:element name="outbound-properties"
+                    type="WebSocketOutboundPropertiesType"/>
+        <xs:element name="inbound-properties"
+                    type="WebSocketInboundPropertiesType"/>
+      </xs:choice>
+      <xs:element name="dispatch-policy" type="xs:string" minOccurs="0"
+                  default="">
+        <xs:annotation>
+          <xs:documentation>
+            WLS dispatch policy (name of the WLS work manager or Execute Queue
+            to use for this endpoint). If not specified, the default WLS work
+            manager will be used
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="WebSocketOutboundPropertiesType">
+    <xs:annotation>
+      <xs:documentation/>
+    </xs:annotation>
+    <xs:sequence>
+      <!-- websocket server port -->
+      <xs:element name="server-port" type="xs:int">
+        <xs:annotation>
+          <xs:documentation>
+            WebSocket server port.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <!-- server context path -->
+      <xs:element name="server-context-path" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            WebSocket server context path.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <!-- static files directory -->
+      <xs:element name="static-files-dir" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            WebApp static files directory.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <!-- servlet class -->
+      <xs:element name="servlet-class" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            WebSocket Servlet class.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="WebSocketInboundPropertiesType">
+    <xs:annotation>
+      <xs:documentation/>
+    </xs:annotation>
+    <xs:sequence>
+        <!-- websocket server port -->
+        <xs:element name="server-port" type="xs:int">
+          <xs:annotation>
+            <xs:documentation>
+              WebSocket server port.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <!-- server context path -->
+        <xs:element name="server-context-path" type="xs:string">
+          <xs:annotation>
+            <xs:documentation>
+              WebSocket server context path.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <!-- static files directory -->
+        <xs:element name="static-files-dir" type="xs:string">
+          <xs:annotation>
+            <xs:documentation>
+              WebApp static files directory.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <!-- servlet class -->
+        <xs:element name="servlet-class" type="xs:string">
+          <xs:annotation>
+            <xs:documentation>
+              WebSocket Servlet class.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <!--
+            WebSocket Request Metadata
+     -->
+  <xs:complexType name="WebSocketRequestMetaDataXML">
+    <xs:annotation>
+      <xs:documentation/>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="ts:RequestMetaDataXML">
+        <xs:sequence>
+          <xs:element name="client-host"
+                      type="xs:string" minOccurs="0">
+            <xs:annotation>
+              <xs:documentation>
+                Client host name
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="client-port" type="xs:int" minOccurs="0">
+            <xs:annotation>
+              <xs:documentation>Client port</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="WebSocketRequestHeadersXML">
+    <xs:annotation>
+      <xs:documentation/>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="ts:RequestHeadersXML">
+        <xs:sequence>
+          <xs:element name="message-count" type="xs:long" minOccurs="0">
+            <xs:annotation>
+              <xs:documentation>
+                Number of messages passed till now.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <!--
+             WebSocket Response Metadata
+     -->
+  <xs:complexType name="WebSocketResponseMetaDataXML">
+    <xs:complexContent>
+      <xs:extension base="ts:ResponseMetaDataXML">
+        <xs:sequence>
+          <xs:element name="service-endpoint-host"
+                      type="xs:string" minOccurs="0">
+            <xs:annotation>
+              <xs:documentation>
+                Host name of the service end point connection.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="service-endpoint-ip"
+                      type="xs:string" minOccurs="0">
+            <xs:annotation>
+              <xs:documentation>
+                IP address of the service end point connection.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="WebSocketResponseHeadersXML">
+    <xs:annotation>
+      <xs:documentation/>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="ts:ResponseHeadersXML"/>
+    </xs:complexContent>
+  </xs:complexType>
+</xs:schema>

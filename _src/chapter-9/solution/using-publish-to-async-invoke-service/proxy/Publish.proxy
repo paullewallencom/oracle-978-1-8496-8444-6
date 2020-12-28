@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xml-fragment xmlns:ser="http://www.bea.com/wli/sb/services" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:env="http://www.bea.com/wli/config/env" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:con="http://www.bea.com/wli/sb/pipeline/config" xmlns:con1="http://www.bea.com/wli/sb/stages/publish/config" xmlns:con2="http://www.bea.com/wli/sb/stages/config" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:con3="http://www.bea.com/wli/sb/stages/logging/config">
+  <ser:coreEntry isProxy="true" isEnabled="true">
+    <ser:binding type="abstract XML" xmlns:con="http://www.bea.com/wli/sb/services/bindings/config"/>
+    <ser:monitoring isEnabled="false">
+      <ser:aggregationInterval>10</ser:aggregationInterval>
+      <ser:pipelineMonitoringLevel>Pipeline</ser:pipelineMonitoringLevel>
+    </ser:monitoring>
+    <ser:reporting>true</ser:reporting>
+    <ser:logging isEnabled="true">
+      <ser:logLevel>debug</ser:logLevel>
+    </ser:logging>
+    <ser:sla-alerting isEnabled="true">
+      <ser:alertLevel>normal</ser:alertLevel>
+    </ser:sla-alerting>
+    <ser:pipeline-alerting isEnabled="true">
+      <ser:alertLevel>normal</ser:alertLevel>
+    </ser:pipeline-alerting>
+  </ser:coreEntry>
+  <ser:endpointConfig>
+    <tran:provider-id>http</tran:provider-id>
+    <tran:inbound>true</tran:inbound>
+    <tran:URI>
+      <env:value>/using-publish-to-async-invoke-service/proxy/Publish</env:value>
+    </tran:URI>
+    <tran:inbound-properties/>
+    <tran:all-headers>false</tran:all-headers>
+    <tran:provider-specific>
+      <http:inbound-properties/>
+    </tran:provider-specific>
+  </ser:endpointConfig>
+  <ser:router>
+    <con:pipeline type="request" name="PublishPipelinePair_request">
+      <con:stage name="PublishStage">
+        <con:context/>
+        <con:actions>
+          <con1:route>
+            <con2:id>_ActionId-1179746223787761928-6c04ab2d.133bb0aa610.-7446</con2:id>
+            <con1:service ref="using-publish-to-async-invoke-service/proxy/Processing" xsi:type="ref:ProxyRef" xmlns:ref="http://www.bea.com/wli/sb/reference"/>
+            <con1:outboundTransform/>
+          </con1:route>
+          <con3:log>
+            <con2:id>_ActionId-1179746223787761928-6c04ab2d.133bb0aa610.-740e</con2:id>
+            <con3:logLevel>warning</con3:logLevel>
+            <con3:expr>
+              <con2:xqueryText>'Publish completed, continue with processing in Publish proxy service'</con2:xqueryText>
+            </con3:expr>
+          </con3:log>
+        </con:actions>
+      </con:stage>
+    </con:pipeline>
+    <con:pipeline type="response" name="PublishPipelinePair_response"/>
+    <con:flow>
+      <con:pipeline-node name="PublishPipelinePair">
+        <con:request>PublishPipelinePair_request</con:request>
+        <con:response>PublishPipelinePair_response</con:response>
+      </con:pipeline-node>
+    </con:flow>
+  </ser:router>
+</xml-fragment>

@@ -1,0 +1,169 @@
+<wsdl:definitions name="CustomerService" targetNamespace="http://www.crm.org/CustomerService/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://www.crm.org/CustomerService/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+   <wsdl:types>
+      <xsd:schema targetNamespace="http://www.crm.org/CustomerService/">
+         <xsd:complexType name="AddressTyp">
+            <xsd:sequence>
+               <xsd:element name="street" type="xsd:string"/>
+               <xsd:element name="nr" type="xsd:string"/>
+               <xsd:element name="zipcode" type="xsd:string"/>
+               <xsd:element name="city" type="xsd:string"/>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:complexType name="CustomerTyp">
+            <xsd:sequence>
+               <xsd:element name="id" type="xsd:int"/>
+               <xsd:element name="firstname" type="xsd:string"/>
+               <xsd:element name="lastname" type="xsd:string"/>
+               <xsd:element name="gender" type="xsd:string"/>
+               <xsd:element name="emailAddress" type="xsd:string"/>
+               <xsd:element name="rating" type="xsd:string"/>
+               <xsd:element name="address" type="tns:AddressTyp"/>
+               <xsd:element name="userdef1" type="xsd:string"/>
+               <xsd:element name="userdef2" type="xsd:string"/>
+               <xsd:element name="userdef3" type="xsd:string"/>
+               <xsd:element name="userdef4" type="xsd:string"/>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:complexType name="CriteriasType">
+            <xsd:sequence>
+               <xsd:element name="criteria" type="tns:CriteriaType" minOccurs="1" maxOccurs="unbounded"/>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:complexType name="CriteriaType">
+            <xsd:sequence>
+               <xsd:element name="criteriaField" type="xsd:string"/>
+               <xsd:element name="criteriaValue" type="xsd:string"/>
+            </xsd:sequence>
+         </xsd:complexType>
+         <xsd:element name="CreateNewCustomer">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element name="customer" type="tns:CustomerTyp"/>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+         <xsd:element name="CreateNewCustomerResponse">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element name="id" type="xsd:int"/>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+         <xsd:element name="UpdateExistingCustomer">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element name="customer" type="tns:CustomerTyp"/>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+         <xsd:element name="UpdateExistingCustomerResponse">
+            <xsd:complexType>
+               <xsd:sequence/>
+            </xsd:complexType>
+         </xsd:element>
+         <xsd:element name="RetrieveCustomerByCriteria">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element name="criterias" type="tns:CriteriasType" minOccurs="1"/>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+         <xsd:element name="RetrieveCustomerByCriteriaResponse">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element name="customers" type="tns:CustomerTyp"/>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+         <xsd:element name="CreateNewCustomerFault">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element name="CreateNewCustomerFault" type="xsd:string"/>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+         <xsd:element name="UpdateExistingCustomerFault">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element name="UpdateExistingCustomerFault" type="xsd:string"/>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+      </xsd:schema>
+   </wsdl:types>
+   <wsdl:message name="CreateNewCustomerRequest">
+      <wsdl:part name="parameters" element="tns:CreateNewCustomer"/>
+   </wsdl:message>
+   <wsdl:message name="CreateNewCustomerResponse">
+      <wsdl:part name="parameters" element="tns:CreateNewCustomerResponse"/>
+   </wsdl:message>
+   <wsdl:message name="CreateNewCustomerFault">
+      <wsdl:part name="parameters" element="tns:CreateNewCustomerFault"/>
+   </wsdl:message>
+   <wsdl:message name="UpdateExistingCustomerRequest">
+      <wsdl:part name="parameters" element="tns:UpdateExistingCustomer"/>
+   </wsdl:message>
+   <wsdl:message name="UpdateExistingCustomerResponse">
+      <wsdl:part name="parameters" element="tns:UpdateExistingCustomerResponse"/>
+   </wsdl:message>
+   <wsdl:message name="UpdateExistingCustomerFault">
+      <wsdl:part name="parameters" element="tns:UpdateExistingCustomerFault"/>
+   </wsdl:message>
+   <wsdl:message name="RetrieveCustomerByCriteriaRequest">
+      <wsdl:part name="parameters" element="tns:RetrieveCustomerByCriteria"/>
+   </wsdl:message>
+   <wsdl:message name="RetrieveCustomerByCriteriaResponse">
+      <wsdl:part name="parameters" element="tns:RetrieveCustomerByCriteriaResponse"/>
+   </wsdl:message>
+   <wsdl:portType name="CustomerService">
+      <wsdl:operation name="CreateNewCustomer">
+         <wsdl:input message="tns:CreateNewCustomerRequest"/>
+         <wsdl:output message="tns:CreateNewCustomerResponse"/>
+         <wsdl:fault name="fault" message="tns:CreateNewCustomerFault"/>
+      </wsdl:operation>
+      <wsdl:operation name="UpdateExistingCustomer">
+         <wsdl:input message="tns:UpdateExistingCustomerRequest"/>
+         <wsdl:output message="tns:UpdateExistingCustomerResponse"/>
+         <wsdl:fault name="fault" message="tns:UpdateExistingCustomerFault"/>
+      </wsdl:operation>
+      <wsdl:operation name="RetrieveCustomerByCriteria">
+         <wsdl:input message="tns:RetrieveCustomerByCriteriaRequest"/>
+         <wsdl:output message="tns:RetrieveCustomerByCriteriaResponse"/>
+      </wsdl:operation>
+   </wsdl:portType>
+   <wsdl:binding name="CustomerServiceSOAP" type="tns:CustomerService">
+      <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+      <wsdl:operation name="CreateNewCustomer">
+         <soap:operation soapAction="http://www.crm.org/CustomerService/CreateNewCustomer"/>
+         <wsdl:input>
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"/>
+         </wsdl:output>
+      </wsdl:operation>
+      <wsdl:operation name="UpdateExistingCustomer">
+         <soap:operation soapAction="http://www.crm.org/CustomerService/UpdateExistingCustomer"/>
+         <wsdl:input>
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"/>
+         </wsdl:output>
+      </wsdl:operation>
+      <wsdl:operation name="RetrieveCustomerByCriteria">
+         <soap:operation soapAction="http://www.crm.org/CustomerService/RetrieveCustomerByCriteria"/>
+         <wsdl:input>
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"/>
+         </wsdl:output>
+      </wsdl:operation>
+   </wsdl:binding>
+   <wsdl:service name="CustomerService">
+      <wsdl:port name="CustomerServiceSOAP" binding="tns:CustomerServiceSOAP">
+         <soap:address location="http://localhost:8088/mockCustomerServiceSOAP"/>
+      </wsdl:port>
+   </wsdl:service>
+</wsdl:definitions>

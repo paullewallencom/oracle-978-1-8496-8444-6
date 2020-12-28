@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project name="CreditCardInfoServiceFromCRM" resourceRoot="" soapui-version="4.0.1" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="CreditCardInfoServiceSOAP" type="wsdl" bindingName="{http://www.crm.org/CreditCardInfoService/}CreditCardInfoServiceSOAP" soapVersion="1_1" anonymous="optional" definition="file:/C:/workspace/osb-cookbook/trunk/book-handout/chapter-9/getting-ready/misc/CreditCardInfoServiceCRM.wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="file:/C:/workspace/osb-cookbook/trunk/book-handout/chapter-9/getting-ready/misc/CreditCardInfoServiceCRM.wsdl"><con:part><con:url>file:/C:/workspace/osb-cookbook/trunk/book-handout/chapter-9/getting-ready/misc/CreditCardInfoServiceCRM.wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="CreditCardInfoService" targetNamespace="http://www.crm.org/CreditCardInfoService/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://www.crm.org/CreditCardInfoService/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://www.crm.org/CreditCardInfoService/">
+      <xsd:complexType name="CreditCardTyp">
+        <xsd:sequence>
+          <xsd:element name="creditCardType" type="xsd:string"/>
+          <xsd:element name="creditCardNumber" type="xsd:int"/>
+          <xsd:element name="cardHolderName" type="xsd:string"/>
+          <xsd:element name="expiration" type="xsd:string"/>
+          <xsd:element name="cvc" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="RetrieveCreditCardById">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="id" type="xsd:long" minOccurs="1"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="RetrieveCreditCardByIdResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="creditCard" type="tns:CreditCardTyp"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="RetrieveCreditCardByIdRequest">
+    <wsdl:part name="parameters" element="tns:RetrieveCreditCardById"/>
+  </wsdl:message>
+  <wsdl:message name="RetrieveCreditCardByIdResponse">
+    <wsdl:part name="parameters" element="tns:RetrieveCreditCardByIdResponse"/>
+  </wsdl:message>
+  <wsdl:portType name="CreditCardInfoService">
+    <wsdl:operation name="RetrieveCreditCardById">
+      <wsdl:input message="tns:RetrieveCreditCardByIdRequest"/>
+      <wsdl:output message="tns:RetrieveCreditCardByIdResponse"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="CreditCardInfoServiceSOAP" type="tns:CreditCardInfoService">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="RetrieveCreditCardById">
+      <soap:operation soapAction="http://www.crm.org/CreditCardInfoService/RetrieveCreditCardById"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="CreditCardInfoService">
+    <wsdl:port name="CreditCardInfoServiceSOAP" binding="tns:CreditCardInfoServiceSOAP">
+      <soap:address location="http://soadev:8088/mockCreditCardInfoServiceSOAP"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://soadev:8088/mockCreditCardInfoServiceSOAP</con:endpoint></con:endpoints><con:operation isOneWay="false" action="http://www.crm.org/CreditCardInfoService/RetrieveCreditCardById" name="RetrieveCreditCardById" bindingOperationName="RetrieveCreditCardById" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8090/mockCreditCardInfoServiceSOAP</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:cred="http://www.crm.org/CreditCardInfoService/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <cred:RetrieveCreditCardById>
+         <id>1</id>
+      </cred:RetrieveCreditCardById>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.crm.org/CreditCardInfoService/RetrieveCreditCardById"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:mockService port="8090" path="/mockCreditCardInfoServiceSOAP" host="localhost" name="CreditCardInfoServiceSOAP MockService" bindToHostOnly="false" docroot=""><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.mock.WsdlMockService@require-soap-action">false</con:setting></con:settings><con:mockOperation name="RetrieveCreditCardById" interface="CreditCardInfoServiceSOAP" operation="RetrieveCreditCardById"><con:settings/><con:dispatchStyle>SEQUENCE</con:dispatchStyle><con:defaultResponse>Response 1</con:defaultResponse><con:response name="Response 1" encoding="UTF-8"><con:settings/><con:responseContent><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:cred="http://www.crm.org/CreditCardInfoService/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <cred:RetrieveCreditCardByIdResponse>
+         <creditCard>
+            <creditCardType>visa</creditCardType>
+            <creditCardNumber>1234 1234 1234 1234</creditCardNumber>
+            <cardHolderName>Peter Sample</cardHolderName>
+            <expiration>01/13</expiration>
+            <cvc>099</cvc>
+         </creditCard>
+      </cred:RetrieveCreditCardByIdResponse>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:responseContent><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://www.crm.org/CreditCardInfoService/RetrieveCreditCardById"/></con:response><con:dispatchConfig/></con:mockOperation><con:properties/></con:mockService><con:properties/><con:wssContainer/><con:sensitiveInformation/></con:soapui-project>

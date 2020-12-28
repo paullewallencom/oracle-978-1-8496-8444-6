@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xml-fragment xmlns:ser="http://www.bea.com/wli/sb/services" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:env="http://www.bea.com/wli/config/env" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:con="http://www.bea.com/wli/sb/pipeline/config" xmlns:con1="http://www.bea.com/wli/sb/stages/config" xmlns:con2="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con3="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con4="http://www.bea.com/wli/sb/stages/logging/config">
+  <ser:coreEntry isProxy="true" isEnabled="true">
+    <ser:binding type="Mixed" xsi:type="con:MixedBindingType" xmlns:con="http://www.bea.com/wli/sb/services/bindings/config">
+      <con:request type="XML"/>
+      <con:response type="XML"/>
+    </ser:binding>
+    <ser:monitoring isEnabled="false">
+      <ser:aggregationInterval>10</ser:aggregationInterval>
+      <ser:pipelineMonitoringLevel>Pipeline</ser:pipelineMonitoringLevel>
+    </ser:monitoring>
+    <ser:reporting>true</ser:reporting>
+    <ser:logging isEnabled="true">
+      <ser:logLevel>debug</ser:logLevel>
+    </ser:logging>
+    <ser:sla-alerting isEnabled="true">
+      <ser:alertLevel>normal</ser:alertLevel>
+    </ser:sla-alerting>
+    <ser:pipeline-alerting isEnabled="true">
+      <ser:alertLevel>normal</ser:alertLevel>
+    </ser:pipeline-alerting>
+  </ser:coreEntry>
+  <ser:endpointConfig>
+    <tran:provider-id>http</tran:provider-id>
+    <tran:inbound>true</tran:inbound>
+    <tran:URI>
+      <env:value>/exposing-restful-service/CustomerService</env:value>
+    </tran:URI>
+    <tran:inbound-properties/>
+    <tran:all-headers>false</tran:all-headers>
+    <tran:provider-specific>
+      <http:inbound-properties/>
+    </tran:provider-specific>
+  </ser:endpointConfig>
+  <ser:router>
+    <con:pipeline type="request" name="NotSupportedMethodPipeline_request">
+      <con:stage name="RaiseErrorStage">
+        <con:context/>
+        <con:actions>
+          <con3:Error>
+            <con1:id>_ActionId-6828835564956723246--513cd642.1329c323d90.-7f5d</con1:id>
+            <con3:errCode>NOT_SUPPORTED_HTTP_METHOD</con3:errCode>
+            <con3:message>Unsupported HTTP method.</con3:message>
+          </con3:Error>
+        </con:actions>
+      </con:stage>
+    </con:pipeline>
+    <con:pipeline type="response" name="NotSupportedMethodPipeline_response"/>
+    <con:flow>
+      <con:branch-node type="condition" name="MethodBranch">
+        <con:context/>
+        <con:branch-table variable="inbound">
+          <con:xpath>
+            <con1:xpathText>./ctx:transport/ctx:request/http:http-method/text()</con1:xpathText>
+          </con:xpath>
+          <con:branch name="GET">
+            <con:operator>equals</con:operator>
+            <con:value>'GET'</con:value>
+            <con:flow>
+              <con:route-node name="RetrieveCustomerRoute">
+                <con:context>
+                  <con1:userNsDecl namespace="http://www.crm.org/CustomerService/" prefix="cus"/>
+                </con:context>
+                <con:actions>
+                  <con2:route>
+                    <con1:id>_ActionId-4521397633437871172-64907eda.1329b164660.-7e73</con1:id>
+                    <con2:service ref="exposing-restful-service/business/CustomerServiceCRM" xsi:type="ref:BusinessServiceRef" xmlns:ref="http://www.bea.com/wli/sb/reference"/>
+                    <con2:operation>RetrieveCustomerByCriteria</con2:operation>
+                    <con2:outboundTransform>
+                      <con3:replace varName="body" contents-only="true">
+                        <con1:id>_ActionId-4521397633437871172-64907eda.1329b164660.-7c08</con1:id>
+                        <con3:expr>
+                          <con1:xqueryTransform>
+                            <con1:resource ref="exposing-restful-service/transformation/HttpGetToSoap"/>
+                            <con1:param name="queryString">
+                              <con1:path>$inbound/ctx:transport/ctx:request/http:query-string/text()</con1:path>
+                            </con1:param>
+                          </con1:xqueryTransform>
+                        </con3:expr>
+                      </con3:replace>
+                    </con2:outboundTransform>
+                    <con2:responseTransform>
+                      <con3:replace varName="body" contents-only="true">
+                        <con1:id>_ActionId-4521397633437871172-64907eda.1329b164660.-7bd0</con1:id>
+                        <con3:expr>
+                          <con1:xqueryTransform>
+                            <con1:resource ref="exposing-restful-service/transformation/SoapToHttpGet"/>
+                            <con1:param name="retrieveCustomerByCriteriaResponse1">
+                              <con1:path>$body/cus:RetrieveCustomerByCriteriaResponse</con1:path>
+                            </con1:param>
+                          </con1:xqueryTransform>
+                        </con3:expr>
+                      </con3:replace>
+                      <con3:transport-headers>
+                        <con1:id>_ActionId-4521397633437871172-64907eda.1329b164660.-7ba5</con1:id>
+                        <con3:header-set>inbound-response</con3:header-set>
+                        <con3:header name="Content-Type" value="expression">
+                          <con1:xqueryText>'text/xml; charset=utf-8'</con1:xqueryText>
+                        </con3:header>
+                        <con3:header name="Content-Length" value="expression">
+                          <con1:xqueryText>string-length($body)</con1:xqueryText>
+                        </con3:header>
+                        <con3:header name="Date" value="expression">
+                          <con1:xqueryText>fn-bea:dateTime-to-string-with-format("E, dd MMM yyyy hh:mm:ss",fn:current-dateTime())</con1:xqueryText>
+                        </con3:header>
+                        <con3:header name="Content-Encoding" value="expression">
+                          <con1:xqueryText>'UTF-8'</con1:xqueryText>
+                        </con3:header>
+                        <con3:header name="Allow" value="expression">
+                          <con1:xqueryText>'GET, POST, PUT, DELETE'</con1:xqueryText>
+                        </con3:header>
+                      </con3:transport-headers>
+                    </con2:responseTransform>
+                  </con2:route>
+                </con:actions>
+              </con:route-node>
+            </con:flow>
+          </con:branch>
+          <con:branch name="PUT">
+            <con:operator>equals</con:operator>
+            <con:value>'PUT'</con:value>
+            <con:flow>
+              <con:route-node name="UpdateExistingCustomerRoute">
+                <con:context>
+                  <con1:userNsDecl namespace="http://www.crm.org/CustomerService/" prefix="cus"/>
+                  <con1:userNsDecl namespace="http://www.somecorp.com/customer" prefix="cus1"/>
+                </con:context>
+                <con:actions>
+                  <con2:route>
+                    <con1:id>_ActionId-4521397633437871172-64907eda.1329b164660.-78e8</con1:id>
+                    <con2:service ref="exposing-restful-service/business/CustomerServiceCRM" xsi:type="ref:BusinessServiceRef" xmlns:ref="http://www.bea.com/wli/sb/reference"/>
+                    <con2:operation>UpdateExistingCustomer</con2:operation>
+                    <con2:outboundTransform>
+                      <con4:log>
+                        <con1:id>_ActionId-5986864927245353184--400b2e0d.132d4da5506.-7bc9</con1:id>
+                        <con4:logLevel>warning</con4:logLevel>
+                        <con4:expr>
+                          <con1:xqueryText>$body</con1:xqueryText>
+                        </con4:expr>
+                      </con4:log>
+                      <con3:replace varName="body" contents-only="true">
+                        <con1:id>_ActionId-4521397633437871172-64907eda.1329b164660.-78e7</con1:id>
+                        <con3:expr>
+                          <con1:xqueryTransform>
+                            <con1:resource ref="exposing-restful-service/transformation/HttpPutToSoap"/>
+                            <con1:param name="customer1">
+                              <con1:path>$body/cus1:Customer</con1:path>
+                            </con1:param>
+                          </con1:xqueryTransform>
+                        </con3:expr>
+                      </con3:replace>
+                    </con2:outboundTransform>
+                    <con2:responseTransform>
+                      <con3:replace varName="body" contents-only="true">
+                        <con1:id>_ActionId-4521397633437871172-64907eda.1329b164660.-78e6</con1:id>
+                        <con3:expr>
+                          <con1:xqueryText><![CDATA[<status>
+     <code>OK</code>
+     <message>record updated</message>
+</status>]]></con1:xqueryText>
+                        </con3:expr>
+                      </con3:replace>
+                      <con3:transport-headers>
+                        <con1:id>_ActionId-4521397633437871172-64907eda.1329b164660.-78e5</con1:id>
+                        <con3:header-set>inbound-response</con3:header-set>
+                        <con3:header name="Content-Type" value="expression">
+                          <con1:xqueryText>'text/xml; charset=utf-8'</con1:xqueryText>
+                        </con3:header>
+                        <con3:header name="Content-Length" value="expression">
+                          <con1:xqueryText>string-length($body)</con1:xqueryText>
+                        </con3:header>
+                        <con3:header name="Date" value="expression">
+                          <con1:xqueryText>fn-bea:dateTime-to-string-with-format("E, dd MMM yyyy hh:mm:ss",fn:current-dateTime())</con1:xqueryText>
+                        </con3:header>
+                        <con3:header name="Content-Encoding" value="expression">
+                          <con1:xqueryText>'UTF-8'</con1:xqueryText>
+                        </con3:header>
+                      </con3:transport-headers>
+                    </con2:responseTransform>
+                  </con2:route>
+                </con:actions>
+              </con:route-node>
+            </con:flow>
+          </con:branch>
+          <con:branch name="POST">
+            <con:operator>equals</con:operator>
+            <con:value>'POST'</con:value>
+            <con:flow>
+              <con:route-node name="CreateNewCustomerRoute">
+                <con:context>
+                  <con1:userNsDecl namespace="http://www.crm.org/CustomerService/" prefix="cus"/>
+                  <con1:userNsDecl namespace="http://www.somecorp.com/customer" prefix="cus1"/>
+                </con:context>
+                <con:actions>
+                  <con2:route>
+                    <con1:id>_ActionId-4521397633437871172-64907eda.1329b164660.-77c2</con1:id>
+                    <con2:service ref="exposing-restful-service/business/CustomerServiceCRM" xsi:type="ref:BusinessServiceRef" xmlns:ref="http://www.bea.com/wli/sb/reference"/>
+                    <con2:operation>CreateNewCustomer</con2:operation>
+                    <con2:outboundTransform>
+                      <con3:assign varName="origRequest">
+                        <con1:id>_ActionId-5986864927245353184--400b2e0d.132d4da5506.-7c05</con1:id>
+                        <con3:expr>
+                          <con1:xqueryText>$body</con1:xqueryText>
+                        </con3:expr>
+                      </con3:assign>
+                      <con3:replace varName="body" contents-only="true">
+                        <con1:id>_ActionId-4521397633437871172-64907eda.1329b164660.-77c1</con1:id>
+                        <con3:expr>
+                          <con1:xqueryTransform>
+                            <con1:resource ref="exposing-restful-service/transformation/HttpPostToSoap"/>
+                            <con1:param name="customer1">
+                              <con1:path>$body/cus1:Customer</con1:path>
+                            </con1:param>
+                          </con1:xqueryTransform>
+                        </con3:expr>
+                      </con3:replace>
+                    </con2:outboundTransform>
+                    <con2:responseTransform>
+                      <con3:replace varName="body" contents-only="true">
+                        <con1:id>_ActionId-4521397633437871172-64907eda.1329b164660.-77c0</con1:id>
+                        <con3:expr>
+                          <con1:xqueryTransform>
+                            <con1:resource ref="exposing-restful-service/transformation/SoapToHttpPost"/>
+                            <con1:param name="customer1">
+                              <con1:path>$origRequest/cus1:Customer</con1:path>
+                            </con1:param>
+                            <con1:param name="createNewCustomerResponse1">
+                              <con1:path>$body/cus:CreateNewCustomerResponse</con1:path>
+                            </con1:param>
+                          </con1:xqueryTransform>
+                        </con3:expr>
+                      </con3:replace>
+                      <con3:transport-headers>
+                        <con1:id>_ActionId-4521397633437871172-64907eda.1329b164660.-77bf</con1:id>
+                        <con3:header-set>inbound-response</con3:header-set>
+                        <con3:header name="Content-Type" value="expression">
+                          <con1:xqueryText>'text/xml; charset=utf-8'</con1:xqueryText>
+                        </con3:header>
+                        <con3:header name="Content-Length" value="expression">
+                          <con1:xqueryText>string-length($body)</con1:xqueryText>
+                        </con3:header>
+                        <con3:header name="Date" value="expression">
+                          <con1:xqueryText>fn-bea:dateTime-to-string-with-format("E, dd MMM yyyy hh:mm:ss",fn:current-dateTime())</con1:xqueryText>
+                        </con3:header>
+                        <con3:header name="Content-Encoding" value="expression">
+                          <con1:xqueryText>'UTF-8'</con1:xqueryText>
+                        </con3:header>
+                        <con3:header name="Allow" value="expression">
+                          <con1:xqueryText>'GET, POST, PUT, DELETE'</con1:xqueryText>
+                        </con3:header>
+                      </con3:transport-headers>
+                    </con2:responseTransform>
+                  </con2:route>
+                </con:actions>
+              </con:route-node>
+            </con:flow>
+          </con:branch>
+          <con:branch name="DELETE">
+            <con:operator>equals</con:operator>
+            <con:value>'DELETE'</con:value>
+            <con:flow>
+              <con:route-node name="DeleteExistingCustomerRoute">
+                <con:context>
+                  <con1:userNsDecl namespace="http://www.crm.org/CustomerService/" prefix="cus"/>
+                </con:context>
+                <con:actions>
+                  <con2:route>
+                    <con1:id>_ActionId-4521397633437871172-64907eda.1329b164660.-7628</con1:id>
+                    <con2:service ref="exposing-restful-service/business/CustomerServiceCRM" xsi:type="ref:BusinessServiceRef" xmlns:ref="http://www.bea.com/wli/sb/reference"/>
+                    <con2:operation>DeleteExistingCustomer</con2:operation>
+                    <con2:outboundTransform>
+                      <con3:replace varName="body" contents-only="true">
+                        <con1:id>_ActionId-4521397633437871172-64907eda.1329b164660.-7627</con1:id>
+                        <con3:expr>
+                          <con1:xqueryTransform>
+                            <con1:resource ref="exposing-restful-service/transformation/HttpDeleteToSoap"/>
+                            <con1:param name="id">
+                              <con1:path>$inbound/ctx:transport/ctx:request/http:query-parameters/http:parameter/@value[$inbound/ctx:transport/ctx:request/http:query-parameters/http:parameter/@name='id']</con1:path>
+                            </con1:param>
+                          </con1:xqueryTransform>
+                        </con3:expr>
+                      </con3:replace>
+                    </con2:outboundTransform>
+                    <con2:responseTransform>
+                      <con3:replace varName="body" contents-only="true">
+                        <con1:id>_ActionId-4521397633437871172-64907eda.1329b164660.-7626</con1:id>
+                        <con3:expr>
+                          <con1:xqueryText><![CDATA[<status>
+     <code>OK</code>
+     <message>record deleted</message>
+</status>]]></con1:xqueryText>
+                        </con3:expr>
+                      </con3:replace>
+                      <con3:transport-headers>
+                        <con1:id>_ActionId-4521397633437871172-64907eda.1329b164660.-7625</con1:id>
+                        <con3:header-set>inbound-response</con3:header-set>
+                        <con3:header name="Content-Type" value="expression">
+                          <con1:xqueryText>'text/xml; charset=utf-8'</con1:xqueryText>
+                        </con3:header>
+                        <con3:header name="Content-Length" value="expression">
+                          <con1:xqueryText>string-length($body)</con1:xqueryText>
+                        </con3:header>
+                        <con3:header name="Date" value="expression">
+                          <con1:xqueryText>fn-bea:dateTime-to-string-with-format("E, dd MMM yyyy hh:mm:ss",fn:current-dateTime())</con1:xqueryText>
+                        </con3:header>
+                        <con3:header name="Content-Encoding" value="expression">
+                          <con1:xqueryText>'UTF-8'</con1:xqueryText>
+                        </con3:header>
+                      </con3:transport-headers>
+                    </con2:responseTransform>
+                  </con2:route>
+                </con:actions>
+              </con:route-node>
+            </con:flow>
+          </con:branch>
+          <con:default-branch>
+            <con:flow>
+              <con:pipeline-node name="NotSupportedMethodPipeline">
+                <con:request>NotSupportedMethodPipeline_request</con:request>
+                <con:response>NotSupportedMethodPipeline_response</con:response>
+              </con:pipeline-node>
+            </con:flow>
+          </con:default-branch>
+        </con:branch-table>
+      </con:branch-node>
+    </con:flow>
+  </ser:router>
+</xml-fragment>
